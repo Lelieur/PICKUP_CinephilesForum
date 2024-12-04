@@ -1,0 +1,50 @@
+.search-icon {
+    color: white
+}
+
+.btn:hover .search-icon {
+    color: rgb(5 255 161)
+}
+
+.navbar {
+    background-color: #060613;
+    z-index: 1050;
+}
+
+.navbar .nav-link:hover,
+.navbar .dropdown-toggle:hover,
+.navbar .dropdown-item:hover {
+    color: rgb(5 255 161) !important
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar-nav {
+    flex-direction: row;
+}
+
+.offcanvas {
+    background-color: transparent;
+}
+
+.offcanvas-header {
+    height: 60px;
+}
+
+.offcanvas-body {
+    background-color: #141426;
+    padding: 0;
+}
+
+.accordion-menu {
+    background: #060613
+}
+
+.accordion-item,
+.accordion-button {
+    background-color: transparent;
+    color: white;
+    font-size: bold;
+}
