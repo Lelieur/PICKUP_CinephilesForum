@@ -1,7 +1,10 @@
 import { Container, Nav, Navbar, Button, Dropdown, Offcanvas, Row, Col, Accordion } from 'react-bootstrap'
 import { Search, List, XLg } from "react-bootstrap-icons"
-import "./Navigation.css"
 import { useState } from 'react'
+import { Link } from 'react-router-dom';
+
+import "./Navigation.css"
+
 
 const Navigation = () => {
 
@@ -20,8 +23,8 @@ const Navigation = () => {
     return (
         <div className="Navigation">
             <Navbar expand="lg" className="text-white" variant="dark" >
-                <Container >
-                    <Nav className="d-flex align-items-center">
+                <Container>
+                    <Nav>
                         <Navbar.Toggle
                             className="me-2 border-0 bg-transparent text-white"
                             aria-controls="basic-navbar-nav"
@@ -42,7 +45,7 @@ const Navigation = () => {
                         <Nav className="me-auto">
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav>
-                                    <Nav.Link className="text-white" href="#home">Comunidades</Nav.Link>
+                                    <Nav.Link className="text-white" as={Link} to="/">Comunidades</Nav.Link>
                                     <Nav.Link className="text-white" href="#link">Reseñas</Nav.Link>
                                 </Nav>
                                 <Nav>
@@ -51,9 +54,9 @@ const Navigation = () => {
                                             Más
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
-                                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                                            <Dropdown.Item href="/tendencias">Tendencias</Dropdown.Item>
+                                            <Dropdown.Item href="/top-reviews">Top Reviews</Dropdown.Item>
+                                            <Dropdown.Item href="/top-comunidades">Top Comunidades</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Nav>
@@ -102,13 +105,25 @@ const Navigation = () => {
                     <hr className='m-0' />
                     <Row className="accordion-menu">
                         <Col>
-                            <Accordion defaultActiveKey="0" flush>
+                            <Accordion flush>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header><span className="fw-bold">Más</span></Accordion.Header>
-                                    <Accordion.Body className="ml-3">
-                                        <Row>
+                                    <Accordion.Body className="p-0">
+                                        <Row className="ms-2 p-3">
                                             <Col>
                                                 Tendencias
+                                            </Col>
+                                        </Row>
+                                        <hr className='m-0' />
+                                        <Row className="ms-2 p-3">
+                                            <Col>
+                                                Top Reviews
+                                            </Col>
+                                        </Row>
+                                        <hr className='m-0' />
+                                        <Row className="ms-2 p-3">
+                                            <Col>
+                                                Top Comunidades
                                             </Col>
                                         </Row>
                                     </Accordion.Body>

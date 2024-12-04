@@ -27,6 +27,7 @@
 
 .offcanvas {
     background-color: transparent;
+    z-index: 2000;
 }
 
 .offcanvas-header {

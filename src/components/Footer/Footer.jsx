@@ -1,43 +1,40 @@
 import './Footer.css'
-import { Row, Col, Container, Nav } from 'react-bootstrap'
+import { Container, Nav, Navbar, Row } from 'react-bootstrap'
 import { Facebook, Twitter, Instagram, Tiktok, Linkedin } from 'react-bootstrap-icons'
-import { Cloudinary } from '@cloudinary/url-gen'
 
 const Footer = () => {
+
     return (
-        <footer>
-            <Container className="text-light py-4">
-                <Row className="text-center mb-3">
-                    <Col md={9} className='d-flex' >
-                        <Nav>
-                            <Nav.Link href="#" className="text-light mx-2">Centro de ayuda</Nav.Link>
-                            <Nav.Link href="#" className="text-light mx-2">Aviso Legal</Nav.Link>
-                            <Nav.Link href="#" className="text-light mx-2">Prensa</Nav.Link>
-                            <Nav.Link href="#" className="text-light mx-2">¿Quiénes somos?</Nav.Link>
-                        </Nav>
-                    </Col>
-                    <Col md={3} className="d-flex justify-content-start">
-                        <Nav className='social-icons'>
-                            <a href="#" className="text-white me-3">
-                                <Facebook size={24} />
-                            </a>
-                            <a href="#" className="text-white me-3">
-                                <Twitter size={24} />
-                            </a>
-                            <a href="#" className="text-white me-3">
-                                <Instagram size={24} />
-                            </a>
-                            <a href="#" className="text-white me-3">
-                                <Tiktok size={24} />
-                            </a>
-                            <a href="#" className="text-white me-3">
-                                <Linkedin size={24} />
-                            </a>
-                        </Nav>
-                    </Col>
-                </Row>
-            </Container>
-        </footer>
+
+        <div className="Footer">
+            <Navbar>
+                <Container className="fs-6 opacity-50 d-flex flex-column text-center pt-2 pb-2 flex-row@lg align-items-center justify-content-between@lg">
+                    <Nav className="mb-1 text-center flex-wrap justify-content-center">
+                        <Nav.Link href="#" className="text-white">Centro de ayuda</Nav.Link>
+                        <Nav.Link href="#" className="text-white">Aviso Legal</Nav.Link>
+                        <Nav.Link href="#" className="text-white">Prensa</Nav.Link>
+                        <Nav.Link href="#" className="text-white">¿Quiénes somos?</Nav.Link>
+                    </Nav>
+                    <Nav>
+                        <Nav.Link className="text-white" href="#home">
+                            <Facebook size={15} />
+                        </Nav.Link>
+                        <Nav.Link className="text-white" href="#home">
+                            <Twitter size={15} />
+                        </Nav.Link>
+                        <Nav.Link className="text-white" href="#home">
+                            <Instagram size={15} />
+                        </Nav.Link>
+                        <Nav.Link className="text-white" href="#home">
+                            <Tiktok size={15} />
+                        </Nav.Link>
+                        <Nav.Link className="text-white" href="#home">
+                            <Linkedin size={15} />
+                        </Nav.Link>
+                    </Nav>
+                </Container>
+            </Navbar>
+        </div >
     )
 }
 

@@ -1,0 +1,12 @@
+.text-vertical {
+    font-size: 0.5em;
+    writing-mode: vertical-rl;
+}
+
+.card-img {
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.5em;
+}

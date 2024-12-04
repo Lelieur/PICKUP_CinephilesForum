@@ -1,9 +1,7 @@
-footer {
+.Footer {
     background-color: black;
 }
 
-.social-icons {
-    margin-left: 0;
-    margin-right: 15px;
-    margin-top: auto;
+.Footer a {
+    font-size: 0.75em;
 }

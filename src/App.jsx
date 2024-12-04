@@ -3,7 +3,7 @@ import "./App.css"
 import 'bootstrap/dist/css/bootstrap.min.css'
 import AppRoutes from "./routes/AppRoutes"
 import Navigation from "./components/Navigation/Navigation"
-import Footer from "./components/Footer/Footer"
+import Footer from "./components/Footer/Footer.jsx"
 
 const App = () => {
     return (
