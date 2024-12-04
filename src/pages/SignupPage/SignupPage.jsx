@@ -1,26 +1,28 @@
 import { Container, Row, Col } from 'react-bootstrap'
 import SignupForm from '../../components/SignUpForm/SignUpForm'
+import './SignupPage.css'
 
 const SignupPage = () => {
 
     return (
+        <div className='SignupPage'>
+            <Container>
 
-        <Container>
+                <Row>
 
-            <Row>
+                    <Col md={{ span: 6, offset: 3 }}>
 
-                <Col md={{ span: 6, offset: 3 }}>
+                        <h1>Registro</h1>
 
-                    <h1>Registro</h1>
+                        <hr />
 
-                    <hr />
+                        <SignupForm />
 
-                    <SignupForm />
+                    </Col>
+                </Row>
 
-                </Col>
-            </Row>
-
-        </Container>
+            </Container>
+        </div>
     )
 }
 

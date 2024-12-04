@@ -1,11 +1,10 @@
 import './Footer.css'
 import { Row, Col, Container, Nav } from 'react-bootstrap'
 import { Facebook, Twitter, Instagram, Tiktok, Linkedin } from 'react-bootstrap-icons'
-import { Cloudinary } from '@cloudinary/url-gen'
 
 const Footer = () => {
     return (
-        <footer>
+        <div className="Footer">
             <Container className="text-light py-4">
                 <Row className="text-center mb-3">
                     <Col md={9} className='d-flex' >
@@ -37,7 +36,7 @@ const Footer = () => {
                     </Col>
                 </Row>
             </Container>
-        </footer>
+        </div>
     )
 }
 
