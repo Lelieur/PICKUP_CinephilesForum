@@ -5,6 +5,7 @@ import HomePage from '../pages/HomePage/HomePage'
 import CommunityDetailsPage from '../pages/CommunityPages/CommunityDetailsPage/CommunityDetailsPage'
 import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/CommunitiesPagef'
 import Error404Page from '../pages/Error404Page/Error404Page'
+import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 
 const AppRoutes = () => {
 
@@ -20,6 +21,7 @@ const AppRoutes = () => {
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
 
                 <Route path={'/*'} element={<Error404Page />} />
+                <Route path={'/reviews'} element={<ReviewsPage />} />
             </Routes>
         </div>
     )

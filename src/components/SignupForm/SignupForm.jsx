@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom'
 import authServices from "../../services/auth.services"
@@ -6,6 +6,7 @@ import authServices from "../../services/auth.services"
 const SignupForm = () => {
 
     const navigate = useNavigate()
+    const [error, setError] = useState("")
 
     const [signupData, setSignupData] = useState({
         username: '',
@@ -23,55 +24,41 @@ const SignupForm = () => {
     const handleInputChange = (e, index = null) => {
         const { value, name } = e.target
 
-        if (index !== null) {
-            // Si hay un índice (para redes sociales), actualizamos esa URL en el array
-            const updatedSocialNetworks = [...signupData.socialNetworksProfiles]
-            updatedSocialNetworks[index] = value
-            setSignupData({ ...signupData, socialNetworksProfiles: updatedSocialNetworks })
-        } else {
-            // Para otros campos
-            setSignupData({ ...signupData, [name]: value })
-        }
+        setSignupData((prevData) => {
+            if (name === 'socialNetworksProfiles') {
+                const updatedSocialNetworks = [...prevData.socialNetworksProfiles]
+                updatedSocialNetworks[index] = value
+                return { ...prevData, socialNetworksProfiles: updatedSocialNetworks }
+            }
+            return { ...prevData, [name]: value }
+        })
     }
 
-    // Manejo de cambio de avatar (archivos)
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0]
-        setSignupData({ ...signupData, avatar: file })
-    }
-
-    // Manejo de cambio en selección de redes sociales
+    // Añadir seleccion socialNetwork
     const handleAddSocialNetwork = () => {
         setSignupData({
             ...signupData,
             socialNetworksProfiles: [...signupData.socialNetworksProfiles, '']
         })
     }
-
+    //Eliminación campo socialNetwork
     const handleRemoveSocialNetwork = (index) => {
-        const updatedSocialNetworks = signupData.socialNetworksProfiles.filter((_, i) => i !== index)
-        setSignupData({ ...signupData, socialNetworksProfiles: updatedSocialNetworks })
+        setSignupData((prevData) => ({
+            ...prevData,
+            socialNetworksProfiles: prevData.socialNetworksProfiles.filter((_, i) => i !== index)
+        }))
     }
 
-    // Manejo de cambio en selección de géneros favoritos
+    // Selección de géneros favoritos (Con ternario, más explicito y declarativo)
     const handleGenreChange = (e) => {
         const { value, checked } = e.target
-        setSignupData((prevState) => {
-            const genres = checked
-                ? [...prevState.favoriteGenres, value]
-                : prevState.favoriteGenres.filter((genre) => genre !== value)
-            return { ...prevState, favoriteGenres: genres }
-        })
+        setSignupData((prevData) => ({
+            ...prevData,
+            favoriteGenres: checked
+                ? [...prevData.favoriteGenres, value] // añade el  género si está marcado
+                : prevData.favoriteGenres.filter((genre) => genre !== value) // elimina el género si está desmarcado
+        }))
     }
-
-    // Limpieza de objetos URL para evitar fugas de memoria
-    useEffect(() => {
-        return () => {
-            if (signupData.avatar) {
-                URL.revokeObjectURL(signupData.avatar)
-            }
-        }
-    }, [signupData.avatar])
 
     const handleFormSubmit = e => {
         e.preventDefault()
@@ -79,7 +66,10 @@ const SignupForm = () => {
         authServices
             .signupUser(signupData)
             .then(() => navigate('/inicio-sesion'))
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                setError("Hubo un error al intentar registrar el usuario. Por favor, intenta nuevamente.")
+            })
     }
 
     return (
@@ -119,18 +109,11 @@ const SignupForm = () => {
                 <Form.Group className="mb-3" controlId="avatar">
                     <Form.Label>Avatar</Form.Label>
                     <Form.Control
-                        type="file"
-                        onChange={handleAvatarChange}
+                        type="text"
+                        value={signupData.avatar}
+                        onChange={handleInputChange}
                         name="avatar"
                     />
-                    {signupData.avatar && (
-                        <img
-                            src={URL.createObjectURL(signupData.avatar)}
-                            alt="Avatar"
-                            className="mt-2"
-                            style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-                        />
-                    )}
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="firstName">
@@ -190,16 +173,18 @@ const SignupForm = () => {
 
                 <Form.Group className="mb-3" controlId="favoriteGenres">
                     <Form.Label>Géneros Favoritos</Form.Label>
-                    {["Drama", "Acción", "Terror", "Comedia", "Romántico"].map((genre) => (
-                        <Form.Check
-                            key={genre}
-                            type="checkbox"
-                            label={genre}
-                            value={genre}
-                            checked={signupData.favoriteGenres.includes(genre)}
-                            onChange={handleGenreChange}
-                        />
-                    ))}
+                    {
+                        ["Drama", "Acción", "Terror", "Comedia", "Romántico"].map((genre) => (
+                            <Form.Check
+                                key={genre}
+                                type="checkbox"
+                                label={genre}
+                                value={genre}
+                                checked={signupData.favoriteGenres.includes(genre)}
+                                onChange={handleGenreChange}
+                            />
+                        ))
+                    }
                     <div className="mt-2">
                         {signupData.favoriteGenres.map((genre) => (
                             <span key={genre} className="badge bg-secondary me-2">{genre}</span>
