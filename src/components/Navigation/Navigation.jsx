@@ -68,7 +68,7 @@ const Navigation = () => {
                         <Button variant="ligth"><Search className="search-icon" size="20px" /></Button>
                     </Nav>
                 </Container>
-            </Navbar>
+            </Navbar >
 
             <Offcanvas className="text-white border-0" bg="transparent" show={isOffCanvasOpen} onHide={handleIsOffCanvasOpen}>
                 <div className="offcanvas-header" />

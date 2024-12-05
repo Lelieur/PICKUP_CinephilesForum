@@ -1,1 +1,1 @@
-export const homer = "https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2017/01/coche-homer-simpson_1.jpg?tf=3840x"
+export const homer = "https://res.cloudinary.com/de0ld2xax/image/upload/v1733329889/coche-homer-simpson_1_vag4iu.jpg" 

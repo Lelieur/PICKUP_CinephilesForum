@@ -6,6 +6,8 @@ import { Col, Row } from "react-bootstrap"
 
 import "./ReviewsList.css"
 
+const API_URL = import.meta.env.VITE_APP_API_URL
+
 const ReviewsList = () => {
 
     const [reviews, setReviews] = useState([])
@@ -17,7 +19,7 @@ const ReviewsList = () => {
 
     const fetchReviews = () => {
         axios
-            .get("http://localhost:5005/api/reviews")
+            .get(`${API_URL}/api/reviews`)
             .then(response => {
                 setReviews(response.data)
                 setIsLoading(false)
@@ -33,17 +35,19 @@ const ReviewsList = () => {
             {isLoading ? (
                 <div>Loading...</div>
             ) : (
-                <Row>
-                    {reviews.map(elm => {
-                        if (!elm.isDeleted) {
-                            return (
-                                <Col className="mb-5" md={{ span: 4 }} key={elm._id}>
-                                    <ReviewCard {...elm} />
-                                </Col>
-                            );
-                        }
-                        return null;
-                    })}
+                <Row className="d-flex justify-content-center">
+                    <Col lg={{ span: 7 }} className="reviews-container">
+                        {reviews.map(elm => {
+                            if (!elm.isDeleted) {
+                                return (
+                                    <div className="mt-5" md={{ span: 2 }} key={elm._id}>
+                                        <ReviewCard {...elm} />
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
+                    </Col>
                 </Row>
             )}
         </div>
