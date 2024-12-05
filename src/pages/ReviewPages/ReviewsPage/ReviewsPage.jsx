@@ -17,12 +17,8 @@ const ReviewsPage = () => {
                         <hr />
                     </Col>
                 </Row>
-                <Row>
-                    <NewReviewForm />
-                </Row>
-                <Row>
-                    <ReviewsList />
-                </Row>
+                <NewReviewForm />
+                <ReviewsList />
                 <Button variant="dark" className=" mt-3 styled-button-2" to={'/'} as={Link}>Volver a la Home</Button>
             </Container>
 

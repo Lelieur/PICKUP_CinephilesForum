@@ -5,8 +5,8 @@ import { useParams } from "react-router-dom"
 import { Col, Container, Row, Button } from "react-bootstrap"
 
 import Loader from "../../../components/Loader/Loader"
-import MovieCard from "../../../components/MovieCard/MovieCard"
-import UserCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
+import MoviesList from "../../../components/MovieComponentes/MoviesList/MoviesList"
+import UserCard from "../../../components/User/UserCard/UserCard"
 
 const API_URL = import.meta.env.VITE_APP_API_URL
 
@@ -31,7 +31,7 @@ const CommunityDetailsPage = () => {
                 const { data: community } = response
 
                 setCommunity(community)
-                return (response.data)
+                return (community)
             })
             .then(community => {
 
@@ -105,68 +105,87 @@ const CommunityDetailsPage = () => {
                         </Col>
                     </Row>
                     <Row className="pt-4">
-                        <Row>
-                            <Col>
-                                <p className="m-0 fw-bold fs-5">Películas recomendadas por la comunidad</p>
-                            </Col>
-                        </Row>
-                        <Row>
-
-                            <Col xs={12} sm={12} md={12} lg={9}>
-                                {
-                                    Array.isArray(communityMovies) ?
-                                        <Row>
+                        <Col xs={12} sm={12} md={12} lg={9}>
+                            <Row>
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <p className="m-0 fw-bold fs-5">Películas recomendadas por la comunidad</p>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-3">
+                                        <Col>
                                             {
-                                                communityMovies.map(elm => {
-                                                    return (
-                                                        <Col key={elm.id} xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
-                                                            <MovieCard {...elm} />
+                                                communityMovies.length ?
+                                                    <MoviesList movies={communityMovies} />
+                                                    :
+                                                    <Row>
+                                                        <Col >
+                                                            Ningún películas en esta comunidad
                                                         </Col>
-                                                    )
-                                                })
+                                                    </Row>
                                             }
-                                        </Row>
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <p className="m-0 fw-bold fs-5">Actores fetiche de la comunidad</p>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            INCLUIR LA CREDITLIST CON LOS ACTORES
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col>
+                                    <Row>
+                                        <Col>
+                                            <p className="m-0 fw-bold fs-5">Directores fetiche de la comunidad</p>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            INCLUIR LA CREDITLIST CON LOS DIRECTORES
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col className="ps-lg-4 ps-md-0" lg={3}>
+                            <Row>
+                                <p className="fw-bold">Usuarios de la comunidad ({users.length})</p>
+                            </Row>
+                            {
+                                users.length ?
+                                    <Row>
+                                        {
+                                            communityUsers.map(elm => {
+                                                return (
+                                                    <Col className="mb-2" lg={{ span: 12 }} key={elm._id}>
+                                                        <UserCard {...elm} />
+                                                    </Col>
+                                                )
+                                            })
+                                        }
+                                    </Row>
 
-                                        :
+                                    :
 
-                                        <Row>
-                                            <Col xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
-                                                <MovieCard {...communityMovies} />
-                                            </Col>
-                                        </Row>
-                                }
-                            </Col>
-                            <Col className="ps-lg-5 ps-md-0" lg={3} bg="success">
-                                <Row>
-                                    <p className="opacity-50">Usuarios de la comunidad ({users.length})</p>
-                                    <hr />
-                                </Row>
-                                {
-                                    Array.isArray(users) ?
-                                        <Row>
-                                            {
-                                                communityUsers.map(elm => {
-                                                    return (
-                                                        <Col className="p-0 mt-2" lg={{ span: 12 }} key={elm._id}>
-                                                            <UserCard {...elm} />
-                                                        </Col>
-                                                    )
-                                                })
-                                            }
-                                        </Row>
+                                    <Row>
+                                        <Col  >
+                                            Ningún usuario sigue esta comunidad
+                                        </Col>
+                                    </Row>
 
-                                        :
-
-                                        <Row>
-                                            <Col  >
-                                                Ningún usuario sigue esta comunidad
-                                            </Col>
-                                        </Row>
-
-                                }
-                            </Col>
-                        </Row>
-
+                            }
+                        </Col>
                     </Row>
                 </Container >
             </div >
