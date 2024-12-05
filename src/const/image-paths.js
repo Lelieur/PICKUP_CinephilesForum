@@ -1,0 +1,1 @@
+export const homer = "https://res.cloudinary.com/de0ld2xax/image/upload/v1733329889/coche-homer-simpson_1_vag4iu.jpg" 

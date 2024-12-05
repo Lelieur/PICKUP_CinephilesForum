@@ -16,10 +16,10 @@ const ReviewsPage = () => {
                         <hr />
                     </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row>
                     <ReviewsList />
                 </Row>
-                <Button variant="dark" className="styled-button-2" to={'/'} as={Link}>Volver a la Home</Button>
+                <Button variant="dark" className=" mt-3 styled-button-2" to={'/'} as={Link}>Volver a la Home</Button>
             </Container>
 
         </div>

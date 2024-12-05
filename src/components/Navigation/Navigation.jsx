@@ -46,7 +46,7 @@ const Navigation = () => {
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav>
                                     <Nav.Link className="text-white" as={Link} to="/">Comunidades</Nav.Link>
-                                    <Nav.Link className="text-white" href="#link">Reseñas</Nav.Link>
+                                    <Nav.Link className="text-white" as={Link} to="/reviews" >Reseñas</Nav.Link>
                                 </Nav>
                                 <Nav>
                                     <Dropdown>
@@ -68,7 +68,7 @@ const Navigation = () => {
                         <Button variant="ligth"><Search className="search-icon" size="20px" /></Button>
                     </Nav>
                 </Container>
-            </Navbar>
+            </Navbar >
 
             <Offcanvas className="text-white border-0" bg="transparent" show={isOffCanvasOpen} onHide={handleIsOffCanvasOpen}>
                 <div className="offcanvas-header" />
