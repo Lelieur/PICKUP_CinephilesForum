@@ -1,3 +1,16 @@
+.MovieCard .text-vertical {
+    font-size: 0.5em;
+    writing-mode: vertical-rl;
+}
+
+.MovieCard .card-img {
+    object-fit: cover;
+}
+
+.MovieCard .card-title {
+    font-size: 1.5em;
+}
+
 .MovieCard:hover {
     transform: scale(1.05);
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);

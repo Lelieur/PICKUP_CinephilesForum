@@ -1,12 +1,11 @@
 import { Container } from 'react-bootstrap'
-import CommunitiesList from '../../components/CommunitiesComponents/CommunitiesList/CommunitiesList'
 
 const HomePage = () => {
 
     return (
         <div className="HomePage">
-            <Container className="mt-3" >
-                <CommunitiesList />
+            <Container>
+                <h1>ESTA ES NUESTRA HOME PERO ESTÁ EN CONSTRUCCIÓN</h1>
             </Container>
         </div>
     )

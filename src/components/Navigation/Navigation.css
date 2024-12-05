@@ -24,39 +24,40 @@
     flex-direction: row;
 }
 
-.Navigation .offcanvas {
-    background-color: #141426 !important;
-    z-index: 2000;
+.offcanvas.offcanvas-start {
+    position: fixed;
+    top: 60px;
 }
 
-.Navigation .offcanvas-header {
-    height: 60px;
+.offcanvas {
+    background-color: red;
+    z-index: 3000;
 }
 
-.Navigation .offcanvas-body {
+.offcanvas-body {
     background-color: #141426 !important;
     padding: 0;
 }
 
-.Navigation .offcanvas .row:hover {
+.offcanvas .row:hover {
     background-color: #060613;
 }
 
-.Navigation .offcanvas .offcanvas-login:hover {
+.offcanvas .offcanvas-login:hover {
     background-color: transparent;
 }
 
-.Navigation .offcanvas .btn:hover {
+.offcanvas .btn:hover {
     background-color: transparent;
     color: white
 }
 
-.Navigation .accordion-menu {
+.accordion-menu {
     background: #060613
 }
 
-.Navigation .accordion-item,
-.Navigation .accordion-button {
+.accordion-item,
+.accordion-button {
     background-color: transparent;
     color: white;
     font-size: bold;
@@ -75,20 +76,11 @@
     background-color: #060613;
 }
 
-.Navigation a {
+.offcanvas a {
     text-decoration: none;
     color: white;
 }
 
-.Navigation hr {
+.offcanvas hr {
     margin: 0
-}
-
-.Navigation .navbar-nav .signup-btn {
-    background-color: #05ffa1;
-    color: #060613
-}
-
-.Navigation .navbar-nav .signup-btn:hover {
-    background-color: #5effc3;
 }

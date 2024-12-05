@@ -3,9 +3,10 @@ import SignupPage from '../pages/SignupPage/SignupPage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import HomePage from '../pages/HomePage/HomePage'
 import CommunityDetailsPage from '../pages/CommunityPages/CommunityDetailsPage/CommunityDetailsPage'
-import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/CommunitiesPagef'
+import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/CommunitiesPage'
 import Error404Page from '../pages/Error404Page/Error404Page'
 import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
+import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
 
 const AppRoutes = () => {
 
@@ -19,6 +20,8 @@ const AppRoutes = () => {
 
                 <Route path={'/registro'} element={<SignupPage />} />
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
+
+                <Route path={'/usuarios/:id'} element={<UserProfilePage />} />
 
                 <Route path={'/*'} element={<Error404Page />} />
                 <Route path={'/reviews'} element={<ReviewsPage />} />

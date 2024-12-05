@@ -9,3 +9,20 @@ body {
     margin: 0;
     padding: 0;
 }
+
+.btn-style-1 {
+    background-color: #242432 !important;
+}
+
+.btn-style-1:hover {
+    background-color: #373845 !important;
+}
+
+.btn-style-2 {
+    background-color: #05ffa1 !important;
+    color: #060613 !important;
+}
+
+.btn-style-2:hover {
+    background-color: #5effc3 !important;
+}

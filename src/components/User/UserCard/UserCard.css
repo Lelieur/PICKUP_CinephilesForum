@@ -1,12 +1,5 @@
 .UserCard .card {
     background-color: #242432;
-    margin: 0;
-    padding: 0;
-}
-
-.UserCard:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .UserCard span,
