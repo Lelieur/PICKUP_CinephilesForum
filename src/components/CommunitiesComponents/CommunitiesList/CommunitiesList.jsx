@@ -1,7 +1,7 @@
 import axios from "axios"
 
 import CommunityCard from "../CommunityCard/CommunityCard"
-import Loader from "../Loader/Loader"
+import Loader from "../../Loader/Loader"
 
 import { useEffect, useState } from "react"
 import { Row, Col } from "react-bootstrap"

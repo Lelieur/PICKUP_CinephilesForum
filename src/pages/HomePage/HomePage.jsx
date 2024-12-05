@@ -1,5 +1,5 @@
 import { Container } from 'react-bootstrap'
-import CommunitiesList from '../../components/CommunitiesList/CommunitiesList'
+import CommunitiesList from '../../components/CommunitiesComponents/CommunitiesList/CommunitiesList'
 
 const HomePage = () => {
 

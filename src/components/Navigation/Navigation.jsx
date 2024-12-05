@@ -42,11 +42,11 @@ const Navigation = () => {
                     </Nav>
 
                     {!isOffCanvasOpen &&
-                        <Nav className="me-auto">
+                        <Nav className="d-flex justify-content-between w-100">
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav>
                                     <Nav.Link className="text-white" as={Link} to="/comunidades">Comunidades</Nav.Link>
-                                    <Nav.Link className="text-white" as={Link} to="/comunidades">Reseñas</Nav.Link>
+                                    <Nav.Link className="text-white" as={Link} to="/reviews">Reseñas</Nav.Link>
                                 </Nav>
                                 <Nav>
                                     <Dropdown className="m-0">
@@ -61,10 +61,14 @@ const Navigation = () => {
                                     </Dropdown>
                                 </Nav>
                             </Navbar.Collapse>
+                            <Navbar.Collapse id="basic-navbar-nav" className="d-flex justify-content-end">
+                                <Button className="btn-sm signup-btn border-0 fw-bold me-3" as={Link} to="/registro">REGISTRARSE</Button>
+                                <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
+                            </Navbar.Collapse>
                         </Nav>
                     }
 
-                    <Nav>
+                    <Nav className="d-flex align-items-center">
                         <Button variant="ligth"><Search className="search-icon" size="20px" /></Button>
                     </Nav>
                 </Container>
@@ -75,7 +79,8 @@ const Navigation = () => {
                 <Offcanvas.Body className="w-75 fw-bold">
                     <Row className="offcanvas-login text-center p-3">
                         <Col>
-                            <Button variant="outline-light" className="w-100 fw-bold">INICIAR SESIÓN</Button>
+                            <Button variant="outline-light" className="w-100 fw-bold" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
+                            <Button variant="outline-light" className="w-100 fw-bold" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
                         </Col>
                     </Row>
                     <hr />
