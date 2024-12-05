@@ -6,9 +6,7 @@ import { Col, Container, Row, Button } from "react-bootstrap"
 
 import Loader from "../../../components/Loader/Loader"
 import MovieCard from "../../../components/MovieCard/MovieCard"
-import UserCard from "../../../components/User/UserCard/UserCard"
-
-import "./CommunityDetailsPage.css"
+import UserCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
 
 const API_URL = import.meta.env.VITE_APP_API_URL
 

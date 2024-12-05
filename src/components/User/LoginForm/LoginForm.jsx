@@ -29,6 +29,7 @@ const LoginForm = () => {
                 localStorage.setItem('authToken', data.authToken)
                 authenticateUser()
             })
+            .then(() => navigate('/'))
             .catch(err => console.log(err))
     }
 

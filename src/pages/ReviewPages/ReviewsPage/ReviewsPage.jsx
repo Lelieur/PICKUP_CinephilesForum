@@ -4,6 +4,7 @@ import { Container, Button, Row, Col } from 'react-bootstrap'
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
 
 import "./ReviewsPage.css"
+import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
 
 const ReviewsPage = () => {
     return (
@@ -15,6 +16,9 @@ const ReviewsPage = () => {
                         <h3 className="section-title">Reviews</h3>
                         <hr />
                     </Col>
+                </Row>
+                <Row>
+                    <NewReviewForm />
                 </Row>
                 <Row>
                     <ReviewsList />
