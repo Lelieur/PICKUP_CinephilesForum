@@ -1,7 +1,3 @@
-.Footer {
-    background-color: black;
-}
-
-.Footer a {
+.nav-link a {
     font-size: 0.75em;
 }

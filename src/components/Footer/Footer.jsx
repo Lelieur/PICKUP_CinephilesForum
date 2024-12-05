@@ -16,6 +16,9 @@ const Footer = () => {
                         <Nav.Link href="#" className="text-white">¿Quiénes somos?</Nav.Link>
                     </Nav>
                     <Nav>
+                        <p className="m-0">© La Review 2024. Made by Aaron & Lucas Spain. Film data from <a className="text-white" href="https://www.themoviedb.org/">TMDb</a></p>
+                    </Nav>
+                    <Nav>
                         <Nav.Link className="text-white" href="#home">
                             <Facebook size={15} />
                         </Nav.Link>

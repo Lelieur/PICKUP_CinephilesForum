@@ -6,13 +6,15 @@ import { Col, Container, Row } from "react-bootstrap"
 
 import Loader from "../../../components/Loader/Loader"
 import MovieCard from "../../../components/MovieCard/MovieCard"
+import UserCard from "../../../components/UserCard/UserCard"
 
 const API_URL = import.meta.env.VITE_APP_API_URL
 
 const CommunityDetailsPage = () => {
 
     const [community, setCommunity] = useState({})
-    const [movies, setMovies] = useState([])
+    const [communityMovies, setCommunityMovies] = useState([])
+    const [communityUsers, setCommunityUsers] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
     const { communityId } = useParams()
@@ -33,21 +35,20 @@ const CommunityDetailsPage = () => {
             })
             .then(community => {
 
-                const { moviesApiIds } = community
+                const { moviesApiIds, users } = community
 
-                const promises =
-                    moviesApiIds.map(elm => axios.get(`${API_URL}/api/movies/${elm}`))
+                const moviesPromises = moviesApiIds.map(elm => axios.get(`${API_URL}/api/movies/${elm}`))
+                const usersPromises = users.map(elm => axios.get(`${API_URL}/api/users/${elm}`))
 
-                return promises
+                return [moviesPromises, usersPromises]
             })
-            .then(response => {
-
-                const promises = response
+            .then(([moviesPromises, usersPromises]) => {
 
                 let allMovies = []
+                let allUsers = []
 
                 Promise
-                    .all(promises)
+                    .all(moviesPromises)
                     .then(response => {
                         response.map(movie => {
                             allMovies.push(movie.data)
@@ -55,17 +56,28 @@ const CommunityDetailsPage = () => {
                         return allMovies
                     })
                     .then(response => {
-                        console.log(response)
-                        setMovies(response)
-                        setIsLoading(false)
+                        setCommunityMovies(response)
+                    })
+                    .catch(err => console.log(err))
+
+                Promise
+                    .all(usersPromises)
+                    .then(response => {
+                        response.map(user => {
+                            allUsers.push(user.data)
+                        })
+                        return allUsers
+                    })
+                    .then(response => {
+                        setCommunityUsers(response)
                     })
                     .catch(err => console.log(err))
             })
-            .then()
+            .then(() => setIsLoading(false))
             .catch(err => console.log(err))
     }
 
-    console.log(movies)
+    console.log(communityUsers)
 
     const { title, description, cover, genres, fetishActors, decades, moviesApiIds, users, owner, createdAt, updatedAt } = community
 
@@ -79,34 +91,62 @@ const CommunityDetailsPage = () => {
                     <p>{users.length} usuarios siguen esta comunidad</p>
                     <p className="fs-4 mt-0 opacity-50" >{description}</p>
                     <Row>
-                        <Col xs={12} sm={12} md={12} lg={9}>
+                        <Col className="pt-5" xs={12} sm={12} md={12} lg={9}>
                             {
-                                Array.isArray(movies) ?
+                                Array.isArray(communityMovies) ?
                                     <Row>
                                         {
-                                            movies.map(elm => {
+                                            communityMovies.map(elm => {
                                                 return (
-                                                    <Col xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
-                                                        <MovieCard key={elm.id} {...elm} />
+                                                    <Col key={elm.id} xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
+                                                        <MovieCard {...elm} />
                                                     </Col>
                                                 )
                                             })
                                         }
                                     </Row>
+
                                     :
 
-                                    <Col xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
-                                        <MovieCard {...movies} />
-                                    </Col>
+                                    <Row>
+                                        <Col xs={12} sm={6} md={4} lg={3} className="mt-3 mb-3 pe-4">
+                                            <MovieCard {...communityMovies} />
+                                        </Col>
+                                    </Row>
                             }
                         </Col>
-                        <Col lg={3} bg="success">
-                            <p>Usuarios de la comunidad</p>
-                            <hr />
+                        <Col className="ps-lg-5 ps-md-0" lg={3} bg="success">
+                            <Row>
+                                <p className="opacity-50">Usuarios de la comunidad ({users.length})</p>
+                                <hr />
+                            </Row>
+                            {
+                                Array.isArray(users) ?
+                                    <Row>
+                                        {
+                                            communityUsers.map(elm => {
+                                                return (
+                                                    <Col className="p-0 mt-2" lg={{ span: 12 }} key={elm._id}>
+                                                        <UserCard {...elm} />
+                                                    </Col>
+                                                )
+                                            })
+                                        }
+                                    </Row>
+
+                                    :
+
+                                    <Row>
+                                        <Col  >
+                                            Ningún usuario sigue esta comunidad
+                                        </Col>
+                                    </Row>
+
+                            }
                         </Col>
                     </Row>
-                </Container>
-            </div>
+                </Container >
+            </div >
     )
 }
 

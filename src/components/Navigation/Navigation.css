@@ -1,51 +1,85 @@
-.search-icon {
+.Navigation .search-icon {
     color: white
 }
 
-.btn:hover .search-icon {
+.Navigation .btn:hover .search-icon {
     color: rgb(5 255 161)
 }
 
-.navbar {
+.Navigation .navbar {
     background-color: #060613;
     z-index: 1050;
 }
 
-.navbar .nav-link:hover,
-.navbar .dropdown-toggle:hover,
-.navbar .dropdown-item:hover {
+.Navigation .navbar .nav-link:hover,
+.Navigation .navbar .dropdown-toggle:hover {
     color: rgb(5 255 161) !important
 }
 
-.navbar-toggler:focus {
+.Navigation .navbar-toggler:focus {
     box-shadow: none;
 }
 
-.navbar-nav {
+.Navigation .navbar-nav {
     flex-direction: row;
 }
 
-.offcanvas {
+.Navigation .offcanvas {
     background-color: transparent;
     z-index: 2000;
 }
 
-.offcanvas-header {
+.Navigation .offcanvas-header {
     height: 60px;
 }
 
-.offcanvas-body {
+.Navigation .offcanvas-body {
     background-color: #141426;
     padding: 0;
 }
 
-.accordion-menu {
+.Navigation .offcanvas .row:hover {
+    background-color: #060613;
+}
+
+.Navigation .offcanvas .offcanvas-login:hover {
+    background-color: transparent;
+}
+
+.Navigation .offcanvas .btn:hover {
+    background-color: transparent;
+    color: white
+}
+
+.Navigation .accordion-menu {
     background: #060613
 }
 
-.accordion-item,
-.accordion-button {
+.Navigation .accordion-item,
+.Navigation .accordion-button {
     background-color: transparent;
     color: white;
     font-size: bold;
+}
+
+.Navigation .dropdown-menu {
+    background-color: #141426;
+}
+
+.Navigation .dropdown-item {
+    font-size: 0.9rem;
+}
+
+
+.Navigation .dropdown-item:hover {
+    background-color: #060613;
+}
+
+.Navigation a {
+    text-decoration: none;
+    color: white;
+}
+
+.Navigation hr {
+    margin: 0
 }
