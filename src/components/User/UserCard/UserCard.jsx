@@ -1,7 +1,7 @@
 import "./UserCard.css"
 
 import { Card, Row, Col, Container } from "react-bootstrap"
-import { homer } from "../../const/image-paths"
+import { homer } from "../../../const/image-paths"
 
 import { Link } from "react-router-dom"
 
