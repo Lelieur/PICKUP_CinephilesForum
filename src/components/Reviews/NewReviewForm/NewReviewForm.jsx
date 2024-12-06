@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Form, Button, ListGroup, Card, Modal } from 'react-bootstrap'
 import { Film, PlusCircle } from "react-bootstrap-icons"
 
-import movieService from "../../../services/movie.service"
+import movieService from "../../../services/movie.services"
 import reviewServices from "../../../services/review.services"
 
 import "./NewReviewForm.css"
