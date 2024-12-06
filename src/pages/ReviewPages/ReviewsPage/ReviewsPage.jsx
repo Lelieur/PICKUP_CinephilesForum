@@ -7,6 +7,9 @@ import "./ReviewsPage.css"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
 
 const ReviewsPage = () => {
+    const handleReviewCreated = (review) => {
+        console.log('Nueva reseña creada:', review)
+    }
     return (
         <div className="ReviewsPage">
 
@@ -17,7 +20,7 @@ const ReviewsPage = () => {
                         <hr />
                     </Col>
                 </Row>
-                <NewReviewForm />
+                <NewReviewForm onReviewCreated={handleReviewCreated} />
                 <ReviewsList />
                 <Button variant="dark" className=" mt-3 styled-button-2" to={'/'} as={Link}>Volver a la Home</Button>
             </Container>

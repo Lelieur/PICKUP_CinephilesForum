@@ -28,8 +28,8 @@ const LoginForm = () => {
             .then(({ data }) => {
                 localStorage.setItem('authToken', data.authToken)
                 authenticateUser()
+                navigate('')
             })
-            .then(() => navigate('/'))
             .catch(err => console.log(err))
     }
 

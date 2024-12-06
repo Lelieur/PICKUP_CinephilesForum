@@ -7,6 +7,7 @@ import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/Communities
 import Error404Page from '../pages/Error404Page/Error404Page'
 import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
+import PrivateRoute from './PrivateRoutes'
 
 const AppRoutes = () => {
 
@@ -16,7 +17,6 @@ const AppRoutes = () => {
                 <Route path={'/'} element={<HomePage />} />
 
                 <Route path={'/comunidades'} element={<CommunitiesPage />} />
-                <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
 
                 <Route path={'/registro'} element={<SignupPage />} />
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
@@ -24,7 +24,12 @@ const AppRoutes = () => {
                 <Route path={'/usuarios/:id'} element={<UserProfilePage />} />
 
                 <Route path={'/*'} element={<Error404Page />} />
-                <Route path={'/reviews'} element={<ReviewsPage />} />
+
+                <Route element={<PrivateRoute />} >
+                    <Route path={'/reviews'} element={<ReviewsPage />} />
+                    <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
+                </Route>
+
             </Routes>
         </div>
     )

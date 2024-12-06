@@ -36,6 +36,13 @@ class AuthServices {
             }
         })
     }
+    getUserDetails(userId, token) {
+        return this.axiosApp.get(`/users/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+    }
 }
 
 export default new AuthServices()
