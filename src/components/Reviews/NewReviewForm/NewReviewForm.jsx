@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
 import { Form, Button, ListGroup } from 'react-bootstrap'
-const API_URL = import.meta.env.VITE_APP_API_URL
+
+import movieService from "../../../services/movie.service"
+import reviewServices from "../../../services/review.services"
+
+
 
 const NewReviewForm = ({ onReviewCreated }) => {
 
     const [movies, setMovies] = useState([])
     const [selectedMovie, setSelectedMovie] = useState(null)
-    const [searchQuery, setSearchQuery] = useState("")
+    const [query, setQuery] = useState("")
     const [content, setContent] = useState("")
     const [rate, setRate] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -15,42 +18,43 @@ const NewReviewForm = ({ onReviewCreated }) => {
 
 
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value)
+        setQuery(e.target.value)
     }
 
     useEffect(() => {
-        axios
-            .get(`${API_URL}/api/movies/search/${searchQuery}`)
+        console.log(query)
+        movieService
+            .searchMovies(query)
             .then((response) => {
-                let resultsArray = []
-                response.data.results.map(result => {
-                    resultsArray.push(result.original_title)
-                })
-                setMovies(resultsArray)
+                setMovies(response.data.results)
+                setLoading(false)
             })
             .catch((err) => {
-                setError("Error al cargar las películas.")
-                console.error(err)
+                console.log(err)
             })
-    }, [searchQuery])
+    }, [query])
+
+
+    const handleSelectMovie = (movie) => {
+        setSelectedMovie(movie);
+        setQuery(movie.original_title)
+        setMovies([])
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setLoading(true)
+        if (!selectedMovie) {
+            setError("Por favor, selecciona una película.")
+            return
+        }
+        setLoading(true);
         const token = localStorage.getItem("authToken")
-        const movieApiId = selectedMovie
 
-        axios
-            .post(
-                `${API_URL}/api/reviews`,
-                { movieApiId, content, rate },
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            )
+        reviewServices
+            .saveReview(selectedMovie.id, content, rate)
             .then((response) => {
                 setLoading(false)
-                setContent("")
+                setContent('')
                 setRate(0)
                 setSelectedMovie(null)
                 if (onReviewCreated) {
@@ -65,26 +69,50 @@ const NewReviewForm = ({ onReviewCreated }) => {
     }
 
     return (
-        <div className="NewRevieForm">
+        <div className="NewReviewForm">
             <h4>Crea una reseña</h4>
             <Form onSubmit={handleSubmit}>
+                {/* Campo de búsqueda de película */}
                 <Form.Group className="mb-3" controlId="movieSearch">
                     <Form.Label>Buscar película</Form.Label>
                     <Form.Control
                         type="text"
-                        value={searchQuery}
+                        value={query}
                         onChange={handleSearchChange}
                         placeholder="Buscar por título"
                         required
                     />
                 </Form.Group>
 
+                {/* Lista de películas encontradas */}
+                {movies.length > 0 && (
+                    <ListGroup className="mb-3">
+                        {movies.map((movie) => (
+                            <ListGroup.Item
+                                key={movie.id}
+                                onClick={() => handleSelectMovie(movie)} // Usa el nuevo manejador
+                                style={{ cursor: "pointer" }}
+                            >
+                                {movie.original_title}
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                )}
+
+                {/* Campo para el contenido de la reseña */}
                 <Form.Group className="mb-3" controlId="reviewContent">
                     <Form.Label>Contenido</Form.Label>
-                    <Form.Control as="textarea" rows={3} value={content} onChange={(e) =>
-                        setContent(e.target.value)} placeholder="¿Qué opinas de esta película?"
-                        required />
+                    <Form.Control
+                        as="textarea"
+                        rows={3}
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="¿Qué opinas de esta película?"
+                        required
+                    />
                 </Form.Group>
+
+                {/* Campo para la valoración de la película */}
                 <Form.Group className="mb-3" controlId="reviewRate">
                     <Form.Control
                         type="number"
@@ -97,9 +125,13 @@ const NewReviewForm = ({ onReviewCreated }) => {
                         required
                     />
                 </Form.Group>
+
+                {/* Muestra de errores */}
                 {error && <p className="text-danger">{error}</p>}
+
+                {/* Botón para enviar la reseña */}
                 <Button variant="primary" type="submit" disabled={loading}>
-                    {loading ? 'Enviando...' : 'Enviar Reseña'}
+                    {loading ? "Enviando..." : "Enviar Reseña"}
                 </Button>
             </Form>
         </div>
