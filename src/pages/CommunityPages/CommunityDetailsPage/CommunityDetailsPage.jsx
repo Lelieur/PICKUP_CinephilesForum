@@ -7,77 +7,38 @@ import { Col, Container, Row, Button } from "react-bootstrap"
 import Loader from "../../../components/Loader/Loader"
 import MoviesList from "../../../components/MovieComponentes/MoviesList/MoviesList"
 import UserCard from "../../../components/User/UserCard/UserCard"
+import PersonsList from "../../../components/PersonComponents/PersonsList/PersonsList"
+
+import communityServices from "../../../services/community.services"
 
 const API_URL = import.meta.env.VITE_APP_API_URL
 
 const CommunityDetailsPage = () => {
 
     const [community, setCommunity] = useState({})
-    const [communityMovies, setCommunityMovies] = useState([])
-    const [communityUsers, setCommunityUsers] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 
     const { communityId } = useParams()
 
     useEffect(() => {
-        fetchCommunityDetails()
+        loadCommunityDetails()
     }, [])
 
-    const fetchCommunityDetails = () => {
-        axios
-            .get(`${API_URL}/api/communities/${communityId}`)
+    const loadCommunityDetails = () => {
+
+        communityServices
+            .fetchOneCommunityFullData(communityId)
             .then(response => {
 
                 const { data: community } = response
 
                 setCommunity(community)
-                return (community)
+                setIsLoading(false)
             })
-            .then(community => {
-
-                const { moviesApiIds, users } = community
-
-                const moviesPromises = moviesApiIds.map(elm => axios.get(`${API_URL}/api/movies/${elm}`))
-                const usersPromises = users.map(elm => axios.get(`${API_URL}/api/users/${elm}`))
-
-                return [moviesPromises, usersPromises]
-            })
-            .then(([moviesPromises, usersPromises]) => {
-
-                let allMovies = []
-                let allUsers = []
-
-                Promise
-                    .all(moviesPromises)
-                    .then(response => {
-                        response.map(movie => {
-                            allMovies.push(movie.data)
-                        })
-                        return allMovies
-                    })
-                    .then(response => {
-                        setCommunityMovies(response)
-                    })
-                    .catch(err => console.log(err))
-
-                Promise
-                    .all(usersPromises)
-                    .then(response => {
-                        response.map(user => {
-                            allUsers.push(user.data)
-                        })
-                        return allUsers
-                    })
-                    .then(response => {
-                        setCommunityUsers(response)
-                    })
-                    .catch(err => console.log(err))
-            })
-            .then(() => setIsLoading(false))
             .catch(err => console.log(err))
     }
 
-    const { title, description, cover, genres, fetishActors, decades, moviesApiIds, users, owner, createdAt, updatedAt } = community
+    const { title, description, cover, genres, fetishActors, fetishDirectors, decades, moviesApiIds, users, owner, createdAt, updatedAt } = community
 
     return (
 
@@ -89,7 +50,7 @@ const CommunityDetailsPage = () => {
                         <Col className="position-relative" style={{ height: "20rem" }}>
                             <img className="w-100 h-100 object-fit-cover rounded opacity-50" src={cover} alt="Cover" />
                             <div className="ps-5 community-title-container position-absolute top-50 translate-middle-y">
-                                <h1 className="fw-bold m-0 pt-4">{title} ({moviesApiIds.length})</h1>
+                                <h1 className="fw-bold m-0 pt-4">{title} ({moviesApiIds?.length})</h1>
                                 {
                                     genres.map(genre => {
                                         return (
@@ -104,24 +65,63 @@ const CommunityDetailsPage = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row className="pt-4">
-                        <Col xs={12} sm={12} md={12} lg={9}>
-                            <Row>
+                    <Row>
+                        <Col md={{ span: 9 }}>
+                            <Row className="d-flex justify-content-between">
                                 <Col>
-                                    <Row>
-                                        <Col>
-                                            <p className="m-0 fw-bold fs-5">Películas recomendadas por la comunidad</p>
-                                        </Col>
-                                    </Row>
                                     <Row className="mt-3">
                                         <Col>
+                                            <p className="m-0 fw-bold ">Décadas</p>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-1">
+                                        <Col>
                                             {
-                                                communityMovies.length ?
-                                                    <MoviesList movies={communityMovies} />
+                                                decades.map(decade => {
+                                                    return (
+                                                        <span bg="black" key={decade} className="me-2 opacity-50">{decade} </span>
+                                                    )
+                                                })
+                                            }
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row className="mt-3">
+                                        <Col>
+                                            <p className="m-0 fw-bold ">Actores fetiche de la comunidad</p>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-1">
+                                        <Col>
+                                            {
+                                                fetishActors?.length ?
+                                                    <PersonsList persons={fetishActors} />
                                                     :
                                                     <Row>
                                                         <Col >
-                                                            Ningún películas en esta comunidad
+                                                            Todavía no hay actores fetiche en esta comunidad
+                                                        </Col>
+                                                    </Row>
+                                            }
+                                        </Col>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <Row className="mt-3">
+                                        <Col>
+                                            <p className="m-0 fw-bold ">Directores fetiche de la comunidad</p>
+                                        </Col>
+                                    </Row>
+                                    <Row className="mt-1">
+                                        <Col>
+                                            {
+                                                fetishDirectors?.length ?
+                                                    <PersonsList persons={fetishDirectors} />
+                                                    :
+                                                    <Row>
+                                                        <Col >
+                                                            Todavía no hay actores fetiche en esta comunidad
                                                         </Col>
                                                     </Row>
                                             }
@@ -129,44 +129,42 @@ const CommunityDetailsPage = () => {
                                     </Row>
                                 </Col>
                             </Row>
-                            <Row className="mt-3">
+                        </Col>
+                    </Row>
+                    <Row className="mt-5">
+                        <Col md={{ span: 9 }}>
+                            <Row>
                                 <Col>
-                                    <Row>
-                                        <Col>
-                                            <p className="m-0 fw-bold fs-5">Actores fetiche de la comunidad</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            INCLUIR LA CREDITLIST CON LOS ACTORES
-                                        </Col>
-                                    </Row>
+                                    <p className="m-0 fw-bold fs-5">Películas recomendadas por la comunidad</p>
                                 </Col>
                             </Row>
                             <Row className="mt-3">
                                 <Col>
-                                    <Row>
-                                        <Col>
-                                            <p className="m-0 fw-bold fs-5">Directores fetiche de la comunidad</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            INCLUIR LA CREDITLIST CON LOS DIRECTORES
-                                        </Col>
-                                    </Row>
+                                    {
+                                        moviesApiIds?.length ?
+                                            <MoviesList movies={moviesApiIds} />
+                                            :
+                                            <Row>
+                                                <Col >
+                                                    Todavía no hay ninguna película recomendada en esta comunidad
+                                                </Col>
+                                            </Row>
+                                    }
                                 </Col>
                             </Row>
                         </Col>
-                        <Col className="ps-lg-4 ps-md-0" lg={3}>
-                            <Row>
-                                <p className="fw-bold">Usuarios de la comunidad ({users.length})</p>
+                        <Col className="mt-4 ps-lg-4 ps-md-0" md={{ span: 3 }}>
+                            <Row className="mt-3">
+                                <Col>
+                                    <p className="fw-bold fs-6">Usuarios de la comunidad ({users.length})</p>
+                                    <hr className="p2" />
+                                </Col>
                             </Row>
                             {
-                                users.length ?
+                                users?.length ?
                                     <Row>
                                         {
-                                            communityUsers.map(elm => {
+                                            users.map(elm => {
                                                 return (
                                                     <Col className="mb-2" lg={{ span: 12 }} key={elm._id}>
                                                         <UserCard {...elm} />

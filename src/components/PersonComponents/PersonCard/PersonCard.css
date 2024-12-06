@@ -1,0 +1,11 @@
+.PersonCard {
+    opacity: 80%;
+}
+
+.PersonCard:hover {
+    opacity: 100%
+}
+
+.PersonCard .card {
+    background-color: transparent;
+}

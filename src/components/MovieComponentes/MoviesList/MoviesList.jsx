@@ -8,11 +8,11 @@ const MoviesList = ({ movies }) => {
 
     return (
         <div className="MoviesList">
-            <Row className="movies-list">
+            <Row>
                 {
                     movies.map(elm => {
                         return (
-                            <Col key={elm.id} xs={12} sm={6} md={4} lg={3} className="me-2">
+                            <Col key={elm.id} xs={12} sm={6} md={4} lg={3} className="pe-3 pb-3">
                                 <MovieCard {...elm} />
                             </Col>
                         )

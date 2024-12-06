@@ -64,8 +64,8 @@ const UserProfilePage = () => {
                                     </Row>
                                 </Col>
                                 <Col xs={12} lg={5} >
-                                    <Row className="d-flex justify-content-center align-items-center">
-                                        <Col xs={{ span: 3 }} lg={{ span: 4 }}>
+                                    <Row className="order-2 d-flex justify-content-center align-items-center">
+                                        <Col xs={{ span: 8 }} lg={{ span: 4 }}>
                                             <Row>
                                                 <Col as="a" href={socialNetworksProfiles.facebook} target="_blank" className="text-white text-decoration-none opacity-50 text-center p-0">
                                                     <Facebook target="_blank" size={15} />
@@ -81,8 +81,8 @@ const UserProfilePage = () => {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                        <Col xs={{ span: 9 }} lg={{ span: 8 }}>
-                                            <Row className="d-flex justify-content-end">
+                                        <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                                            <Row className="mt-sm-3 mt-lg-0 order-1 d-flex justify-content-center">
                                                 <Col xs={{ span: 3 }} lg={{ span: 5 }} className="text-center p-0">
                                                     <p className="fs-5 fw-bold m-0">{reviews.length}</p>
                                                     <p className="m-0 opacity-50">RESEÑAS</p>

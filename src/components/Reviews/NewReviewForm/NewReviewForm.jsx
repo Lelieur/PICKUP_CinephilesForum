@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Form, Button, ListGroup } from 'react-bootstrap'
 
-import movieService from "../../../services/movie.service"
+import movieService from "../../../services/movie.services"
 import reviewServices from "../../../services/review.services"
 
 
