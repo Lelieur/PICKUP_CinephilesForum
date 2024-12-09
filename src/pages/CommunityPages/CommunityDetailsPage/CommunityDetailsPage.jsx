@@ -1,5 +1,3 @@
-import axios from "axios"
-
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { Col, Container, Row, Button } from "react-bootstrap"
@@ -11,7 +9,7 @@ import PersonsList from "../../../components/PersonComponents/PersonsList/Person
 
 import communityServices from "../../../services/community.services"
 
-const API_URL = import.meta.env.VITE_APP_API_URL
+import "./CommunityDetailsPage.css"
 
 const CommunityDetailsPage = () => {
 
@@ -65,73 +63,79 @@ const CommunityDetailsPage = () => {
                             </div>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col md={{ span: 9 }}>
-                            <Row className="d-flex justify-content-between">
+                    <Row className="mt-4">
+                        <Col>
+                            <Row>
+                                <p className="m-0 fw-bold">Administrador</p>
+                            </Row>
+                            <Row className="mt-2">
                                 <Col>
-                                    <Row className="mt-3">
-                                        <Col>
-                                            <p className="m-0 fw-bold ">Décadas</p>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mt-1">
-                                        <Col>
-                                            {
-                                                decades.map(decade => {
-                                                    return (
-                                                        <span bg="black" key={decade} className="me-2 opacity-50">{decade} </span>
-                                                    )
-                                                })
-                                            }
-                                        </Col>
-                                    </Row>
+                                    <UserCard {...owner} />
                                 </Col>
+                            </Row>
+                        </Col>
+                        <Col>
+                            <Row>
                                 <Col>
-                                    <Row className="mt-3">
-                                        <Col>
-                                            <p className="m-0 fw-bold ">Actores fetiche de la comunidad</p>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mt-1">
-                                        <Col>
-                                            {
-                                                fetishActors?.length ?
-                                                    <PersonsList persons={fetishActors} />
-                                                    :
-                                                    <Row>
-                                                        <Col >
-                                                            Todavía no hay actores fetiche en esta comunidad
-                                                        </Col>
-                                                    </Row>
-                                            }
-                                        </Col>
-                                    </Row>
+                                    <p className="m-0 fw-bold">Décadas</p>
                                 </Col>
+                            </Row>
+                            <Row className="mt-2">
                                 <Col>
-                                    <Row className="mt-3">
-                                        <Col>
-                                            <p className="m-0 fw-bold ">Directores fetiche de la comunidad</p>
-                                        </Col>
-                                    </Row>
-                                    <Row className="mt-1">
-                                        <Col>
-                                            {
-                                                fetishDirectors?.length ?
-                                                    <PersonsList persons={fetishDirectors} />
-                                                    :
-                                                    <Row>
-                                                        <Col >
-                                                            Todavía no hay actores fetiche en esta comunidad
-                                                        </Col>
-                                                    </Row>
-                                            }
-                                        </Col>
-                                    </Row>
+                                    {
+                                        decades.map(decade => {
+                                            return (
+                                                <span key={decade} className="me-2 opacity-50">{decade} </span>
+                                            )
+                                        })
+                                    }
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col>
+                            <Row>
+                                <Col>
+                                    <p className="m-0 fw-bold ">Actores fetiche de la comunidad</p>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2">
+                                <Col>
+                                    {
+                                        fetishActors?.length ?
+                                            <PersonsList persons={fetishActors} />
+                                            :
+                                            <Row>
+                                                <Col >
+                                                    Todavía no hay actores fetiche en esta comunidad
+                                                </Col>
+                                            </Row>
+                                    }
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col>
+                            <Row>
+                                <Col>
+                                    <p className="m-0 fw-bold ">Directores fetiche de la comunidad</p>
+                                </Col>
+                            </Row>
+                            <Row className="mt-2" >
+                                <Col>
+                                    {
+                                        fetishDirectors?.length ?
+                                            <PersonsList persons={fetishDirectors} />
+                                            :
+                                            <Row>
+                                                <Col >
+                                                    Todavía no hay actores fetiche en esta comunidad
+                                                </Col>
+                                            </Row>
+                                    }
                                 </Col>
                             </Row>
                         </Col>
                     </Row>
-                    <Row className="mt-5">
+                    <Row className="mt-4">
                         <Col md={{ span: 9 }}>
                             <Row>
                                 <Col>
