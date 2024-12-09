@@ -65,7 +65,6 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
                                 max={10}
                                 step={0.1}
                                 required
-
                             />
                         </Form.Group>
 

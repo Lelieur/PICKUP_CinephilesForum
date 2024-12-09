@@ -1,12 +1,12 @@
-import axios from "axios"
+
 import { useState, useEffect } from "react"
 
 import ReviewCard from "../ReviewCard/ReviewCard"
 import { Col, Row } from "react-bootstrap"
 
 import "./ReviewsList.css"
-
-const API_URL = import.meta.env.VITE_APP_API_URL
+import reviewServices from "../../../services/review.services"
+import Loader from "../../Loader/Loader"
 
 const ReviewsList = () => {
 
@@ -18,8 +18,9 @@ const ReviewsList = () => {
     }, [])
 
     const fetchReviews = () => {
-        axios
-            .get(`${API_URL}/api/reviews`)
+
+        reviewServices
+            .getAllReviews()
             .then(response => {
                 setReviews(response.data)
                 setIsLoading(false)
@@ -33,7 +34,7 @@ const ReviewsList = () => {
 
         <div className="ReviewsList">
             {isLoading ? (
-                <div>Loading...</div>
+                <Loader />
             ) : (
                 <Row className="d-flex justify-content-center">
                     <Col lg={{ span: 7 }} className="reviews-container">
@@ -41,11 +42,18 @@ const ReviewsList = () => {
                             if (!elm.isDeleted) {
                                 return (
                                     <div className="mt-5" md={{ span: 2 }} key={elm._id}>
-                                        <ReviewCard {...elm} />
+                                        <ReviewCard id={elm._id}
+                                            content={elm.content}
+                                            rate={elm.rate}
+                                            likesCounter={elm.likesCounter}
+                                            author={elm.author}
+                                            createdAt={elm.createdAt}
+                                            movieApiId={elm.movieApiId}
+                                        />
                                     </div>
-                                );
+                                )
                             }
-                            return null;
+                            return null
                         })}
                     </Col>
                 </Row>

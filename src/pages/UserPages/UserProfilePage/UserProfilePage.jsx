@@ -1,46 +1,102 @@
-import axios from "axios"
-import { useEffect, useState } from "react"
+
+import { useEffect, useState, useContext } from "react"
 import { useParams } from "react-router-dom"
-import { Container, Row, Col } from "react-bootstrap"
+import { Container, Row, Col, Button } from "react-bootstrap"
 import { Facebook, Twitter, Instagram, Tiktok, Linkedin } from 'react-bootstrap-icons'
 
 import { homer } from "../../../const/image-paths"
-
+import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
-
-const API_URL = import.meta.env.VITE_APP_API_URL
-
+import userServices from "../../../services/user.services"
+import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
+import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
+import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+import reviewServices from "../../../services/review.services"
 
 const UserProfilePage = () => {
 
+    const { loggedUser } = useContext(AuthContext)
     const { id: userId } = useParams()
 
+
     const [isLoading, setIsLoading] = useState(true)
-    const [userDetails, setUserDetails] = useState({})
+    const [showReviewForm, setShowReviewForm] = useState(false)
+    const [showEditForm, setShowEditForm] = useState(false)
+    const [reviewToEdit, setReviewToEdit] = useState(null)
+    const [userDetails, setUserDetails] = useState({
+        avatar: "",
+        username: "",
+        bio: "",
+        socialNetworksProfiles: {
+            facebook: "",
+            instagram: "",
+            twitter: "",
+            tiktok: ""
+        },
+        favoriteGenres: [],
+        communities: [],
+        reviews: []
+    })
 
     useEffect(() => {
         fetchUserData()
     }, [])
 
     const fetchUserData = () => {
-        axios
-            .get(`${API_URL}/api/users/${userId}`)
-            .then(response => {
+
+        const token = localStorage.getItem('authToken')
+
+        setIsLoading(true)
+
+        userServices
+            .fetchOneUser(userId)
+            .then((response) => {
 
                 const { data: userData } = response
                 setUserDetails(userData)
                 setIsLoading(false)
+                console.log(response)
+                console.log("User Data:", response.data);
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                setIsLoading(false)
+            })
+    }
+    const handleAddReview = () => {
+        setShowReviewForm(true)
     }
 
-    const { avatar, username, bio, socialNetworksProfiles, favoriteGenres, communities, createdAt, reviews } = userDetails
+    const handleEditReview = (review) => {
+        setShowEditForm(true)
+        setReviewToEdit(review)
+    }
+
+    const handleDeleteReview = (reviewId) => {
+        reviewServices.deleteReview(reviewId)
+            .then(() => {
+                fetchUserData()
+            })
+            .catch((err) => console.error("Error deleting review", err))
+    }
+
+    const {
+        avatar = homer,
+        bio = "Sin biografía",
+        socialNetworksProfiles = {},
+        favoriteGenres,
+        communities = [],
+        createdAt,
+        reviews = [],
+    } = userDetails
+
 
     return (
 
-        isLoading ? <Loader /> :
+        isLoading ? <Loader message="Cargando Perfil del usuario..." /> :
 
             <div className="UserProfilePage">
+
                 <Container className="mt-5">
                     <Row >
                         <Col>
@@ -54,12 +110,19 @@ const UserProfilePage = () => {
                                 <Col xs={9} lg={5} >
                                     <Row>
                                         <Col  >
-                                            <span className="fw-bold fs-3">{username}</span>
+                                            <span className="fw-bold fs-3">{loggedUser?.username}</span>
                                         </Col>
                                     </Row>
                                     <Row>
                                         <Col >
                                             <p>{bio}</p>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <p>
+                                                {favoriteGenres}
+                                            </p>
                                         </Col>
                                     </Row>
                                 </Col>
@@ -98,14 +161,57 @@ const UserProfilePage = () => {
                             </Row>
                         </Col>
                     </Row>
+
                     <Row className="mt-3">
                         <Col md={{}} className="p-xs-0">
                             <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
                         </Col>
                     </Row>
+                    <Row className="mt-3">
+                        {communities.length > 0 ? (
+                            communities.map(community => (
+                                <Col key={community.id} md={4} className="mb-3">
+                                    <CommunityCard {...community} />
+                                </Col>
+                            ))
+                        ) : (
+                            <Col>No pertenece a ninguna comunidad.</Col>
+                        )}
+                    </Row>
+
+
+                    <Row className="mt-3">
+                        <Col md={{}} className="p-xs-0">
+                            <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
+                        </Col>
+                    </Row>
+                    <Row className="mt-3">
+                        {reviews.length > 0 ? (
+                            reviews.map(review => (
+                                <Col key={review.id} md={4} className="mb-3">
+                                    <ReviewCard {...review} onEdit={handleEditReview} onDelete={handleDeleteReview} />
+                                </Col>
+                            ))
+                        ) : (
+                            <Col>No ha realizado ninguna reseña.</Col>
+                        )}
+
+                        {/* Add Review Button */}
+                        <Row className="mt-3">
+                            <Col>
+                                <Button onClick={handleAddReview}>Añadir Reseña</Button>
+                            </Col>
+                        </Row>
+                    </Row>
+                    {/* New Review Form */}
+                    {showReviewForm && <NewReviewForm onReviewCreated={fetchUserData} />}
+                    {/* Edit Review Form */}
+                    {showEditForm && <EditReviewForm review={reviewToEdit} onReviewUpdated={fetchUserData} />}
+
                 </Container>
+
             </div>
     )
-}
 
+}
 export default UserProfilePage
