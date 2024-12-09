@@ -1,17 +1,20 @@
-import { useEffect, useState } from 'react'
-import './ReviewCard.css'
-import { Card, Row, Col, Button } from "react-bootstrap"
-import axios from 'axios'
-import { homer } from '../../../const/image-paths'
+import { useEffect, useState } from 'react';
+import './ReviewCard.css';
+import { Card, Row, Col, Button, Spinner } from "react-bootstrap";
+import { homer } from '../../../const/image-paths';
+import reviewServices from '../../../services/review.services'
+import movieServices from '../../../services/movie.services';
+import userServices from '../../../services/user.services';
 
-const API_URL = import.meta.env.VITE_APP_API_URL
-const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
-const ReviewCard = ({ author, avatar, movieApiId, content, rate, likesCounter, createdAt, release_date }) => {
+const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL;
 
+const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounter, createdAt, release_date }) => {
     const [authorData, setAuthorData] = useState({})
     const [movieData, setMovieData] = useState({})
     const [likes, setLikes] = useState(likesCounter)
+    const [loading, setLoading] = useState(true)
+
 
     const formattedDate = new Date(createdAt).toLocaleDateString("es-ES", {
         day: "numeric",
@@ -25,45 +28,82 @@ const ReviewCard = ({ author, avatar, movieApiId, content, rate, likesCounter, c
         year: "numeric",
     })
 
-    const fetchAuthorData = (authorId) => {
-        return axios
-            .get(`${API_URL}/api/users/${authorId}`)
-            .then(response => response.data)
-            .catch(err => console.log(err))
+    const fetchAuthorReviews = (authorId) => {
+        reviewServices
+            .getReviewsFromAuthor(authorId)
+            .then(response => {
+                setAuthorData(response.data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error("Error fetching author data:", err)
+                setLoading(false)
+            })
+    }
+
+    const fetchAuthorDetails = (authorId) => {
+        userServices
+            .fetchOneUser(authorId)
+            .then(response => {
+                setAuthorData(response.data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error("Error fetching author details:", err)
+                setLoading(false)
+            })
     }
 
     const fetchMovieData = (movieApiId) => {
-        return axios
-            .get(`${API_URL}/api/movies/${movieApiId}`)
-            .then(response => response.data)
-            .catch(err => console.log(err))
+        movieServices
+            .getMovieDetails(movieApiId)
+            .then(response => {
+                setMovieData(response.data)
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error("Error fetching movie data:", err)
+                setLoading(false)
+            })
     }
+
+
     useEffect(() => {
         if (author) {
-            fetchAuthorData(author)  // Llamada para obtener los detalles del autor usando el ID
-                .then(authorData => {
-                    setAuthorData(authorData);  // Almacenamos los datos del autor
-                })
-                .catch((err) => console.error("Error fetching author data:", err))
+            fetchAuthorReviews(author)
+            fetchAuthorDetails(author)
         }
 
         if (movieApiId) {
-            fetchMovieData(movieApiId)  // Llamada para obtener los detalles de la película
-                .then(movieData => {
-                    setMovieData(movieData)
-                })
-                .catch((err) => console.error("Error fetching movie data:", err))
+            fetchMovieData(movieApiId)
         }
-    }, [])
+    }, [author, movieApiId])
 
     const handleLike = () => {
-        setLikes(likes + 1)
+
+        const updatedLikes = likes + 1
+        setLikes(updatedLikes)
+
+        reviewServices
+            .editReview(id, content, rate)
+            .catch(err => {
+                console.log("Error updating like count:", err)
+                setLikes(likes)
+            })
     }
 
+    // Fallback loading state if data is still being fetched
+    if (loading) {
+        return (
+            <div className="ReviewCard">
+                <Spinner animation="border" variant="light" />
+            </div>
+        )
+    }
 
     return (
         <div className="ReviewCard">
-            <Card className=' p-3 m-0 text-white text-start'>
+            <Card className='p-3 m-0 text-white text-start'>
                 <Row>
                     <Col md={3}>
                         <Card.Img className='object-fit-cover h-100'
@@ -84,15 +124,14 @@ const ReviewCard = ({ author, avatar, movieApiId, content, rate, likesCounter, c
                         </Row>
                         <Row className='pt-4 d-flex pe-2'>
                             <Col xs={3} md={{ span: 2 }}>
-                                <Card.Img className='rounded-circle  object-fit-cover '
+                                <Card.Img className='rounded-circle object-fit-cover'
                                     style={{ height: "3rem", width: "3rem" }}
-                                    src={homer} alt={authorData.username} />
+                                    src={avatar || homer} alt={authorData.username} />
                             </Col>
                             <Col className='ps-2' xs={6} md={{ span: 8 }}>
-                                <Row >
+                                <Row>
                                     <Col>
-                                        <Card.Title className='fs-6'
-                                        >
+                                        <Card.Title className='fs-6'>
                                             {authorData.firstName}
                                         </Card.Title>
                                     </Col>
@@ -139,9 +178,9 @@ const ReviewCard = ({ author, avatar, movieApiId, content, rate, likesCounter, c
                         </Button>
                     </Col>
                 </Row>
-            </Card >
-        </div >
+            </Card>
+        </div>
     );
+};
 
-}
-export default ReviewCard
+export default ReviewCard;

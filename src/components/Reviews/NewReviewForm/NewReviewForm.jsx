@@ -38,7 +38,8 @@ const NewReviewForm = ({ onReviewCreated }) => {
             setError("Por favor, completa todos los campos.")
             return
         }
-        setLoading(true);
+        setLoading(true)
+
         const token = localStorage.getItem("authToken")
 
         reviewServices
@@ -62,7 +63,7 @@ const NewReviewForm = ({ onReviewCreated }) => {
         setError(null)
         setShowMoviesModal(false)
         setShowRateModal(false)
-    };
+    }
 
     return (
         <div className="NewReviewForm">

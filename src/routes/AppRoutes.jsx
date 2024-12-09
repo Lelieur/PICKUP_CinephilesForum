@@ -25,10 +25,10 @@ const AppRoutes = () => {
 
                 <Route path={'/*'} element={<Error404Page />} />
 
-                <Route element={<PrivateRoute />} >
-                    <Route path={'/reviews'} element={<ReviewsPage />} />
-                    <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
-                </Route>
+
+                <Route path={'/reviews'} element={<ReviewsPage />} />
+                <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
+
 
             </Routes>
         </div>

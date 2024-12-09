@@ -1,12 +1,15 @@
 import { Container, Nav, Navbar, Button, Dropdown, Offcanvas, Row, Col, Accordion } from 'react-bootstrap'
 import { Search, List, XLg } from "react-bootstrap-icons"
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../contexts/auth.context'
 
 import "./Navigation.css"
 
 
 const Navigation = () => {
+
+    const { loggedUser, logoutUser } = useContext(AuthContext)
 
     const [clickToggle, setClickToggle] = useState(false)
     const [showOffCanvas, setShowOffCanvas] = useState(false)
@@ -25,6 +28,7 @@ const Navigation = () => {
 
                             {clickToggle ? <XLg className='fs-1 fw-bold' /> : <List className='fs-1 fw-bold' />}
                         </Navbar.Toggle>
+                        <h3>Bienvend@, {loggedUser?.username || "Invitad@"}</h3>
                         <Navbar.Brand as={Link} to="/">
                             <img
                                 alt="Logo"
@@ -37,6 +41,8 @@ const Navigation = () => {
                         <Nav className="d-flex justify-content-start w-100">
                             <Nav.Link className="text-white" as={Link} to="/comunidades">Comunidades</Nav.Link>
                             <Nav.Link className="text-white" as={Link} to="/reviews">Reseñas</Nav.Link>
+
+
                             <Dropdown className="m-0 d-flex align-items-center">
                                 <Dropdown.Toggle variant="link" className="border-0 m-0 p-2 text-white text-decoration-none" id="dropdown-basic">
                                     Más
@@ -52,6 +58,7 @@ const Navigation = () => {
                             <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/registro">REGISTRARSE</Button>
                             <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
                         </Nav>
+
                     </Navbar.Collapse>
                     <Nav className="d-flex align-items-center">
                         <Button variant="ligth"><Search className="search-icon" size="20px" /></Button>
