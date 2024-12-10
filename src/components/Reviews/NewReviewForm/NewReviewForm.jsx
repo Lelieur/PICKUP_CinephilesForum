@@ -1,263 +1,238 @@
 import { useState } from "react"
-import { Form, Button, ListGroup, Card, Modal } from 'react-bootstrap'
-import { Film, PlusCircle } from "react-bootstrap-icons"
+import { Form, Button, Modal, Card } from "react-bootstrap"
+import { PlusCircle, Film } from "react-bootstrap-icons"
 
+import reviewService from "../../../services/review.services"
 import movieService from "../../../services/movie.services"
-import reviewServices from "../../../services/review.services"
 
 import "./NewReviewForm.css"
 
 const NewReviewForm = ({ onReviewCreated }) => {
-
-    const [movies, setMovies] = useState([])
     const [selectedMovie, setSelectedMovie] = useState(null)
-    const [query, setQuery] = useState()
-    const [content, setContent] = useState("")
-    const [rate, setRate] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [reviewText, setReviewText] = useState("")
+    const [rating, setRating] = useState(null)
+    const [showMovieModal, setShowMovieModal] = useState(false)
+    const [showRatingModal, setShowRatingModal] = useState(false)
+    const [querySearch, setQuerySearch] = useState("")
+    const [moviesFilter, setMoviesFilter] = useState([])
+    const [reviews, setReviews] = useState([])
     const [error, setError] = useState(null)
-    const [showMoviesModal, setShowMoviesModal] = useState(false)
-    const [showRateModal, setShowRateModal] = useState(false)
 
+    const handleMovieSearch = (e) => {
+        const { value: query } = e.target
+        setQuerySearch(query)
 
-    const handleSearchMovies = () => {
-        movieService
-            .searchMovies(query)
-            .then((response) => {
-                setMovies(response.data.results)
-            })
-            .catch((err) => {
-                console.error(err)
-                setError("Hubo un problema buscando la película.")
-            })
+        if (query) {
+            movieService
+                .searchMovies(query)
+                .then((response) => {
+                    setMoviesFilter(response.data.results)
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+        }
+    }
+
+    const handleMovieSelect = (movie) => {
+        setSelectedMovie(movie)
+        setShowMovieModal(false)
+        setQuerySearch("")
+        setMoviesFilter([])
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
-        if (!selectedMovie || !content || rate === null) {
-            setError("Por favor, completa todos los campos.")
+
+        if (!reviewText || !selectedMovie || rating === null) {
+            setError("Por favor, completa todos los campos antes de enviar.")
             return
         }
-        setLoading(true)
 
-        const token = localStorage.getItem("authToken")
+        const storedToken = localStorage.getItem('authToken');
+        const author = storedToken ? JSON.parse(atob(storedToken.split('.')[1])).userId : null
 
-        reviewServices
-            .saveReview(selectedMovie.id, content, rate)
+        reviewService
+            .saveReview(selectedMovie.id, reviewText, rating, author)
             .then((response) => {
-                setLoading(false)
-                resetForm()
-                onReviewCreated(response.data)
+                console.log("Reseña registrada:", response.data)
+                //Pass the new review to the main component (ReviewsPage)
+                if (onReviewCreated) {
+                    onReviewCreated(response.data)
+                }
+                setSelectedMovie(null)
+                setReviewText("")
+                setRating(null)
+                setError(null)
             })
-            .catch((err) => {
-                setLoading(false)
-                console.error(err)
-            });
-    }
-    const resetForm = () => {
-        setContent("")
-        setRate(null)
-        setSelectedMovie(null)
-        setQuery("")
-        setMovies([])
-        setError(null)
-        setShowMoviesModal(false)
-        setShowRateModal(false)
+            .catch((error) => {
+                console.error("Error al registrar la reseña:", error)
+                setError("Hubo un error al enviar la reseña.")
+            })
     }
 
     return (
         <div className="NewReviewForm">
-            <Card className="review-card" style={{ maxWidth: "750px", margin: "0 auto" }}>
-                <Card.Body>
-                    <div className="d-flex align-items-start gap-3">
-                        {/* Botones para seleccionar película y nota */}
-                        <div className="d-flex flex-column mb-3">
-                            <Button
-                                variant="secondary"
-                                onClick={() => setShowMoviesModal(true)}
-                                style={{
-                                    color: "rgb(5 255 161)",
-                                    fontSize: "20px",
-
-                                    marginBottom: "10px",
-                                    background: "transparent",
-                                    border: "none"
-                                }}
-                            >
-                                <Film />
-                            </Button>
-
-
-                            <Button
-                                variant="secondary"
-                                onClick={() => setShowRateModal(true)}
-                                style={{
-                                    color: "rgb(5 255 161)",
-                                    fontSize: "20px",
-                                    background: "transparent",
-                                    border: "none"
-                                }}
-                            >
-                                <PlusCircle />
-                            </Button>
-                        </div>
-                        {/* Área de comentario */}
-                        <div style={{ flex: 1 }}>
-                            <Form.Group className="d-flex align-items-center mb-3" controlId="reviewContent">
-                                <Form.Control
-                                    as="textarea"
-                                    rows={3}
-                                    placeholder="Dejanos tu reseña"
-                                    value={content}
-                                    onChange={(e) => setContent(e.target.value)}
-                                    required
-                                    style={{
-                                        color: "white",
-                                        resize: "none",
-                                        fontSize: "14px",
-                                        backgroundColor: "#242432",
-                                        border: "none",
-                                        marginRight: "10px"
-                                    }}
-                                />
-                            </Form.Group>
-
-                            {/* Mostrar la película seleccionada y la nota */}
-                            {selectedMovie && (
-                                <div className="d-flex align-items-center" style={{ marginTop: "10px" }}>
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
-                                        alt={selectedMovie.original_title}
-                                        style={{ width: "50px", marginRight: "10px", borderRadius: "5px" }}
-                                    />
-                                    <p style={{ margin: 0, fontSize: "14px" }}>
-                                        {selectedMovie.original_title}
-                                    </p>
-                                </div>
-                            )}
-
-                            {rate && (
-                                <div className="d-flex align-items-center mb-3">
-                                    <strong>Nota:</strong> {rate}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    <div className="d-flex justify-content-end align-items-center gap-2">
-                        {/* Botón para publicar */}
-                        <Button
-                            className="btn-post"
-                            onClick={handleSubmit}
-                            disabled={loading || !content || rate === null || !selectedMovie}
+            <Card
+                className="mx-auto mt-5 p-4"
+                style={{
+                    maxWidth: "600px",
+                    backgroundColor: "#1a1a2e",
+                    borderRadius: "10px",
+                    boxShadow: "0 4px 10px rgba(0, 0, 0, 0.5)",
+                }}
+            >
+                <Form onSubmit={handleSubmit}>
+                    {/* Campo de descripción */}
+                    <Form.Group controlId="reviewText">
+                        <Form.Label style={{ color: "white", fontWeight: "bold" }}>
+                            Describe tu reseña
+                        </Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows={4}
+                            placeholder="Escribe aquí lo que opinas de la película..."
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
                             style={{
+                                backgroundColor: "#242432",
+                                border: "1px solid #444",
+                                color: "white",
+                            }}
+                        />
+                    </Form.Group>
+
+                    {/* Mostrar la imagen de la película seleccionada */}
+                    {selectedMovie && (
+                        <div className="mt-3">
+                            <strong style={{ color: "rgb(5 255 161)" }}>Película:</strong>{" "}
+                            {selectedMovie.original_title}
+                            <div className="mt-2">
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w500/${selectedMovie.poster_path}`}
+                                    alt={selectedMovie.original_title}
+                                    style={{ width: "100px", height: "150px", objectFit: "cover" }}
+                                />
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Nota seleccionada */}
+                    {rating !== null && (
+                        <div className="mt-3">
+                            <strong style={{ color: "rgb(5 255 161)" }}>Nota:</strong> {rating}
+                        </div>
+                    )}
+
+                    {/* Botones */}
+                    <div className="d-flex mt-4 gap-3">
+                        <Button
+                            variant="secondary"
+                            onClick={() => setShowMovieModal(true)}
+                            style={{
+                                flex: 1,
                                 backgroundColor: "rgb(5 255 161)",
                                 border: "none",
-                                fontSize: "14px",
-                                padding: "6px 12px",
                             }}
                         >
-                            {loading ? "Enviando..." : "Postear"}
+                            <Film /> Añadir Película
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => setShowRatingModal(true)}
+                            style={{
+                                flex: 1,
+                                backgroundColor: "rgb(5 255 161)",
+                                border: "none",
+                            }}
+                        >
+                            <PlusCircle /> Añadir Nota
                         </Button>
                     </div>
 
+                    {/* Botón para enviar */}
+                    <Button
+                        type="submit"
+                        className="mt-4 w-100"
+                        style={{
+                            backgroundColor: "rgb(5 255 161)",
+                            border: "none",
+                            fontWeight: "bold",
+                        }}
+                    >
+                        Enviar Reseña
+                    </Button>
+
                     {/* Mostrar errores */}
                     {error && <p className="text-danger mt-3">{error}</p>}
-                </Card.Body>
+                </Form>
             </Card>
 
-            {/* Modal para seleccionar película */}
-            <Modal
-                show={showMoviesModal}
-                onHide={() => setShowMoviesModal(false)}
-                style={{ backgroundColor: "black" }}>
-                <Modal.Header closeButton style={{ backgroundColor: "black" }}>
-                    <Modal.Title>Selecciona una Película</Modal.Title>
+            {/* Modal de búsqueda de películas */}
+            <Modal show={showMovieModal} onHide={() => setShowMovieModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Buscar Película</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ backgroundColor: "black", color: "white" }}>
-                    <Form.Group className="mb-3" controlId="movieSearch">
-                        <Form.Control
-                            type="text"
-                            placeholder="Buscar película"
-                            value={query || ""}
-                            onChange={(e) => setQuery(e.target.value)}
-                            style={{ backgroundColor: "#242432", color: "white" }}
-                        />
-                    </Form.Group>
-                    <Button
-                        onClick={handleSearchMovies}
-                        variant="success"
-                        className="mb-3 w-100"
-                        style={{ backgroundColor: "rgb(5, 255, 161)", borderColor: "rgb(5, 255, 161)" }}
-                    >
-                        Buscar
-                    </Button>
-
-                    {movies.length > 0 && (
-                        <ListGroup>
-                            {movies.map((movie) => (
-                                <ListGroup.Item
-                                    key={movie.id}
-                                    onClick={() => {
-                                        setSelectedMovie(movie);
-                                        setShowMoviesModal(false);
-                                    }}
-                                    style={{ cursor: "pointer", display: "flex", alignItems: "center", marginBottom: "10px" }}
-                                >
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                        alt={movie.original_title}
-                                        style={{ width: "50px", marginRight: "10px", borderRadius: "5px" }}
-                                    />
-                                    {movie.original_title}
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
-                    )}
+                <Modal.Body>
+                    <Form.Control
+                        type="text"
+                        placeholder="Escribe el título de una película..."
+                        value={querySearch}
+                        onChange={handleMovieSearch}
+                    />
+                    <ul className="mt-3">
+                        {moviesFilter.map((movie) => (
+                            <li
+                                key={movie.id}
+                                onClick={() => handleMovieSelect(movie)}
+                                style={{ cursor: "pointer", color: "black" }}
+                            >
+                                {movie.original_title} ({new Date(movie.release_date).getFullYear()})
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                                    alt={movie.original_title}
+                                    style={{ width: "50px", height: "75px", marginLeft: "10px", objectFit: "cover" }}
+                                />
+                            </li>
+                        ))}
+                    </ul>
                 </Modal.Body>
             </Modal>
 
-            {/* Modal para añadir nota */}
-            <Modal show={showRateModal} onHide={() => setShowRateModal(false)}>
-                <Modal.Header closeButton style={{ backgroundColor: "black" }}>
-                    <Modal.Title>Califica la Película</Modal.Title>
+            {/* Modal de calificación */}
+            <Modal show={showRatingModal} onHide={() => setShowRatingModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Calificar Película</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ backgroundColor: "black" }}>
-                    <Form.Group controlId="reviewRate">
-                        <Form.Label>Introduce una nota (0-10):</Form.Label>
-                        <Form.Control
-                            type="number"
-                            value={rate || ""}
-                            onChange={(e) =>
-                                setRate(Math.min(10, Math.max(0, Number(e.target.value))))}
-                            placeholder="Tu valoración (0-10)"
-                            min={0}
-                            max={10}
-                            step={0.1}
-                            className="input-rate"
-                            required
-                            style={{ color: "white", backgroundColor: "#242432" }}
-                        />
-                    </Form.Group>
+                <Modal.Body>
+                    <Form.Control
+                        type="number"
+                        placeholder="Escribe una calificación (0-10)"
+                        value={rating || ""}
+                        onChange={(e) =>
+                            setRating(Math.min(10, Math.max(0, Number(e.target.value))))
+                        }
+                    />
                 </Modal.Body>
-                <Modal.Footer style={{ backgroundColor: "black" }}>
-                    <Button
-                        variant="secondary"
-                        onClick={() => setShowRateModal(false)}
-                        style={{ backgroundColor: "rgb(5, 255, 161)", borderColor: "rgb(5, 255, 161)" }}
-                    >
-                        Cancelar
-                    </Button>
-                    <Button
-                        variant="primary"
-                        onClick={() => setShowRateModal(false)}
-                        style={{ backgroundColor: "rgb(5, 255, 161)", borderColor: "rgb(5, 255, 161)" }}
-                    >
-                        Guardar
-                    </Button>
-                </Modal.Footer>
             </Modal>
-        </div >
+
+            {/* Mostrar las reseñas de la película seleccionada */}
+            {reviews.length > 0 && (
+                <div className="mt-4">
+                    <h4 style={{ color: "white" }}>Reseñas:</h4>
+                    <ul>
+                        {reviews.map((review) => (
+                            <li key={review._id} className="mt-3" style={{ color: "white" }}>
+                                <strong>{review.author ? review.author : "Anónimo"}</strong> -{" "}
+                                <span>{review.rate}</span>
+                                <p>{review.content}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
     )
-}
-export default NewReviewForm
+};
+
+export default NewReviewForm;
+

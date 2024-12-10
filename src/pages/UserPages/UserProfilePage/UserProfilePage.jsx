@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button } from "react-bootstrap"
 import { Facebook, Twitter, Instagram, Tiktok, Linkedin } from 'react-bootstrap-icons'
 
-import { homer } from "../../../const/image-paths"
+
 import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
 import userServices from "../../../services/user.services"
@@ -80,7 +80,7 @@ const UserProfilePage = () => {
     }
 
     const {
-        avatar = homer,
+        avatar = '',
         bio = "Sin biografía",
         socialNetworksProfiles = {},
         favoriteGenres,
@@ -103,7 +103,7 @@ const UserProfilePage = () => {
                                 <Col xs={3} lg={2}>
                                     <img className="border border-white object-fit-cover rounded-circle"
                                         style={{ height: "5rem", width: "5rem" }}
-                                        src={avatar ? avatar : homer}
+                                        src={avatar}
                                         alt="avatar" />
                                 </Col>
                                 <Col xs={9} lg={5} >

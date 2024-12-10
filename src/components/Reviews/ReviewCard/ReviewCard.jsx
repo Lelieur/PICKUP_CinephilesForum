@@ -1,20 +1,13 @@
-import { useEffect, useState } from 'react';
 import './ReviewCard.css';
-import { Card, Row, Col, Button, Spinner } from "react-bootstrap";
-import { homer } from '../../../const/image-paths';
-import reviewServices from '../../../services/review.services'
-import movieServices from '../../../services/movie.services';
-import userServices from '../../../services/user.services';
+import { Card, Row, Col, Button } from "react-bootstrap"
+import { homer } from '../../../const/image-paths'
+import { useState } from 'react'
 
+const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
-const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL;
-
-const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounter, createdAt, release_date }) => {
-    const [authorData, setAuthorData] = useState({})
-    const [movieData, setMovieData] = useState({})
-    const [likes, setLikes] = useState(likesCounter)
-    const [loading, setLoading] = useState(true)
-
+const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete }) => {
+    const { _id, content, rate, likesCounter, createdAt } = review
+    const [loggedUser, setLoggedUser] = useState()
 
     const formattedDate = new Date(createdAt).toLocaleDateString("es-ES", {
         day: "numeric",
@@ -22,92 +15,17 @@ const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounte
         year: "numeric",
     })
 
-    const releaseDate = new Date(release_date).toLocaleDateString("es-Es", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    })
-
-    const fetchAuthorReviews = (authorId) => {
-        reviewServices
-            .getReviewsFromAuthor(authorId)
-            .then(response => {
-                setAuthorData(response.data)
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error("Error fetching author data:", err)
-                setLoading(false)
-            })
+    const handleLikeClick = () => {
+        onLike(_id)
     }
-
-    const fetchAuthorDetails = (authorId) => {
-        userServices
-            .fetchOneUser(authorId)
-            .then(response => {
-                setAuthorData(response.data)
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error("Error fetching author details:", err)
-                setLoading(false)
-            })
-    }
-
-    const fetchMovieData = (movieApiId) => {
-        movieServices
-            .getMovieDetails(movieApiId)
-            .then(response => {
-                setMovieData(response.data)
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error("Error fetching movie data:", err)
-                setLoading(false)
-            })
-    }
-
-
-    useEffect(() => {
-        if (author) {
-            fetchAuthorReviews(author)
-            fetchAuthorDetails(author)
-        }
-
-        if (movieApiId) {
-            fetchMovieData(movieApiId)
-        }
-    }, [author, movieApiId])
-
-    const handleLike = () => {
-
-        const updatedLikes = likes + 1
-        setLikes(updatedLikes)
-
-        reviewServices
-            .editReview(id, content, rate)
-            .catch(err => {
-                console.log("Error updating like count:", err)
-                setLikes(likes)
-            })
-    }
-
-    // Fallback loading state if data is still being fetched
-    if (loading) {
-        return (
-            <div className="ReviewCard">
-                <Spinner animation="border" variant="light" />
-            </div>
-        )
-    }
-
+    const isOwner = loggedUser && loggedUser._id === review.author
     return (
         <div className="ReviewCard">
             <Card className='p-3 m-0 text-white text-start'>
                 <Row>
                     <Col md={3}>
                         <Card.Img className='object-fit-cover h-100'
-                            src={`${TMDB_API_IMG_URL}/w780/${movieData.backdrop_path}`}
+                            src={`${TMDB_API_IMG_URL}/w780/${movieData?.backdrop_path}`}
                             alt="movie poster"
                         />
                     </Col>
@@ -115,9 +33,9 @@ const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounte
                         <Row className='pe-3'>
                             <Col>
                                 <Card.Subtitle className='fs-4'>
-                                    {movieData.original_title}{" "}
+                                    {movieData?.original_title}{" "}
                                     <span>
-                                        ({new Date(movieData.release_date).getFullYear()})
+                                        ({new Date(movieData?.release_date).getFullYear()})
                                     </span>
                                 </Card.Subtitle>
                             </Col>
@@ -126,20 +44,20 @@ const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounte
                             <Col xs={3} md={{ span: 2 }}>
                                 <Card.Img className='rounded-circle object-fit-cover'
                                     style={{ height: "3rem", width: "3rem" }}
-                                    src={avatar || homer} alt={authorData.username} />
+                                    src={authorData?.avatar || homer} alt={authorData?.username} />
                             </Col>
                             <Col className='ps-2' xs={6} md={{ span: 8 }}>
                                 <Row>
                                     <Col>
                                         <Card.Title className='fs-6'>
-                                            {authorData.firstName}
+                                            {authorData?.firstName}
                                         </Card.Title>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <Card.Subtitle>
-                                            @{authorData.username}
+                                            @{authorData?.username}
                                         </Card.Subtitle>
                                     </Col>
                                 </Row>
@@ -150,37 +68,57 @@ const ReviewCard = ({ id, author, avatar, movieApiId, content, rate, likesCounte
                         </Row>
                         <Row className='pt-4 pb-4'>
                             <Col>
-                                <Card.Text>
-                                    {content}
-                                </Card.Text>
+                                <Card.Text>{content}</Card.Text>
                             </Col>
                         </Row>
                     </Col>
                 </Row>
                 <Row className='d-flex align-items-center'>
                     <Col>
-                        <span className='p-0'
-                            style={{
-                                fontSize: "0.9rem",
-                                color: "#aaa",
-                            }}
+                        <span
+                            className='p-0'
+                            style={{ fontSize: "0.9rem", color: "#aaa" }}
                         >
                             {formattedDate}
                         </span>
                     </Col>
-                    <Col className='text-end'>
+                </Row>
+                <Row className="d-flex align-items-center">
+                    <Col className="text-end">
                         <Button
                             variant="outline-light"
                             size="sm"
-                            onClick={handleLike}
+                            onClick={handleLikeClick}
                         >
-                            ❤️ {likes} Likes
+                            ❤️ {likesCounter} Likes
                         </Button>
                     </Col>
                 </Row>
+                {isOwner && (
+                    <Row className="d-flex justify-content-end mt-2">
+                        <Col xs="auto">
+                            <Button
+                                variant="outline-warning"
+                                size="sm"
+                                onClick={() => onEdit(review)}
+                            >
+                                Editar
+                            </Button>
+                        </Col>
+                        <Col xs="auto">
+                            <Button
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={() => onDelete(review._id)}
+                            >
+                                Eliminar
+                            </Button>
+                        </Col>
+                    </Row>
+                )}
             </Card>
         </div>
-    );
-};
+    )
+}
 
-export default ReviewCard;
+export default ReviewCard

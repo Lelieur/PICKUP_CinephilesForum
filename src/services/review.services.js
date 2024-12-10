@@ -30,8 +30,8 @@ class reviewService {
     }
 
 
-    editReview(id, content, rate) {
-        return this.axiosApp.put(`/${id}`, { content, rate })
+    editReview(id, content, rate, likesCounter) {
+        return this.axiosApp.put(`/${id}`, { content, rate, likesCounter })
     }
 
     getReviewsDetails(id) {
@@ -65,6 +65,10 @@ class reviewService {
 
     getOneReview(id) {
         return this.axiosApp.get(`/${id}`)
+    }
+
+    likeReview(id) {
+        return this.axiosApp.patch(`/${id}/like`);
     }
 }
 
