@@ -35,12 +35,7 @@ class userServices {
     }
 
     editUser(id, userData) {
-        return this.axiosApp.put(`/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            userData
-        })
+        return this.axiosApp.put(`/${id}`, userData)
     }
 }
 

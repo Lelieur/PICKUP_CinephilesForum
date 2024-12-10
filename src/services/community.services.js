@@ -41,22 +41,17 @@ class communityServices {
     }
 
     editCommunity(id, communityData) {
-        return this.axiosApp.put(`/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            communityData
-        })
+        return this.axiosApp.put(`/${id}`, communityData)
     }
 
-
     deleteCommunity(id) {
-        return this.axiosApp.put(`/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            communityData
-        })
+        return this.axiosApp.delete(`/${id}`)
+    }
+
+    followCommunity(id, userId) {
+        console.log(id)
+        console.log(userId)
+        return this.axiosApp.put(`/follow/${id}`, userId)
     }
 }
 

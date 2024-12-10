@@ -18,7 +18,6 @@ const UserProfilePage = () => {
     const { loggedUser } = useContext(AuthContext)
     const { id: userId } = useParams()
 
-
     const [isLoading, setIsLoading] = useState(true)
     const [showReviewForm, setShowReviewForm] = useState(false)
     const [showEditForm, setShowEditForm] = useState(false)

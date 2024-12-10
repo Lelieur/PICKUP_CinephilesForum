@@ -3,6 +3,7 @@ import { Search, List, XLg } from "react-bootstrap-icons"
 import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth.context'
+import { homer } from '../../const/image-paths';
 
 import "./Navigation.css"
 
@@ -10,7 +11,6 @@ import "./Navigation.css"
 const Navigation = () => {
 
     const { loggedUser, logoutUser } = useContext(AuthContext)
-    const [userData, setUserData] = useState()
 
     const [clickToggle, setClickToggle] = useState(false)
     const [showOffCanvas, setShowOffCanvas] = useState(false)
@@ -48,22 +48,34 @@ const Navigation = () => {
                                     Más
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="boder-0 m-0">
-                                    <Dropdown.Item className="text-white pt-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
-                                    <Dropdown.Item className="text-white pt-2" as={Link} to="/trend/reviews">Top Reviews</Dropdown.Item>
-                                    <Dropdown.Item className="text-white pt-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend/reviews">Top Reviews</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
                         {
-                            loggedUser ?
-                                <Nav className="d-flex justify-content-end w-100">
-                                    <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/log-out">CERRAR SESIÓN</Button>
-                                    <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/perfil">PERFIL</Button>
-                                </Nav>
-                                :
+                            !loggedUser ?
                                 <Nav className="d-flex justify-content-end w-100">
                                     <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/registro">REGISTRARSE</Button>
                                     <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
+                                </Nav>
+                                :
+                                <Nav className="d-flex justify-content-end w-100">
+                                    <Dropdown className="m-0" align="end">
+                                        <Dropdown.Toggle variant="link" className="border-0 m-0 p-0 profile-toggle" id="dropdown-basic">
+                                            <img className="border border-white object-fit-cover rounded-circle"
+                                                style={{ height: "2rem", width: "2rem" }}
+                                                src={loggedUser.avatar ? loggedUser.avatar : homer}
+                                                alt="avatar" />
+                                        </Dropdown.Toggle>
+
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to={`/usuarios/${loggedUser._id}`}>Ver perfil</Dropdown.Item>
+                                            <hr className='m-0' />
+                                            <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as="button" onClick={() => logoutUser()}>Cerrar sesión</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
                                 </Nav>
                         }
 

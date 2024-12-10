@@ -12,7 +12,7 @@
 }
 
 .Navigation .navbar .nav-link:hover,
-.Navigation .navbar .dropdown-toggle:hover {
+.dropdown-toggle:hover {
     color: rgb(5 255 161) !important
 }
 
@@ -63,16 +63,16 @@
     font-size: bold;
 }
 
-.Navigation .dropdown-menu {
+.dropdown-menu {
     background-color: #141426;
 }
 
-.Navigation .dropdown-item {
+.dropdown-item {
     font-size: 0.9rem;
 }
 
 
-.Navigation .dropdown-item:hover {
+.dropdown-item:hover {
     background-color: #060613;
 }
 
@@ -83,4 +83,8 @@
 
 .offcanvas hr {
     margin: 0
+}
+
+.profile-toggle::after {
+    display: none;
 }

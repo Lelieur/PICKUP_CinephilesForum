@@ -279,7 +279,10 @@ const NewCommunityForm = () => {
 
         communityServices
             .saveCommunity(communityData)
-            .then(response => navigate(`/cines/detalles/${response._id}`))
+            .then(response => {
+                const { data: newCommunity } = response
+                navigate(`/comunidades/detalles/${newCommunity._id}`)
+            })
             .catch(err => console.log(err))
     }
 
@@ -518,29 +521,24 @@ const NewCommunityForm = () => {
                 <Modal
                     show={showMoviesModal}
                     onHide={() => { setShowMoviesModal(false), setQuerySearch(''), setMoviesFilter([]) }}
-                    backdrop="static"
-                    keyboard={false}
+                    backdrop={true}
+                    keyboard={true}
                     centered>
-
-                    <Modal.Header closeButton>
-                        <Modal.Title className="text-dark">Películas de la comunidad</Modal.Title>
+                    <Modal.Header closeButton className="border-0 ps-4">
+                        <Modal.Title className="text-white fw-bold">Películas de la comunidad</Modal.Title>
                     </Modal.Header>
-
-                    <Modal.Body>
+                    <Modal.Body className="ps-4 pe-4">
                         <Form>
                             <Form.Group className="mb-3" controlId="searchMovieField">
-
-                                <Form.Label className="text-dark">Nombre de la película</Form.Label>
-
+                                <Form.Label className="text-white">Nombre de la película</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Busca una película..."
                                     value={querySearch}
                                     onChange={handleMovieSearch} />
-
                                 {
                                     moviesFilter.length &&
-                                    <ListGroup>
+                                    <ListGroup align="end">
                                         {
                                             moviesFilter.map(movie => {
                                                 return (
@@ -574,26 +572,20 @@ const NewCommunityForm = () => {
                     backdrop="static"
                     keyboard={false}
                     centered>
-
-                    <Modal.Header closeButton>
-                        <Modal.Title className="text-dark">Fetiches de la comunidad</Modal.Title>
+                    <Modal.Header closeButton className="border-0 ps-4">
+                        <Modal.Title className="text-white fw-bold">Fetiches de la comunidad</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body className="ps-4 pe-4">
                         <Form>
                             <Form.Group className="mb-3" controlId="searchActorField">
-
-                                <Form.Label className="text-dark">¿A quién buscas?</Form.Label>
-
+                                <Form.Label className="text-white">¿A quién buscas?</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Busca a alguien..."
                                     value={querySearch}
                                     onChange={handleActorsSearch} />
-
                                 {
-
                                     creditsFilter.length &&
-
                                     <ListGroup>
                                         {
                                             creditsFilter.map(actor => {
@@ -629,26 +621,20 @@ const NewCommunityForm = () => {
                     backdrop="static"
                     keyboard={false}
                     centered>
-
-                    <Modal.Header closeButton>
-                        <Modal.Title className="text-dark">Fetiches de la comunidad</Modal.Title>
+                    <Modal.Header closeButton className="border-0 ps-4">
+                        <Modal.Title className="text-white fw-bold">Fetiches de la comunidad</Modal.Title>
                     </Modal.Header>
-                    <Modal.Body>
+                    <Modal.Body className="ps-4 pe-4">
                         <Form>
                             <Form.Group className="mb-3" controlId="searchDirectorField">
-
-                                <Form.Label className="text-dark">¿A quién buscas?</Form.Label>
-
+                                <Form.Label className="text-white">¿A quién buscas?</Form.Label>
                                 <Form.Control
                                     type="text"
                                     placeholder="Busca a alguien..."
                                     value={querySearch}
                                     onChange={handleDirectorsSearch} />
-
                                 {
-
                                     creditsFilter.length &&
-
                                     <ListGroup>
                                         {
                                             creditsFilter.map(director => {
@@ -675,9 +661,7 @@ const NewCommunityForm = () => {
                             </Form.Group>
                         </Form>
                     </Modal.Body>
-
                 </Modal>
-
             </div>
     )
 }

@@ -7,6 +7,7 @@ import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/Communities
 import Error404Page from '../pages/Error404Page/Error404Page'
 import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
+
 import PrivateRoute from './PrivateRoutes'
 
 import NewCommunityForm from '../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm'
