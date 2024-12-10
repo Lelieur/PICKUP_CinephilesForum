@@ -1,13 +1,17 @@
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Form, Button, Card } from 'react-bootstrap'
 import reviewServices from '../../../services/review.services'
 
 const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
-    const [content, setContent] = useState()
-    const [rate, setRate] = useState()
+    const [content, setContent] = useState(review.content || "")
+    const [rate, setRate] = useState(review.rate || 0)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+
+    useEffect(() => {
+        setContent(review.content || "")
+        setRate(review.rate || 0)
+    }, [review])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -32,9 +36,11 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
             })
             .catch((err) => {
                 console.log(err)
+                setLoading(false)
                 setError("Hubo un problema al actualizar la reseña")
             })
     }
+
     return (
         <div className="EditReviewForm">
             <Card className='ReviewCard'>
@@ -95,8 +101,8 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
                     </Form>
                 </Card.Body>
             </Card>
-
         </div>
     )
 }
+
 export default EditReviewForm

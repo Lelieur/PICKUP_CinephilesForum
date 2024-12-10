@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import authServices from "../../../services/auth.services"
 
 import { genres } from "../../../const/forms-constants"
+import uploadServices from "../../../services/upload.services"
 
 const SignupForm = () => {
 
@@ -62,6 +63,18 @@ const SignupForm = () => {
         }))
     }
 
+    const handleUpload = e => {
+        const formData = new FormData()
+        formData.append('imageData', e.target.files[0])
+
+        uploadServices
+            .uploadimage(formData)
+            .then(res => {
+                setSignupData({ ...signupData, avatar: res.data.cloudinary_url })
+            })
+            .catch(err => console.log(err))
+    }
+
     const handleFormSubmit = e => {
         e.preventDefault()
 
@@ -111,9 +124,8 @@ const SignupForm = () => {
                 <Form.Group className="mb-3" controlId="avatar">
                     <Form.Label>Avatar</Form.Label>
                     <Form.Control
-                        type="text"
-                        value={signupData.avatar}
-                        onChange={handleInputChange}
+                        type="file"
+                        onChange={handleUpload}
                         name="avatar"
                     />
                 </Form.Group>

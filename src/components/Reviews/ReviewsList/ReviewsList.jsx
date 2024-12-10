@@ -1,63 +1,30 @@
-
-import { useState, useEffect } from "react"
-
+import { Row, Col } from "react-bootstrap"
 import ReviewCard from "../ReviewCard/ReviewCard"
-import { Col, Row } from "react-bootstrap"
 
-import "./ReviewsList.css"
-import reviewServices from "../../../services/review.services"
-import Loader from "../../Loader/Loader"
-
-const ReviewsList = () => {
-
-    const [reviews, setReviews] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        fetchReviews()
-    }, [])
-
-    const fetchReviews = () => {
-
-        reviewServices
-            .getAllReviews()
-            .then(response => {
-                setReviews(response.data)
-                setIsLoading(false)
-            })
-            .catch(err => {
-                console.error("Error en la solicitud:", err)
-                setIsLoading(false)
-            });
-    };
+const ReviewsList = ({ reviews, usersData, moviesData, onLike, handleEdit, handleDelete, loggedUser }) => {
     return (
-
         <div className="ReviewsList">
-            {isLoading ? (
-                <Loader />
-            ) : (
-                <Row className="d-flex justify-content-center">
-                    <Col lg={{ span: 7 }} className="reviews-container">
-                        {reviews.map(elm => {
-                            if (!elm.isDeleted) {
-                                return (
-                                    <div className="mt-5" md={{ span: 2 }} key={elm._id}>
-                                        <ReviewCard id={elm._id}
-                                            content={elm.content}
-                                            rate={elm.rate}
-                                            likesCounter={elm.likesCounter}
-                                            author={elm.author}
-                                            createdAt={elm.createdAt}
-                                            movieApiId={elm.movieApiId}
-                                        />
-                                    </div>
-                                )
-                            }
-                            return null
-                        })}
-                    </Col>
-                </Row>
-            )}
+            <Row className="d-flex justify-content-center">
+                <Col lg={{ span: 7 }} className="reviews-container">
+                    {reviews.length > 0 ? (
+                        reviews.map((review) => (
+                            <div key={review._id} className="mt-5">
+                                <ReviewCard
+                                    review={review}
+                                    authorData={usersData[review.author]}
+                                    movieData={moviesData[review.movieApiId]}
+                                    onLike={onLike}
+                                    onDelete={handleDelete}
+                                    onEdit={handleEdit}
+                                    loggedUser={loggedUser}
+                                />
+                            </div>
+                        ))
+                    ) : (
+                        <p>No reviews available.</p>
+                    )}
+                </Col>
+            </Row>
         </div>
     )
 }

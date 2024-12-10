@@ -57,7 +57,7 @@ const Navigation = () => {
                         {
                             loggedUser ?
                                 <Nav className="d-flex justify-content-end w-100">
-                                    <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/log-out">CERRAR SESIÓN</Button>
+                                    <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/log-out" onClick={logoutUser}>CERRAR SESIÓN</Button>
                                     <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/perfil">PERFIL</Button>
                                 </Nav>
                                 :
