@@ -1,0 +1,5 @@
+.community-films-selector {
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: nowrap;
+}

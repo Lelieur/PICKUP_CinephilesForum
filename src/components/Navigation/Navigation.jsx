@@ -10,6 +10,7 @@ import "./Navigation.css"
 const Navigation = () => {
 
     const { loggedUser, logoutUser } = useContext(AuthContext)
+    const [userData, setUserData] = useState()
 
     const [clickToggle, setClickToggle] = useState(false)
     const [showOffCanvas, setShowOffCanvas] = useState(false)
@@ -28,7 +29,6 @@ const Navigation = () => {
 
                             {clickToggle ? <XLg className='fs-1 fw-bold' /> : <List className='fs-1 fw-bold' />}
                         </Navbar.Toggle>
-                        <h3>Bienvend@, {loggedUser?.username || "Invitad@"}</h3>
                         <Navbar.Brand as={Link} to="/">
                             <img
                                 alt="Logo"
@@ -54,10 +54,18 @@ const Navigation = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
-                        <Nav className="d-flex justify-content-end w-100">
-                            <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/registro">REGISTRARSE</Button>
-                            <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
-                        </Nav>
+                        {
+                            loggedUser ?
+                                <Nav className="d-flex justify-content-end w-100">
+                                    <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/log-out">CERRAR SESIÓN</Button>
+                                    <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/perfil">PERFIL</Button>
+                                </Nav>
+                                :
+                                <Nav className="d-flex justify-content-end w-100">
+                                    <Button className="btn-style-2 btn-sm border-0 fw-bold me-3" as={Link} to="/registro">REGISTRARSE</Button>
+                                    <Button variant="outline-light" className="btn-sm fw-bold me-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
+                                </Nav>
+                        }
 
                     </Navbar.Collapse>
                     <Nav className="d-flex align-items-center">
@@ -70,8 +78,8 @@ const Navigation = () => {
                 <Offcanvas.Body className="w-75 fw-bold w-100">
                     <Row className="offcanvas-login text-center p-3">
                         <Col>
-                            <Button className="btn-style-2 signup-btn border-0 fw-bold me-3 w-100" as={Link} to="/registro">REGISTRARSE</Button>
-                            <Button variant="outline-light" className="w-100 fw-bold mt-3" as={Link} to="/inicio-sesion">INICIAR SESIÓN</Button>
+                            <Button className="btn-style-2 signup-btn border-0 fw-bold me-3 w-100" as={Link} to="/registro" onClick={() => setShowOffCanvas(false)}>REGISTRARSE</Button>
+                            <Button variant="outline-light" className="w-100 fw-bold mt-3" as={Link} to="/inicio-sesion" onClick={() => setShowOffCanvas(false)}>INICIAR SESIÓN</Button>
                         </Col>
                     </Row>
                     <hr />
@@ -88,8 +96,8 @@ const Navigation = () => {
                     </Row>
                     <hr />
                     <Row className="p-3">
-                        <Col as={Link} to="/peliculas" onClick={() => { setShowOffCanvas(false), setClickToggle(false) }}>
-                            Películas
+                        <Col as={Link} to="/reviews" onClick={() => { setShowOffCanvas(false), setClickToggle(false) }}>
+                            Reseñas
                         </Col>
                     </Row>
                     <hr />

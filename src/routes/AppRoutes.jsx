@@ -9,6 +9,8 @@ import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
 import PrivateRoute from './PrivateRoutes'
 
+import NewCommunityForm from '../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm'
+
 const AppRoutes = () => {
 
     return (
@@ -17,6 +19,8 @@ const AppRoutes = () => {
                 <Route path={'/'} element={<HomePage />} />
 
                 <Route path={'/comunidades'} element={<CommunitiesPage />} />
+                <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
+                <Route path={'/comunidades/crear'} element={<NewCommunityForm />} />
 
                 <Route path={'/registro'} element={<SignupPage />} />
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
@@ -25,10 +29,7 @@ const AppRoutes = () => {
 
                 <Route path={'/*'} element={<Error404Page />} />
 
-
                 <Route path={'/reviews'} element={<ReviewsPage />} />
-                <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
-
 
             </Routes>
         </div>

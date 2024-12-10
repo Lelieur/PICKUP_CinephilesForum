@@ -33,6 +33,15 @@ class userServices {
     filterUsers(searchQuery) {
         return this.axiosApp.get(`/ search ? query = ${searchQuery}`)
     }
+
+    editUser(id, userData) {
+        return this.axiosApp.put(`/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            userData
+        })
+    }
 }
 
 export default new userServices()

@@ -17,7 +17,6 @@ class communityServices {
             }
 
             return config
-
         })
     }
 
@@ -38,12 +37,7 @@ class communityServices {
     }
 
     saveCommunity(communityData) {
-        return this.axiosApp.post(`/`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            },
-            communityData
-        })
+        return this.axiosApp.post(`/`, communityData)
     }
 
     editCommunity(id, communityData) {

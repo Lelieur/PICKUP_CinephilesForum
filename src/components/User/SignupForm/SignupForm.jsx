@@ -3,6 +3,8 @@ import { Form, Button } from "react-bootstrap"
 import { useNavigate } from 'react-router-dom'
 import authServices from "../../../services/auth.services"
 
+import { genres } from "../../../const/forms-constants"
+
 const SignupForm = () => {
 
     const navigate = useNavigate()
@@ -174,7 +176,7 @@ const SignupForm = () => {
                 <Form.Group className="mb-3" controlId="favoriteGenres">
                     <Form.Label>Géneros Favoritos</Form.Label>
                     {
-                        ["Drama", "Acción", "Terror", "Comedia", "Romántico"].map((genre) => (
+                        genres.map((genre) => (
                             <Form.Check
                                 key={genre}
                                 type="checkbox"

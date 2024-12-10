@@ -26,10 +26,15 @@ const LoginForm = () => {
         authServices
             .loginUser(loginData)
             .then(({ data }) => {
-                localStorage.setItem('authToken', data.authToken)
+
+                const { authToken, _id } = data
+
+                localStorage.setItem('authToken', authToken)
+                localStorage.setItem('userId', _id)
+
                 authenticateUser()
-                navigate('')
             })
+            .then(navigate('/'))
             .catch(err => console.log(err))
     }
 
