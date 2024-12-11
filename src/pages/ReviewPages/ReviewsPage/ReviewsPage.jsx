@@ -3,9 +3,9 @@ import { Container, Button, Row, Col, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
-import reviewServices from "../../../services/review.services"
-import movieServices from "../../../services/movie.services"
-import userServices from "../../../services/user.services"
+import ReviewServicess from "../../../services/review.services"
+import TMDBServices from "../../../services/tmdb.services"
+import UserServices from "../../../services/user.services"
 import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
 import "./ReviewsPage.css"
 import { AuthContext } from "../../../contexts/auth.context"
@@ -24,7 +24,7 @@ const ReviewsPage = () => {
 
     useEffect(() => {
 
-        reviewServices
+        ReviewServicess
             .getAllReviews()
             .then((response) => {
                 const sortedReviews = response.data.sort(
@@ -46,7 +46,7 @@ const ReviewsPage = () => {
 
         Promise.all(
             uniqueMovieApiIds.map((movieApiId) =>
-                movieServices.getMovieDetails(movieApiId)
+                TMDBServices.fetchMovieDetails(movieApiId)
             )
         )
             .then((responses) => {
@@ -64,7 +64,7 @@ const ReviewsPage = () => {
 
     const fetchUsersData = (reviews) => {
         const userIds = reviews.map((review) => review.author)
-        userServices
+        UserServices
             .fetchUsers(userIds)
             .then((response) => {
                 const users = response.data.reduce((acc, user) => {
@@ -124,7 +124,7 @@ const ReviewsPage = () => {
         setReviews(updatedReviews)
         setFilteredReviews(updatedReviews)
 
-        reviewServices
+        ReviewServicess
             .likeReview(reviewId)
             .then((response) => {
                 console.log("Review liked successfully:", response)
@@ -145,7 +145,7 @@ const ReviewsPage = () => {
     const handleDelete = (reviewId) => {
         if (loggedUser) {
             if (window.confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
-                reviewServices
+                ReviewServicess
                     .deleteReview(reviewId)
                     .then(() => {
                         const updatedReviews = reviews.filter(review => review._id !== reviewId)

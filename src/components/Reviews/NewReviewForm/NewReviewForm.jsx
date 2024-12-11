@@ -2,8 +2,8 @@ import { useState } from "react"
 import { Form, Button, Modal, Card } from "react-bootstrap"
 import { PlusCircle, Film } from "react-bootstrap-icons"
 
-import reviewService from "../../../services/review.services"
-import movieService from "../../../services/movie.services"
+import ReviewServices from "../../../services/review.services"
+import TMDBServices from "../../../services/tmdb.services"
 
 import "./NewReviewForm.css"
 
@@ -23,8 +23,8 @@ const NewReviewForm = ({ onReviewCreated }) => {
         setQuerySearch(query)
 
         if (query) {
-            movieService
-                .searchMovies(query)
+            TMDBServices
+                .fetchMovieFilter(query)
                 .then((response) => {
                     setMoviesFilter(response.data.results)
                 })
@@ -51,7 +51,7 @@ const NewReviewForm = ({ onReviewCreated }) => {
         const storedToken = localStorage.getItem('authToken');
         const author = storedToken ? JSON.parse(atob(storedToken.split('.')[1])).userId : null
 
-        reviewService
+        ReviewServices
             .saveReview(selectedMovie.id, reviewText, rating, author)
             .then((response) => {
                 console.log("Reseña registrada:", response.data)

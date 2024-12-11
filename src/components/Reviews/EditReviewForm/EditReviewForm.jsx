@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Form, Button, Card, Spinner } from 'react-bootstrap'
-import reviewServices from '../../../services/review.services'
+import ReviewServicess from '../../../services/review.services'
 
 const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
     const [content, setContent] = useState(review?.content || "")
@@ -28,7 +28,7 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
             rate
         }
 
-        reviewServices
+        ReviewServicess
             .editReview(review._id, updatedReviewData)
             .then((response) => {
                 setLoading(false)

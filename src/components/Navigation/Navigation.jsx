@@ -48,9 +48,9 @@ const Navigation = () => {
                                     Más
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="boder-0 m-0">
-                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend/reviews">Top Reviews</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend/reviews">Top Reviews</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
@@ -71,9 +71,9 @@ const Navigation = () => {
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu>
-                                            <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as={Link} to={`/usuarios/${loggedUser._id}`}>Ver perfil</Dropdown.Item>
+                                            <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to={`/usuarios/${loggedUser._id}`}>Ver perfil</Dropdown.Item>
                                             <hr className='m-0' />
-                                            <Dropdown.Item className="text-white ps-5 pe-5 pt-2" as="button" onClick={() => logoutUser()}>Cerrar sesión</Dropdown.Item>
+                                            <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as="button" onClick={() => logoutUser()}>Cerrar sesión</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Nav>

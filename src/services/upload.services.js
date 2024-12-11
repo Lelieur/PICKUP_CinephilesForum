@@ -14,6 +14,4 @@ class UploadServices {
     }
 }
 
-const uploadServices = new UploadServices()
-
-export default uploadServices
+export default new UploadServices()

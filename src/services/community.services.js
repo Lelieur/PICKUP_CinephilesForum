@@ -1,7 +1,7 @@
 
 import axios from 'axios'
 
-class communityServices {
+class CommunityServices {
 
     constructor() {
         this.axiosApp = axios.create({
@@ -57,4 +57,4 @@ class communityServices {
     }
 }
 
-export default new communityServices()
+export default new CommunityServices()

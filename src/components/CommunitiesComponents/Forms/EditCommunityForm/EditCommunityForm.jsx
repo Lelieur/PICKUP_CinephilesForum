@@ -8,10 +8,9 @@ import { genres, decades } from '../../../../const/forms-constants'
 
 import Loader from '../../../Loader/Loader'
 
-import movieService from "../../../../services/movie.services"
-import creditServices from '../../../../services/credit.services'
-import uploadServices from '../../../../services/upload.services'
-import communityServices from '../../../../services/community.services'
+import TMDBService from "../../../../services/tmdb.services"
+import UploadServices from '../../../../services/upload.services'
+import CommunityServices from '../../../../services/community.services'
 
 import "./EditCommunityForm.css"
 
@@ -59,8 +58,8 @@ const EditCommunityForm = ({
         setQuerySearch(query)
         query &&
 
-            movieService
-                .searchMovies(query)
+            TMDBService
+                .fetchMovieFilter(query)
                 .then((response) => {
                     setMoviesFilter(response.data.results)
                 })
@@ -76,8 +75,8 @@ const EditCommunityForm = ({
 
         query &&
 
-            creditServices
-                .searchDirector(query)
+            TMDBServices
+                .fetchDirector(query)
                 .then((response) => {
                     setCreditsFilter(response.data)
                 })
@@ -92,8 +91,8 @@ const EditCommunityForm = ({
 
         query &&
 
-            creditServices
-                .searchActor(query)
+            TMDBServices
+                .fetchActor(query)
                 .then((response) => {
                     setCreditsFilter(response.data)
                 })
@@ -231,7 +230,7 @@ const EditCommunityForm = ({
         const formData = new FormData()
         formData.append('imageData', e.target.files[0])
 
-        uploadServices
+        UploadServices
             .uploadimage(formData)
             .then(res => {
                 setCommunityData({ ...communityData, cover: res.data.cloudinary_url })
@@ -250,7 +249,7 @@ const EditCommunityForm = ({
 
         e.preventDefault()
 
-        communityServices
+        CommunityServices
             .editCommunity(communityData._id, communityData)
             .then(() => {
                 setShowEditModal(false)

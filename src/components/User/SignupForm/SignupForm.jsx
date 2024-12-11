@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import authServices from "../../../services/auth.services"
 
 import { genres } from "../../../const/forms-constants"
-import uploadServices from "../../../services/upload.services"
+import UploadServices from "../../../services/upload.services"
 
 const SignupForm = () => {
 
@@ -67,7 +67,7 @@ const SignupForm = () => {
         const formData = new FormData()
         formData.append('imageData', e.target.files[0])
 
-        uploadServices
+        UploadServices
             .uploadimage(formData)
             .then(res => {
                 setSignupData({ ...signupData, avatar: res.data.cloudinary_url })

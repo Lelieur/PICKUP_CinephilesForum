@@ -8,15 +8,11 @@ import { genres, decades } from '../../../../const/forms-constants'
 
 import Loader from '../../../Loader/Loader'
 
-import movieService from "../../../../services/movie.services"
-import creditServices from '../../../../services/credit.services'
-import uploadServices from '../../../../services/upload.services'
-import communityServices from '../../../../services/community.services'
-
+import TMDBServices from "../../../../services/tmdb.services"
+import UploadServices from '../../../../services/upload.services'
+import CommunityServices from '../../../../services/community.services'
 
 import "./NewCommunityForm.css"
-import userServices from '../../../../services/user.services'
-
 
 const NewCommunityForm = () => {
 
@@ -63,8 +59,8 @@ const NewCommunityForm = () => {
         setQuerySearch(query)
         query &&
 
-            movieService
-                .searchMovies(query)
+            TMDBServices
+                .fetchMovieFilter(query)
                 .then((response) => {
                     setMoviesFilter(response.data.results)
                 })
@@ -80,8 +76,8 @@ const NewCommunityForm = () => {
 
         query &&
 
-            creditServices
-                .searchDirector(query)
+            TMDBServices
+                .fetchDirector(query)
                 .then((response) => {
                     setCreditsFilter(response.data)
                 })
@@ -96,8 +92,8 @@ const NewCommunityForm = () => {
 
         query &&
 
-            creditServices
-                .searchActor(query)
+            TMDBServices
+                .fetchActor(query)
                 .then((response) => {
                     setCreditsFilter(response.data)
                 })
@@ -236,7 +232,6 @@ const NewCommunityForm = () => {
         setCommunityData({ ...communityData, fetishDirectors: directorsCopy })
     }
 
-
     const handleActorsChange = actorId => {
 
         const actorsCopy = [...communityData.fetishActors]
@@ -258,14 +253,13 @@ const NewCommunityForm = () => {
         const formData = new FormData()
         formData.append('imageData', e.target.files[0])
 
-        uploadServices
+        UploadServices
             .uploadimage(formData)
             .then(res => {
                 setCommunityData({ ...communityData, cover: res.data.cloudinary_url })
             })
             .catch(err => console.log(err))
     }
-
 
     const handleCoverButtonClick = () => {
         coverFileInputRef.current.click()
@@ -277,7 +271,7 @@ const NewCommunityForm = () => {
 
         e.preventDefault()
 
-        communityServices
+        CommunityServices
             .saveCommunity(communityData)
             .then(response => {
                 const { data: newCommunity } = response
@@ -569,8 +563,8 @@ const NewCommunityForm = () => {
                 <Modal
                     show={showActorsModal}
                     onHide={() => { setShowActorsModal(false), setQuerySearch(''), setCreditsFilter([]) }}
-                    backdrop="static"
-                    keyboard={false}
+                    backdrop={true}
+                    keyboard={true}
                     centered>
                     <Modal.Header closeButton className="border-0 ps-4">
                         <Modal.Title className="text-white fw-bold">Fetiches de la comunidad</Modal.Title>
@@ -618,8 +612,8 @@ const NewCommunityForm = () => {
                 <Modal
                     show={showDirectorsModal}
                     onHide={() => { setShowDirectorsModal(false), setQuerySearch(''), setCreditsFilter([]) }}
-                    backdrop="static"
-                    keyboard={false}
+                    backdrop={true}
+                    keyboard={true}
                     centered>
                     <Modal.Header closeButton className="border-0 ps-4">
                         <Modal.Title className="text-white fw-bold">Fetiches de la comunidad</Modal.Title>

@@ -9,7 +9,7 @@ const PersonsList = ({ persons }) => {
                 {
                     persons.map(elm => {
                         return (
-                            <Col key={elm.id} xs={12} sm={6} md={4} lg={2} className="me-2">
+                            <Col key={elm.id} xs={3} lg={2} className="me-2">
                                 <PersonCard {...elm} />
                             </Col>
                         )

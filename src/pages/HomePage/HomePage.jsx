@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 
 import CommunitiesList from '../../components/CommunitiesComponents/CommunitiesList/CommunitiesList'
 import Loader from '../../components/Loader/Loader'
-import communityServices from '../../services/community.services'
+import CommunityServices from '../../services/community.services'
 
 import "./HomePage.css"
 
@@ -19,7 +19,7 @@ const HomePage = () => {
     }, [])
 
     const fetchCommunities = () => {
-        communityServices
+        CommunityServices
             .fetchCommunities()
             .then(response => {
                 setCommunities(response.data)
@@ -38,7 +38,7 @@ const HomePage = () => {
                         <img className="w-100 h-100 object-fit-cover opacity-100" src={homeCover} alt="Home Cover" />
                         <div className="w-100 backgroud-faded-down position-absolute top-0" style={{ height: "30%" }} />
                         <div className="w-100 backgroud-faded-up position-absolute bottom-0" style={{ height: "30%" }} />
-                        <div className="w-100 top-50 start-50 translate-middle position-absolute text-center">
+                        <div className="p-5 w-100 top-50 start-50 translate-middle position-absolute text-center">
                             <h1 className="text-center fw-bold">Conecta, comparte y crea con cinéfilos de todo el mundo</h1>
                             <p className="text-center fs-5"> La web de cinéfilos para cinéfilos que estábais esperando </p>
                             <Button className="btn-style-2 border-0 btn-sm fw-bold me-3" as={Link} to="/registro">EMPEZAR</Button>

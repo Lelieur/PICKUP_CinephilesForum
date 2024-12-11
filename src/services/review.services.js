@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-class reviewService {
+class ReviewServices {
 
     constructor() {
         this.axiosApp = axios.create({
@@ -72,4 +72,4 @@ class reviewService {
     }
 }
 
-export default new reviewService()
+export default new ReviewServices()

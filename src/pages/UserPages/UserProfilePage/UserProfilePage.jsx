@@ -5,12 +5,12 @@ import { Facebook, Twitter, Instagram, Tiktok } from 'react-bootstrap-icons'
 
 import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
-import userServices from "../../../services/user.services"
+import UserServices from "../../../services/user.services"
 import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
 import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
 import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
-import reviewServices from "../../../services/review.services"
+import ReviewServicess from "../../../services/review.services"
 
 const UserProfilePage = () => {
     const { loggedUser } = useContext(AuthContext)
@@ -44,7 +44,7 @@ const UserProfilePage = () => {
     const fetchUserData = () => {
         setIsLoading(true)
 
-        userServices.fetchOneUser(userId)
+        UserServices.fetchOneUser(userId)
             .then((response) => {
                 const { data: userData } = response
                 setUserDetails(userData)
@@ -64,7 +64,7 @@ const UserProfilePage = () => {
     }
 
     const handleDelete = (reviewId) => {
-        reviewServices.deleteReview(reviewId)
+        ReviewServicess.deleteReview(reviewId)
             .then(() => {
                 setUserDetails((prevDetails) => ({
                     ...prevDetails,

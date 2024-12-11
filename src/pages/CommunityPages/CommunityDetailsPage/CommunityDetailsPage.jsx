@@ -9,7 +9,7 @@ import UserCard from "../../../components/User/UserCard/UserCard"
 import PersonsList from "../../../components/PersonComponents/PersonsList/PersonsList"
 import EditCommunityForm from "../../../components/CommunitiesComponents/Forms/EditCommunityForm/EditCommunityForm"
 
-import communityServices from "../../../services/community.services"
+import CommunityServices from "../../../services/community.services"
 
 import "./CommunityDetailsPage.css"
 
@@ -32,7 +32,7 @@ const CommunityDetailsPage = () => {
     }, [])
 
     const loadCommunityDetails = () => {
-        communityServices
+        CommunityServices
             .fetchOneCommunityFullData(communityId)
             .then(response => {
                 const { data: community } = response
@@ -44,21 +44,21 @@ const CommunityDetailsPage = () => {
     }
 
     const handleCommunityDelete = () => {
-        communityServices
+        CommunityServices
             .deleteCommunity(communityId)
             .then(() => navigate('/comunidades'))
             .catch(err => console.log(err))
     }
 
     const handleFollowCommunity = () => {
-        communityServices
+        CommunityServices
             .followCommunity(community._id, loggedUser)
             .then(() => loadCommunityDetails())
             .catch(err => console.log())
     }
 
     const handleUnfollowCommunity = () => {
-        communityServices
+        CommunityServices
             .unFollowCommunity(community._id, loggedUser)
             .then(() => loadCommunityDetails())
             .catch(err => console.log())
@@ -88,7 +88,7 @@ const CommunityDetailsPage = () => {
                                 }
                                 <p className="fs-5 mt-0" >{description}</p>
                                 {
-                                    loggedUser?._id !== owner._id && !communityUsersIds.includes(loggedUser._id) &&
+                                    loggedUser?._id !== owner?._id && !communityUsersIds.includes(loggedUser?._id) &&
                                     <Button className="border-0 fw-bold btn-style-2" onClick={handleFollowCommunity}>
                                         Unirse a la comunidad
                                     </Button>
@@ -106,7 +106,7 @@ const CommunityDetailsPage = () => {
                                     </Dropdown>
                                 }
                                 {
-                                    loggedUser?._id !== owner._id && communityUsersIds.includes(loggedUser._id) &&
+                                    loggedUser?._id !== owner?._id && communityUsersIds?.includes(loggedUser?._id) &&
                                     <Button className="border-0 fw-bold btn-style-2" onClick={handleUnfollowCommunity}>
                                         Dejar de seguir
                                     </Button>
@@ -115,7 +115,8 @@ const CommunityDetailsPage = () => {
                         </Col>
                     </Row>
                     <Row className="mt-4">
-                        <Col>
+                        {/* Administrador */}
+                        <Col xs={{ span: 8 }} lg={{ span: 3 }}>
                             <Row>
                                 <p className="m-0 fw-bold">Administrador</p>
                             </Row>
@@ -125,7 +126,9 @@ const CommunityDetailsPage = () => {
                                 </Col>
                             </Row>
                         </Col>
-                        <Col>
+
+                        {/* Décadas */}
+                        <Col xs={{ span: 4 }} lg={{ span: 3 }}>
                             <Row>
                                 <Col>
                                     <p className="m-0 fw-bold">Décadas</p>
@@ -143,7 +146,9 @@ const CommunityDetailsPage = () => {
                                 </Col>
                             </Row>
                         </Col>
-                        <Col>
+
+                        {/* Actores */}
+                        <Col className="mt-3 mt-lg-0" xs={{ span: 6 }} lg={{ span: 3 }}>
                             <Row>
                                 <Col>
                                     <p className="m-0 fw-bold ">Actores fetiche de la comunidad</p>
@@ -164,7 +169,9 @@ const CommunityDetailsPage = () => {
                                 </Col>
                             </Row>
                         </Col>
-                        <Col>
+
+                        {/* Directores */}
+                        <Col className="mt-3 mt-lg-0" xs={{ span: 6 }} lg={{ span: 3 }}>
                             <Row>
                                 <Col>
                                     <p className="m-0 fw-bold ">Directores fetiche de la comunidad</p>
