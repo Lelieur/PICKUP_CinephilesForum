@@ -1,7 +1,7 @@
 import { Container, Button, Form, Row, Col, Modal, ListGroup } from 'react-bootstrap'
 import { Plus, XLg, Upload } from 'react-bootstrap-icons'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { genres, decades } from '../../../../const/forms-constants'
@@ -17,7 +17,6 @@ import "./NewCommunityForm.css"
 const NewCommunityForm = () => {
 
     const [isLoading, setIsLoading] = useState(false)
-    const [isCreditsLoading, setIsCreditsLoading] = useState(true)
 
     const [showMoviesModal, setShowMoviesModal] = useState(false)
     const [showDirectorsModal, setShowDirectorsModal] = useState(false)

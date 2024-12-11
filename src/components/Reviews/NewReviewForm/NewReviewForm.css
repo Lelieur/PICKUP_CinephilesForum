@@ -7,18 +7,16 @@
     background-color: rgb(5 255 161);
 }
 
-.review-card {
-    background-color: #060613;
-    color: white;
-    border: none;
-    border-radius: 15px;
-    padding: 20px;
+.NewReviewForm .btn-primary {
+    background-color: #5e606b !important;
 }
 
-.textarea-review {
-    background-color: #242432;
+.custom-placeholder::placeholder {
+    color: white;
+    font-size: 1.2rem;
+    opacity: 50%;
+}
 
-    border: 1px solid #444;
-    border-radius: 10px;
-    padding: 10px;
+.custom-placeholder:focus {
+    box-shadow: none;
 }

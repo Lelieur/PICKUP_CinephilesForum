@@ -1,252 +1,135 @@
 import { useState, useEffect, useContext } from "react"
 import { Container, Button, Row, Col, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
+import { AuthContext } from "../../../contexts/auth.context"
+
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
-<<<<<<< HEAD
-import ReviewServicess from "../../../services/review.services"
-import TMDBServices from "../../../services/tmdb.services"
-import UserServices from "../../../services/user.services"
-=======
-import reviewServices from "../../../services/review.services"
->>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
-import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
-import { AuthContext } from "../../../contexts/auth.context"
+
+import ReviewServices from "../../../services/review.services"
+
+import Loader from "../../../components/Loader/Loader"
+
 import "./ReviewsPage.css"
 
 const ReviewsPage = () => {
-    const [reviews, setReviews] = useState([])
-    const [filteredReviews, setFilteredReviews] = useState([])
-    const [searchMovie, setSearchMovie] = useState("")
-    const [showEditModal, setShowEditModal] = useState(false)
-    const [editReviewData, setEditReviewData] = useState()
-    const [activeFilter, setActiveFilter] = useState("all")
-
 
     const { loggedUser } = useContext(AuthContext)
 
-    useEffect(() => {
-<<<<<<< HEAD
+    const [isLoading, setIsLoading] = useState(true)
 
-        ReviewServicess
-=======
-        reviewServices
->>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
-            .getAllReviews()
-            .then((response) => {
-                const reviewPromises = response.data.map((review) =>
-                    reviewServices.getOneReviewFullData(review._id)
-                )
-                Promise.all(reviewPromises)
-                    .then((fullReviews) => {
-                        const sortedReviews = fullReviews.sort(
-                            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                        );
-                        setReviews(sortedReviews)
-                        setFilteredReviews(sortedReviews)
-                    })
-                    .catch((err) => {
-                        console.error("Error al cargar los detalles completos de las reseñas:", err)
-                    });
-            })
-            .catch((error) => {
-                console.error("Error al cargar las reseñas:", error)
-            })
+    const [reviews, setReviews] = useState([])
+    const [isReviewsLoaded, setIsReviewsLoaded] = useState(false)
+    const [filteredReviews, setFilteredReviews] = useState([])
+
+    const [activeFilter, setActiveFilter] = useState("all")
+
+    useEffect(() => {
+        fetchAllReviews()
     }, [])
 
-<<<<<<< HEAD
-    const fetchMoviesData = (reviews) => {
-        const movieApiIds = reviews.map((review) => review.movieApiId)
-        const uniqueMovieApiIds = [...new Set(movieApiIds)]
+    useEffect(() => {
+        fetchReviewsFullData()
+        setIsLoading(false)
+    }, [isReviewsLoaded])
 
-        Promise.all(
-            uniqueMovieApiIds.map((movieApiId) =>
-                TMDBServices.fetchMovieDetails(movieApiId)
-            )
+    const fetchAllReviews = () => {
+        ReviewServices
+            .getAllReviews()
+            .then(response => {
+                const { data: reviews } = response
+                setReviews(reviews)
+                setIsReviewsLoaded(true)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const fetchReviewsFullData = () => {
+
+        const reviewPromises = reviews.map((review) =>
+
+            ReviewServices
+                .getOneReviewFullData(review._id)
+                .then(response => {
+                    return response.data
+                })
+                .catch(err => console.log(err))
         )
-            .then((responses) => {
-                const movieData = responses.reduce((acc, response) => {
-                    const movie = response.data
-                    acc[movie.id] = movie
-                    return acc
-                }, {});
-                setMoviesData(movieData)
+
+        Promise
+            .all(reviewPromises)
+            .then(response => {
+                setReviews(response)
             })
-            .catch((err) => {
-                console.error("Error fetching movie data:", err)
-            })
+            .catch(err => console.error(err))
     }
 
-    const fetchUsersData = (reviews) => {
-        const userIds = reviews.map((review) => review.author)
-        UserServices
-            .fetchUsers(userIds)
-            .then((response) => {
-                const users = response.data.reduce((acc, user) => {
-                    acc[user._id] = user
-                    return acc
-                }, {})
-                setUsersData(users)
-            })
-            .catch((err) => {
-                console.error("Error fetching user details:", err)
-            })
-    }
+    const applyFilters = (filterType) => {
 
-=======
->>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
-    const applyFilters = (filterType, searchQuery = searchMovie) => {
-        let updatedReviews = [...reviews];
+        const filteredReviews = [...reviews]
 
         if (filterType === "top") {
-            updatedReviews = updatedReviews.sort((a, b) => b.likesCounter - a.likesCounter)
+            setFilteredReviews(filteredReviews.sort((a, b) => b.likesCounter - a.likesCounter))
         }
-
-        if (filterType === "movie" && searchQuery) {
-            updatedReviews = updatedReviews.filter((review) =>
-                review.movieTitle.toLowerCase().includes(searchQuery.toLowerCase())
-            )
+        if (filterType === "all") {
+            setFilteredReviews(filteredReviews.sort(
+                (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            ))
         }
-
-        setFilteredReviews(updatedReviews)
     }
 
     const handleFilter = (type) => {
         setActiveFilter(type)
-        applyFilters(type, searchMovie)
+        applyFilters(type)
     }
 
-    const handleMovieSearch = (e) => {
-        const searchQuery = e.target.value
-        setSearchMovie(searchQuery)
-        applyFilters(activeFilter, searchQuery)
-    }
-
-    const handleNewReview = (newReview) => {
-        const updatedReviews = [newReview, ...reviews]
-        setReviews(updatedReviews)
-        setFilteredReviews(updatedReviews)
-        handleFilter(activeFilter)
-    }
-
-    const handleLike = (reviewId) => {
-        const updatedReviews = reviews.map((review) => {
-            if (review._id === reviewId) {
-                return { ...review, likesCounter: review.likesCounter + 1 }
-            }
-            return review
-        })
-
-        setReviews(updatedReviews)
-        setFilteredReviews(updatedReviews)
-
-        ReviewServicess
-            .likeReview(reviewId)
-            .then((response) => {
-                console.log("Review liked successfully:", response)
-            })
-            .catch((err) => {
-                console.error("Error liking the review:", err)
-            })
-    }
-
-    const handleEdit = (review) => {
-        if (review) {
-            setEditReviewData(review)
-            setShowEditModal(true)
-        }
-    }
-
-    const handleDelete = (reviewId) => {
-        if (loggedUser) {
-            if (window.confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
-                ReviewServicess
-                    .deleteReview(reviewId)
-                    .then(() => {
-                        const updatedReviews = reviews.filter((review) => review._id !== reviewId)
-                        setReviews(updatedReviews);
-                        setFilteredReviews(updatedReviews)
-                    })
-                    .catch((err) => {
-                        console.error("Error deleting the review:", err)
-                    })
-            }
-        }
-    }
-
-    const handleCloseEditModal = () => {
-        setShowEditModal(false)
-        setEditReviewData(null)
-    }
 
     return (
-        <div className="ReviewsPage">
-            <Container className="text-center">
-                <Row className="mt-5 d-flex align-items-center">
-                    <Col>
-                        <h3 className="section-title">Reviews</h3>
-                        <hr />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className="mb-3">
-                        <Button
-                            variant="outline-light"
-                            onClick={() => handleFilter("all")}
-                            active={activeFilter === "all"}
-                        >
-                            Todas las Reseñas
-                        </Button>
-                        <Button
-                            variant="outline-light"
-                            onClick={() => handleFilter("top")}
-                            active={activeFilter === "top"}
-                        >
-                            Top Reseñas
-                        </Button>
-                        <input
-                            type="text"
-                            placeholder="Buscar por película..."
-                            value={searchMovie}
-                            onChange={handleMovieSearch}
-                            style={{ marginLeft: "10px", padding: "5px" }}
-                        />
-                    </Col>
-                </Row>
-                <NewReviewForm onReviewCreated={handleNewReview} />
-                <ReviewsList
-                    reviews={filteredReviews}
-                    onLike={handleLike}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
-                    loggedUser={loggedUser}
-                />
-                <Modal show={showEditModal} onHide={handleCloseEditModal}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Editar Reseña</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <EditReviewForm
-                            review={editReviewData}
-                            onReviewUpdated={(updatedReview) => {
-                                const updatedReviews = reviews.map((review) =>
-                                    review._id === updatedReview._id ? updatedReview : review
-                                )
-                                setReviews(updatedReviews)
-                                setFilteredReviews(updatedReviews)
-                                handleCloseEditModal()
-                            }}
-                            onCancel={handleCloseEditModal}
-                        />
-                    </Modal.Body>
-                </Modal>
-                <Button variant="dark" className="mt-3 styled-button-2" to="/" as={Link}>
-                    Volver a la Home
-                </Button>
-            </Container>
-        </div>
+
+        isLoading ? <Loader /> :
+
+            <div className="ReviewsPage">
+                <Container className="text-center">
+                    <Row>
+                        <Col className="mt-5">
+                            <Button
+                                variant="link"
+                                className="text-white text-decoration-none fw-bold"
+                                onClick={() => handleFilter("all")}
+                                active={activeFilter === "all"}
+                            >
+                                Más recientes
+                            </Button>
+                            <Button
+                                variant="link"
+                                className="text-white text-decoration-none fw-bold"
+                                onClick={() => handleFilter("top")}
+                                active={activeFilter === "top"}
+                            >
+                                Más valoradas
+                            </Button>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <NewReviewForm newReviewCreated={fetchAllReviews} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <ReviewsList
+                                reviews={filteredReviews.length ? filteredReviews : reviews}
+                                loggedUser={loggedUser}
+                            />
+                        </Col>
+                    </Row>
+
+
+                    <Button variant="dark" className="mt-3 styled-button-2" to="/" as={Link}>
+                        Volver a la Home
+                    </Button>
+                </Container>
+            </div>
     )
 }
-
 export default ReviewsPage
-

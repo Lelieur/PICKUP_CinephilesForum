@@ -3,97 +3,73 @@ import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button, Modal } from "react-bootstrap"
 import { Facebook, Twitter, Instagram, Tiktok } from 'react-bootstrap-icons'
 
+import { homer } from "../../../const/image-paths"
+
 import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
 import UserServices from "../../../services/user.services"
+import ReviewServices from "../../../services/review.services"
 import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
 import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
 import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
-import ReviewServicess from "../../../services/review.services"
 
 const UserProfilePage = () => {
+
     const { loggedUser } = useContext(AuthContext)
     const { id: userId } = useParams()
 
-
     const [isLoading, setIsLoading] = useState(true)
-    const [showReviewForm, setShowReviewForm] = useState(false)
-    const [showEditForm, setShowEditForm] = useState(false)
-    const [reviewToEdit, setReviewToEdit] = useState(null)
-    const [userDetails, setUserDetails] = useState({
-        avatar: "",
-        username: "",
-        bio: "",
-        socialNetworksProfiles: {
-            facebook: "",
-            instagram: "",
-            twitter: "",
-            tiktok: ""
-        },
-        favoriteGenres: [],
-        communities: [],
-        reviews: []
-    })
+
+    const [userData, setUserData] = useState({})
+    const [isUserDataLoaded, setUserDataLoaded] = useState(false)
+    const [reviewsData, setReviewsData] = useState([])
+
+
+    const [showModal, setShowModal] = useState(false)
 
 
     useEffect(() => {
         fetchUserData()
-    }, [userId])
+    }, [])
+
+    useEffect(() => {
+        fetchReviewsData()
+    }, [isUserDataLoaded])
 
     const fetchUserData = () => {
-        setIsLoading(true)
-
-        UserServices.fetchOneUser(userId)
+        UserServices
+            .fetchOneUser(userId)
             .then((response) => {
                 const { data: userData } = response
-                setUserDetails(userData)
+                setUserData(userData)
+                setUserDataLoaded(true)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const { avatar, username, bio, socialNetworksProfiles, favoriteGenres, communities, reviews } = userData
+
+    const fetchReviewsData = () => {
+
+        const reviewsPromises = reviews?.map(review =>
+            ReviewServices
+                .getOneReviewFullData(review)
+                .then(response => {
+                    return response.data
+                })
+                .catch(err => console.log(err))
+        )
+
+        Promise
+            .all(reviewsPromises)
+            .then(response => {
+                setReviewsData(response)
                 setIsLoading(false)
             })
-            .catch((err) => {
-                console.log(err)
-                setIsLoading(false)
-                alert("Ocurrió un error al cargar los datos del usuario.")
-            })
-    }
+            .catch(err => console.log(err))
 
-    const handleAddReview = () => setShowReviewForm(true)
-    const handleEdit = (review) => {
-        setShowEditForm(true)
-        setReviewToEdit(review)
     }
-
-    const handleDelete = (reviewId) => {
-        ReviewServicess.deleteReview(reviewId)
-            .then(() => {
-                setUserDetails((prevDetails) => ({
-                    ...prevDetails,
-                    reviews: prevDetails.reviews.filter(review => review._id !== reviewId)
-                }))
-            })
-            .catch((err) => console.error("Error deleting review", err))
-    }
-
-    const handleReviewCreated = (newReview) => {
-        setUserDetails((prevDetails) => ({
-            ...prevDetails,
-            reviews: [newReview, ...prevDetails.reviews]
-        }))
-        setShowReviewForm(false)
-    }
-    const handleLike = (reviewId) => {
-        console.log(`Like review with ID: ${reviewId}`)
-    }
-
-    const {
-        avatar = '',
-        username = '',
-        bio = "Sin biografía",
-        socialNetworksProfiles = {},
-        favoriteGenres,
-        communities = [],
-        reviews = [],
-    } = userDetails
 
     return (
         isLoading ? <Loader message="Cargando Perfil del usuario..." /> :
@@ -105,13 +81,13 @@ const UserProfilePage = () => {
                                 <Col xs={3} lg={2}>
                                     <img className="border border-white object-fit-cover rounded-circle"
                                         style={{ height: "5rem", width: "5rem" }}
-                                        src={avatar}
+                                        src={avatar ? avatar : homer}
                                         alt="Avatar del usuario" />
                                 </Col>
                                 <Col xs={9} lg={5}>
                                     <Row>
                                         <Col>
-                                            <span className="fw-bold fs-3">{loggedUser?.username}</span>
+                                            <span className="fw-bold fs-3">{username}</span>
                                         </Col>
                                     </Row>
                                     <Row>
@@ -121,7 +97,11 @@ const UserProfilePage = () => {
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <p>{favoriteGenres.join(",")}</p>
+                                            {
+                                                favoriteGenres.map(genre => {
+                                                    return <span key={genre}>{genre} </span>
+                                                })
+                                            }
                                         </Col>
                                     </Row>
                                 </Col>
@@ -184,16 +164,10 @@ const UserProfilePage = () => {
                         </Col>
                     </Row>
                     <Row className="mt-3">
-                        {reviews.length > 0 ? (
-                            reviews.map(review => (
-                                <Col key={review._id} md={4} className="mb-3" >
-                                    <ReviewCard
-                                        review={{ ...review }}
-                                        onLike={handleLike}
-                                        onEdit={handleEdit(review)}
-                                        onDelete={handleDelete(review._id)}
-                                    />
-
+                        {reviewsData.length > 0 ? (
+                            reviewsData.map(review => (
+                                <Col key={review._id} md={12} className="mb-3" >
+                                    <ReviewCard {...review} />
                                 </Col>
                             ))
                         ) : (
@@ -202,34 +176,19 @@ const UserProfilePage = () => {
                     </Row>
                     <Row className="mt-3">
                         <Col>
-                            <Button onClick={handleAddReview}>Añadir Reseña</Button>
+                            <Button>Añadir Reseña</Button>
                         </Col>
                     </Row>
-                    <Modal show={showReviewForm} onHide={() => setShowReviewForm(false)}>
+
+                    <Modal show={showModal} onHide={() => setShowModal(false)}>
                         <Modal.Header closeButton>
                             <Modal.Title>Añadir Reseña</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            <NewReviewForm onReviewCreated={handleReviewCreated} />
+                            <NewReviewForm />
                         </Modal.Body>
                     </Modal>
 
-                    {showEditForm && (
-                        <Modal show={showEditForm} onHide={() => setShowEditForm(false)}>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Editar Reseña</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <EditReviewForm
-                                    review={reviewToEdit}
-                                    onReviewUpdated={() => {
-                                        fetchUserData();
-                                        setShowEditForm(false);
-                                    }}
-                                />
-                            </Modal.Body>
-                        </Modal>
-                    )}
                 </Container>
             </div>
     )
