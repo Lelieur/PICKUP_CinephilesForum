@@ -7,8 +7,6 @@ import Loader from "../../../components/Loader/Loader"
 
 import communityServices from "../../../services/community.services"
 
-const API_URL = import.meta.env.VITE_APP_API_URL
-
 const CommunitiesPage = () => {
 
     const [communities, setCommunities] = useState([])

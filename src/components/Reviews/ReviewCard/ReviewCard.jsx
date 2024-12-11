@@ -6,9 +6,11 @@ import { AuthContext } from '../../../contexts/auth.context'
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
-const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete }) => {
+const ReviewCard = ({ review, onLike, onEdit, onDelete }) => {
 
-    const { _id, content, rate, likesCounter, createdAt } = review
+    const reviewData = review
+
+    const { _id, content, rate, likesCounter, createdAt, movieApiId, author } = reviewData
 
     const { loggedUser } = useContext(AuthContext)
 
@@ -22,6 +24,14 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
         onLike(_id)
     }
 
+    const handleEdit = () => {
+        onEdit(review)
+    }
+
+    const handleDelete = () => {
+        onDelete(_id)
+    }
+
     const isOwner = loggedUser && loggedUser._id === review.author
 
     return (
@@ -30,7 +40,7 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                 <Row>
                     <Col md={3}>
                         <Card.Img className='object-fit-cover h-100'
-                            src={`${TMDB_API_IMG_URL}/w780/${movieData?.backdrop_path}`}
+                            src={`${TMDB_API_IMG_URL}/w780/${movieApiId?.backdrop_path}`}
                             alt="movie poster"
                         />
                     </Col>
@@ -38,9 +48,9 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                         <Row className='pe-3'>
                             <Col>
                                 <Card.Subtitle className='fs-4'>
-                                    {movieData?.original_title}{" "}
+                                    {movieApiId?.original_title}{" "}
                                     <span>
-                                        ({new Date(movieData?.release_date).getFullYear()})
+                                        ({new Date(movieApiId?.release_date).getFullYear()})
                                     </span>
                                 </Card.Subtitle>
                             </Col>
@@ -49,20 +59,20 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                             <Col xs={3} md={{ span: 2 }}>
                                 <Card.Img className='rounded-circle object-fit-cover'
                                     style={{ height: "3rem", width: "3rem" }}
-                                    src={authorData?.avatar || homer} alt={authorData?.username} />
+                                    src={author?.avatar || homer} alt={author?.username} />
                             </Col>
                             <Col className='ps-2' xs={6} md={{ span: 8 }}>
                                 <Row>
                                     <Col>
                                         <Card.Title className='fs-6'>
-                                            {authorData?.firstName}
+                                            {author?.firstName}
                                         </Card.Title>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <Card.Subtitle>
-                                            @{authorData?.username}
+                                            @{author?.username}
                                         </Card.Subtitle>
                                     </Col>
                                 </Row>
@@ -105,7 +115,7 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                             <Button
                                 variant="outline-warning"
                                 size="sm"
-                                onClick={() => onEdit(_id)}
+                                onClick={handleEdit}
                             >
                                 Editar
                             </Button>
@@ -114,7 +124,7 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                             <Button
                                 variant="outline-danger"
                                 size="sm"
-                                onClick={() => onDelete(_id)}
+                                onClick={handleDelete}
                             >
                                 Eliminar
                             </Button>
