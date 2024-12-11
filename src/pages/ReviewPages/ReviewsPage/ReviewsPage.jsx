@@ -3,43 +3,58 @@ import { Container, Button, Row, Col, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+<<<<<<< HEAD
 import ReviewServicess from "../../../services/review.services"
 import TMDBServices from "../../../services/tmdb.services"
 import UserServices from "../../../services/user.services"
+=======
+import reviewServices from "../../../services/review.services"
+>>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
 import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
-import "./ReviewsPage.css"
 import { AuthContext } from "../../../contexts/auth.context"
+import "./ReviewsPage.css"
 
 const ReviewsPage = () => {
     const [reviews, setReviews] = useState([])
-    const [moviesData, setMoviesData] = useState({})
-    const [usersData, setUsersData] = useState({})
     const [filteredReviews, setFilteredReviews] = useState([])
     const [searchMovie, setSearchMovie] = useState("")
-    const [showEditModal, setShowEditModal] = useState()
+    const [showEditModal, setShowEditModal] = useState(false)
     const [editReviewData, setEditReviewData] = useState()
     const [activeFilter, setActiveFilter] = useState("all")
+
 
     const { loggedUser } = useContext(AuthContext)
 
     useEffect(() => {
+<<<<<<< HEAD
 
         ReviewServicess
+=======
+        reviewServices
+>>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
             .getAllReviews()
             .then((response) => {
-                const sortedReviews = response.data.sort(
-                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                const reviewPromises = response.data.map((review) =>
+                    reviewServices.getOneReviewFullData(review._id)
                 )
-                setReviews(sortedReviews)
-                setFilteredReviews(sortedReviews)
-                fetchMoviesData(sortedReviews)
-                fetchUsersData(sortedReviews)
+                Promise.all(reviewPromises)
+                    .then((fullReviews) => {
+                        const sortedReviews = fullReviews.sort(
+                            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+                        );
+                        setReviews(sortedReviews)
+                        setFilteredReviews(sortedReviews)
+                    })
+                    .catch((err) => {
+                        console.error("Error al cargar los detalles completos de las reseñas:", err)
+                    });
             })
             .catch((error) => {
                 console.error("Error al cargar las reseñas:", error)
             })
     }, [])
 
+<<<<<<< HEAD
     const fetchMoviesData = (reviews) => {
         const movieApiIds = reviews.map((review) => review.movieApiId)
         const uniqueMovieApiIds = [...new Set(movieApiIds)]
@@ -78,8 +93,10 @@ const ReviewsPage = () => {
             })
     }
 
+=======
+>>>>>>> 142bbc47b3d85bf3873f5c2715a08b1a86345218
     const applyFilters = (filterType, searchQuery = searchMovie) => {
-        let updatedReviews = [...reviews]
+        let updatedReviews = [...reviews];
 
         if (filterType === "top") {
             updatedReviews = updatedReviews.sort((a, b) => b.likesCounter - a.likesCounter)
@@ -94,9 +111,8 @@ const ReviewsPage = () => {
         setFilteredReviews(updatedReviews)
     }
 
-
     const handleFilter = (type) => {
-        setActiveFilter(type);
+        setActiveFilter(type)
         applyFilters(type, searchMovie)
     }
 
@@ -139,7 +155,6 @@ const ReviewsPage = () => {
             setEditReviewData(review)
             setShowEditModal(true)
         }
-
     }
 
     const handleDelete = (reviewId) => {
@@ -148,8 +163,8 @@ const ReviewsPage = () => {
                 ReviewServicess
                     .deleteReview(reviewId)
                     .then(() => {
-                        const updatedReviews = reviews.filter(review => review._id !== reviewId)
-                        setReviews(updatedReviews)
+                        const updatedReviews = reviews.filter((review) => review._id !== reviewId)
+                        setReviews(updatedReviews);
                         setFilteredReviews(updatedReviews)
                     })
                     .catch((err) => {
@@ -163,7 +178,6 @@ const ReviewsPage = () => {
         setShowEditModal(false)
         setEditReviewData(null)
     }
-
 
     return (
         <div className="ReviewsPage">
@@ -202,11 +216,9 @@ const ReviewsPage = () => {
                 <NewReviewForm onReviewCreated={handleNewReview} />
                 <ReviewsList
                     reviews={filteredReviews}
-                    usersData={usersData}
-                    moviesData={moviesData}
                     onLike={handleLike}
-                    handleDelete={handleDelete}
-                    handleEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
                     loggedUser={loggedUser}
                 />
                 <Modal show={showEditModal} onHide={handleCloseEditModal}>
@@ -237,3 +249,4 @@ const ReviewsPage = () => {
 }
 
 export default ReviewsPage
+

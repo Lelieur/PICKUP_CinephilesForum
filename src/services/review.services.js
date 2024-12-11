@@ -68,7 +68,11 @@ class ReviewServices {
     }
 
     likeReview(id) {
-        return this.axiosApp.patch(`/${id}/like`);
+        return this.axiosApp.patch(`/${id}/like`)
+    }
+
+    getOneReviewFullData(id) {
+        return this.axiosApp.get(`/details/${id}`)
     }
 }
 
