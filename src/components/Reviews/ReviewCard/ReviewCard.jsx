@@ -1,13 +1,16 @@
 import './ReviewCard.css';
 import { Card, Row, Col, Button } from "react-bootstrap"
 import { homer } from '../../../const/image-paths'
-import { useState } from 'react'
+import { useContext } from 'react'
+import { AuthContext } from '../../../contexts/auth.context'
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
 const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete }) => {
+
     const { _id, content, rate, likesCounter, createdAt } = review
-    const [loggedUser, setLoggedUser] = useState()
+
+    const { loggedUser } = useContext(AuthContext)
 
     const formattedDate = new Date(createdAt).toLocaleDateString("es-ES", {
         day: "numeric",
@@ -18,7 +21,9 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
     const handleLikeClick = () => {
         onLike(_id)
     }
+
     const isOwner = loggedUser && loggedUser._id === review.author
+
     return (
         <div className="ReviewCard">
             <Card className='p-3 m-0 text-white text-start'>
@@ -100,7 +105,7 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                             <Button
                                 variant="outline-warning"
                                 size="sm"
-                                onClick={() => onEdit(review)}
+                                onClick={() => onEdit(_id)}
                             >
                                 Editar
                             </Button>
@@ -109,7 +114,7 @@ const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete })
                             <Button
                                 variant="outline-danger"
                                 size="sm"
-                                onClick={() => onDelete(review._id)}
+                                onClick={() => onDelete(_id)}
                             >
                                 Eliminar
                             </Button>
