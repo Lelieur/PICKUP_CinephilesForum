@@ -1,22 +1,22 @@
 import { useState, useEffect } from 'react'
-import { Form, Button, Card } from 'react-bootstrap'
+import { Form, Button, Card, Spinner } from 'react-bootstrap'
 import reviewServices from '../../../services/review.services'
 
 const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
-    const [content, setContent] = useState(review.content || "")
-    const [rate, setRate] = useState(review.rate || 0)
+    const [content, setContent] = useState(review?.content || "")
+    const [rate, setRate] = useState(review?.rate || 0)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        setContent(review.content || "")
-        setRate(review.rate || 0)
+        setContent(review?.content || "")
+        setRate(review?.rate || 0)
     }, [review])
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        if (!content || rate === null) {
+        if (!content || rate === null || !review._id) {
             setError("Por favor, rellena los campos")
             return
         }
@@ -63,7 +63,7 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
                             <Form.Label>Nota (0-10)</Form.Label>
                             <Form.Control
                                 type="number"
-                                value={rate || ""}
+                                value={rate !== null ? rate : ""}
                                 onChange={(e) =>
                                     setRate(Math.min(10, Math.max(0, Number(e.target.value))))}
                                 placeholder="Tu valoración (0-10)"
@@ -80,6 +80,7 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
                             <Button
                                 variant="secondary"
                                 onClick={onCancel}
+                                disabled={loading}
                                 style={{
                                     backgroundColor: "gray",
                                     borderColor: "gray",
@@ -95,7 +96,19 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
                                     border: "none",
                                 }}
                             >
-                                {loading ? "Guardando..." : "Guardar cambios"}
+                                {loading ? (
+                                    <>
+                                        <Spinner
+                                            animation="border"
+                                            size="sm"
+                                            role="status"
+                                            aria-hidden="true"
+                                        />{" "}
+                                        Guardando...
+                                    </>
+                                ) : (
+                                    "Guardar cambios"
+                                )}
                             </Button>
                         </div>
                     </Form>

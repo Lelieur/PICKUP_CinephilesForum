@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { Container, Button, Row, Col, Modal } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
@@ -8,6 +8,7 @@ import movieServices from "../../../services/movie.services"
 import userServices from "../../../services/user.services"
 import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
 import "./ReviewsPage.css"
+import { AuthContext } from "../../../contexts/auth.context"
 
 const ReviewsPage = () => {
     const [reviews, setReviews] = useState([])
@@ -15,16 +16,14 @@ const ReviewsPage = () => {
     const [usersData, setUsersData] = useState({})
     const [filteredReviews, setFilteredReviews] = useState([])
     const [searchMovie, setSearchMovie] = useState("")
-    const [activeFilter, setActiveFilter] = useState("all")
-    const [loggedUser, setLoggedUser] = useState(null)
     const [showEditModal, setShowEditModal] = useState()
     const [editReviewData, setEditReviewData] = useState()
+    const [activeFilter, setActiveFilter] = useState("all")
+
+    const { loggedUser } = useContext(AuthContext)
 
     useEffect(() => {
-        const user = localStorage.getItem("loggedUser")
-        if (user) {
-            setLoggedUser(JSON.parse(user))
-        }
+
         reviewServices
             .getAllReviews()
             .then((response) => {
@@ -76,8 +75,8 @@ const ReviewsPage = () => {
             })
             .catch((err) => {
                 console.error("Error fetching user details:", err)
-            });
-    };
+            })
+    }
 
     const applyFilters = (filterType, searchQuery = searchMovie) => {
         let updatedReviews = [...reviews]
@@ -94,6 +93,7 @@ const ReviewsPage = () => {
 
         setFilteredReviews(updatedReviews)
     }
+
 
     const handleFilter = (type) => {
         setActiveFilter(type);
@@ -134,6 +134,14 @@ const ReviewsPage = () => {
             })
     }
 
+    const handleEdit = (review) => {
+        if (review) {
+            setEditReviewData(review)
+            setShowEditModal(true)
+        }
+
+    }
+
     const handleDelete = (reviewId) => {
         if (loggedUser) {
             if (window.confirm("¿Estás seguro de que quieres eliminar esta reseña?")) {
@@ -150,16 +158,12 @@ const ReviewsPage = () => {
             }
         }
     }
-    const handleEdit = (review) => {
-        setEditReviewData(review)
-        setShowEditModal(true)
-    }
 
     const handleCloseEditModal = () => {
         setShowEditModal(false)
         setEditReviewData(null)
     }
-    const isOwner = loggedUser && loggedUser._id === review.author
+
 
     return (
         <div className="ReviewsPage">
@@ -201,8 +205,8 @@ const ReviewsPage = () => {
                     usersData={usersData}
                     moviesData={moviesData}
                     onLike={handleLike}
-                    onDelete={handleDelete}
-                    onEdit={handleEdit}
+                    handleDelete={handleDelete}
+                    handleEdit={handleEdit}
                     loggedUser={loggedUser}
                 />
                 <Modal show={showEditModal} onHide={handleCloseEditModal}>
