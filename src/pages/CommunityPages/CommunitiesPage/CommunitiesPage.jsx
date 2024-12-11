@@ -5,6 +5,8 @@ import CommunitiesList from "../../../components/CommunitiesComponents/Communiti
 import axios from "axios"
 import Loader from "../../../components/Loader/Loader"
 
+import communityServices from "../../../services/community.services"
+
 const API_URL = import.meta.env.VITE_APP_API_URL
 
 const CommunitiesPage = () => {
@@ -17,8 +19,8 @@ const CommunitiesPage = () => {
     }, [])
 
     const fetchCommunities = () => {
-        axios
-            .get(`${API_URL}/api/communities`)
+        communityServices
+            .fetchCommunities()
             .then(response => {
                 setCommunities(response.data)
                 setIsLoading(false)

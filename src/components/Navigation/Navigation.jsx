@@ -64,8 +64,8 @@ const Navigation = () => {
                                 <Nav className="d-flex justify-content-end w-100">
                                     <Dropdown className="m-0" align="end">
                                         <Dropdown.Toggle variant="link" className="border-0 m-0 p-0 profile-toggle" id="dropdown-basic">
-                                            <img className="border border-white object-fit-cover rounded-circle"
-                                                style={{ height: "2rem", width: "2rem" }}
+                                            <img className="border border-white object-fit-cover rounded-circle me-2"
+                                                style={{ height: "1.5rem", width: "1.5rem" }}
                                                 src={loggedUser.avatar ? loggedUser.avatar : homer}
                                                 alt="avatar" />
                                         </Dropdown.Toggle>

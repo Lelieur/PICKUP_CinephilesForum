@@ -6,7 +6,9 @@ import { useState } from 'react'
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
 const ReviewCard = ({ review, authorData, movieData, onLike, onEdit, onDelete }) => {
+
     const { _id, content, rate, likesCounter, createdAt } = review
+
     const [loggedUser, setLoggedUser] = useState()
 
     const formattedDate = new Date(createdAt).toLocaleDateString("es-ES", {

@@ -54,8 +54,6 @@ const UserProfilePage = () => {
                 const { data: userData } = response
                 setUserDetails(userData)
                 setIsLoading(false)
-                console.log(response)
-                console.log("User Data:", response.data);
             })
             .catch(err => {
                 console.log(err)
@@ -169,7 +167,7 @@ const UserProfilePage = () => {
                     <Row className="mt-3">
                         {communities.length > 0 ? (
                             communities.map(community => (
-                                <Col key={community.id} md={4} className="mb-3">
+                                <Col key={community._id} md={4} className="mb-3">
                                     <CommunityCard {...community} />
                                 </Col>
                             ))
@@ -187,8 +185,8 @@ const UserProfilePage = () => {
                     <Row className="mt-3">
                         {reviews.length > 0 ? (
                             reviews.map(review => (
-                                <Col key={review.id} md={4} className="mb-3">
-                                    <ReviewCard {...review} onEdit={handleEditReview} onDelete={handleDeleteReview} />
+                                <Col key={review._id} md={4} className="mb-3">
+                                    <ReviewCard review={{ ...review }} onEdit={handleEditReview} onDelete={handleDeleteReview} />
                                 </Col>
                             ))
                         ) : (

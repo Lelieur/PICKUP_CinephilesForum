@@ -48,10 +48,12 @@ class communityServices {
         return this.axiosApp.delete(`/${id}`)
     }
 
-    followCommunity(id, userId) {
-        console.log(id)
-        console.log(userId)
-        return this.axiosApp.put(`/follow/${id}`, userId)
+    followCommunity(id, user) {
+        return this.axiosApp.put(`/follow/${id}`, user)
+    }
+
+    unFollowCommunity(id, user) {
+        return this.axiosApp.put(`/unfollow/${id}`, user)
     }
 }
 

@@ -12,13 +12,13 @@ import EditCommunityForm from "../../../components/CommunitiesComponents/Forms/E
 import communityServices from "../../../services/community.services"
 
 import "./CommunityDetailsPage.css"
-import userServices from "../../../services/user.services"
 
 const CommunityDetailsPage = () => {
 
     const { loggedUser } = useContext(AuthContext)
 
     const [community, setCommunity] = useState({})
+    const [communityUsersIds, setCommunityUsersIds] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
 
@@ -37,6 +37,7 @@ const CommunityDetailsPage = () => {
             .then(response => {
                 const { data: community } = response
                 setCommunity(community)
+                setCommunityUsersIds(community.users.map(user => { return user._id }))
                 setIsLoading(false)
             })
             .catch(err => console.log(err))
@@ -50,14 +51,22 @@ const CommunityDetailsPage = () => {
     }
 
     const handleFollowCommunity = () => {
-
         communityServices
-            .followCommunity(community._id, loggedUser._id)
+            .followCommunity(community._id, loggedUser)
             .then(() => loadCommunityDetails())
             .catch(err => console.log())
     }
 
+    const handleUnfollowCommunity = () => {
+        communityServices
+            .unFollowCommunity(community._id, loggedUser)
+            .then(() => loadCommunityDetails())
+            .catch(err => console.log())
+    }
+
+
     const { _id, title, description, cover, genres, fetishActors, fetishDirectors, decades, moviesApiIds, users, owner, createdAt, updatedAt } = community
+
 
     return (
 
@@ -68,7 +77,7 @@ const CommunityDetailsPage = () => {
                     <Row>
                         <Col className="position-relative" style={{ height: "20rem" }}>
                             <img className="w-100 h-100 object-fit-cover rounded opacity-50" src={cover} alt="Cover" />
-                            <div className="ps-5 community-title-container position-absolute top-50 translate-middle-y">
+                            <div className="ps-5 position-absolute top-50 translate-middle-y">
                                 <h1 className="fw-bold m-0 pt-4">{title} ({moviesApiIds?.length})</h1>
                                 {
                                     genres.map(genre => {
@@ -79,25 +88,28 @@ const CommunityDetailsPage = () => {
                                 }
                                 <p className="fs-5 mt-0" >{description}</p>
                                 {
-                                    loggedUser?._id !== owner._id ?
-                                        <Button className="border-0 fw-bold btn-style-2" onClick={handleFollowCommunity}>
-                                            Unirse a la comunidad
-                                        </Button>
-                                        :
-                                        users.includes(loggedUser._id) ?
-                                            <Button className="border-0 fw-bold btn-style-2" >
-                                                Dejar de seguir
-                                            </Button>
-                                            :
-                                            <Dropdown className="m-0 d-flex align-items-center">
-                                                <Dropdown.Toggle className="btn-style-2 border-0 fw-bold" id="dropdown-basic">
-                                                    Administrar
-                                                </Dropdown.Toggle>
-                                                <Dropdown.Menu className="boder-0 m-0">
-                                                    <Dropdown.Item className="ps-5 pe-5 pt-2 text-white" as="button" onClick={() => setShowEditModal(true)}>Editar comunidad</Dropdown.Item>
-                                                    <Dropdown.Item className="ps-5 pe-5 pt-2 text-white" as="button" onClick={() => setShowModal(true)}>Eliminar comunidad</Dropdown.Item>
-                                                </Dropdown.Menu>
-                                            </Dropdown>
+                                    loggedUser?._id !== owner._id && !communityUsersIds.includes(loggedUser._id) &&
+                                    <Button className="border-0 fw-bold btn-style-2" onClick={handleFollowCommunity}>
+                                        Unirse a la comunidad
+                                    </Button>
+                                }
+                                {
+                                    loggedUser?._id === owner._id &&
+                                    <Dropdown className="m-0 d-flex align-items-center">
+                                        <Dropdown.Toggle className="btn-style-2 border-0 fw-bold" id="dropdown-basic">
+                                            Administrar
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu className="boder-0 m-0">
+                                            <Dropdown.Item className="ps-5 pe-5 pt-2 text-white" as="button" onClick={() => setShowEditModal(true)}>Editar comunidad</Dropdown.Item>
+                                            <Dropdown.Item className="ps-5 pe-5 pt-2 text-white" as="button" onClick={() => setShowModal(true)}>Eliminar comunidad</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                }
+                                {
+                                    loggedUser?._id !== owner._id && communityUsersIds.includes(loggedUser._id) &&
+                                    <Button className="border-0 fw-bold btn-style-2" onClick={handleUnfollowCommunity}>
+                                        Dejar de seguir
+                                    </Button>
                                 }
                             </div>
                         </Col>

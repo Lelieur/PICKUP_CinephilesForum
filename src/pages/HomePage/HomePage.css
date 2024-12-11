@@ -1,0 +1,7 @@
+.backgroud-faded-down {
+    background-image: linear-gradient(360deg, transparent 0, RGBA(6, 6, 19, 0.03) 7%, RGBA(6, 6, 19, 0.11) 21%, RGBA(6, 6, 19, 0.8) 77%, RGBA(6, 6, 19, 1))
+}
+
+.backgroud-faded-up {
+    background-image: linear-gradient(180deg, transparent 0, RGBA(6, 6, 19, 0.03) 7%, RGBA(6, 6, 19, 0.11) 21%, RGBA(6, 6, 19, 0.8) 77%, RGBA(6, 6, 19, 1))
+}
