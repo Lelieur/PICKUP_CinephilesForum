@@ -32,6 +32,10 @@ class CommunityServices {
         return this.axiosApp.get(`/`)
     }
 
+    fetchMostFollowedCommunities() {
+        return this.axiosApp.get(`/top`)
+    }
+
     filterCommunities = (query) => {
         return this.axiosApp.get(`/search/${query}`)
     }

@@ -7,7 +7,7 @@ import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/Communities
 import Error404Page from '../pages/Error404Page/Error404Page'
 import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
-import DetailsReviewPage from '../pages/ReviewPages/DetailsReviewPage/DetailsReviewPage'
+import DetailsReviewPage from '../pages/ReviewPages/ReviewDetailsPage/ReviewDetailsPage'
 
 import PrivateRoute from './PrivateRoutes'
 
@@ -34,7 +34,7 @@ const AppRoutes = () => {
                 <Route path={'/*'} element={<Error404Page />} />
 
                 <Route path={'/reviews'} element={<ReviewsPage />} />
-                <Route path={'/reviews/detalles/:reviewId'} element={<DetailsReviewPage />} />
+                <Route path={'/reviews/:reviewId'} element={<DetailsReviewPage />} />
 
             </Routes>
         </div>

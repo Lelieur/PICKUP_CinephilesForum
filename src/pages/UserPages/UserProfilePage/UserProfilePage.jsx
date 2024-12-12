@@ -1,33 +1,28 @@
 import { useEffect, useState, useContext } from "react"
 import { useParams } from "react-router-dom"
+
 import { Container, Row, Col, Button, Modal } from "react-bootstrap"
 import { Facebook, Twitter, Instagram, Tiktok } from 'react-bootstrap-icons'
 
 import { homer } from "../../../const/image-paths"
-
 import { AuthContext } from "../../../contexts/auth.context"
+
 import Loader from "../../../components/Loader/Loader"
 import UserServices from "../../../services/user.services"
 import ReviewServices from "../../../services/review.services"
 import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
 import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
-import EditReviewForm from "../../../components/Reviews/EditReviewForm/EditReviewForm"
 
 const UserProfilePage = () => {
 
     const { loggedUser } = useContext(AuthContext)
     const { id: userId } = useParams()
-
     const [isLoading, setIsLoading] = useState(true)
-
     const [userData, setUserData] = useState({})
     const [isUserDataLoaded, setUserDataLoaded] = useState(false)
     const [reviewsData, setReviewsData] = useState([])
-
-
     const [showModal, setShowModal] = useState(false)
-
 
     useEffect(() => {
         fetchUserData()
@@ -51,7 +46,6 @@ const UserProfilePage = () => {
     const { avatar, username, bio, socialNetworksProfiles, favoriteGenres, communities, reviews } = userData
 
     const fetchReviewsData = () => {
-
         const reviewsPromises = reviews?.map(review =>
             ReviewServices
                 .getOneReviewFullData(review)
@@ -60,7 +54,6 @@ const UserProfilePage = () => {
                 })
                 .catch(err => console.log(err))
         )
-
         Promise
             .all(reviewsPromises)
             .then(response => {
@@ -68,7 +61,6 @@ const UserProfilePage = () => {
                 setIsLoading(false)
             })
             .catch(err => console.log(err))
-
     }
 
     return (
@@ -140,7 +132,6 @@ const UserProfilePage = () => {
                             </Row>
                         </Col>
                     </Row>
-
                     <Row className="mt-3">
                         <Col md={12} className="p-xs-0">
                             <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
@@ -157,7 +148,6 @@ const UserProfilePage = () => {
                             <Col>No pertenece a ninguna comunidad.</Col>
                         )}
                     </Row>
-
                     <Row className="mt-3">
                         <Col md={12} className="p-xs-0">
                             <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
@@ -174,8 +164,6 @@ const UserProfilePage = () => {
                             <Col>No pertenece a ninguna comunidad.</Col>
                         )}
                     </Row>
-
-
                     <Row className="mt-3">
                         <Col md={12} className="p-xs-0">
                             <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
@@ -197,7 +185,6 @@ const UserProfilePage = () => {
                             <Button className="border-0 fw-bold btn-style-2" onClick={() => setShowModal(true)}>Añadir Reseña</Button>
                         </Col>
                     </Row>
-
                     <Modal show={showModal} onHide={() => setShowModal(false)}>
                         <Modal.Header closeButton>
                             <Modal.Title>Añadir Reseña</Modal.Title>
@@ -206,10 +193,8 @@ const UserProfilePage = () => {
                             <NewReviewForm />
                         </Modal.Body>
                     </Modal>
-
                 </Container>
             </div>
     )
 }
-
 export default UserProfilePage

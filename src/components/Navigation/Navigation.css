@@ -12,7 +12,7 @@
 }
 
 .Navigation .navbar .nav-link:hover,
-.dropdown-toggle:hover {
+.Navigation .dropdown-toggle:hover {
     color: rgb(5 255 161) !important
 }
 

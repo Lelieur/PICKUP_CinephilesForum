@@ -3,30 +3,43 @@ import { homeCover } from '../../const/image-paths'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react"
 
+import MoviesPostersList from '../../components/MovieComponentes/MoviesPostersList/MoviesPostersList'
 import CommunitiesList from '../../components/CommunitiesComponents/CommunitiesList/CommunitiesList'
 import Loader from '../../components/Loader/Loader'
 import CommunityServices from '../../services/community.services'
+import ReviewServices from '../../services/review.services'
 
 import "./HomePage.css"
 
 const HomePage = () => {
 
     const [communities, setCommunities] = useState([])
+    const [movies, setMovies] = useState([])
+
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetchCommunities()
+        fetchAllData()
     }, [])
 
-    const fetchCommunities = () => {
-        CommunityServices
-            .fetchCommunities()
-            .then(response => {
-                setCommunities(response.data)
-                setIsLoading(false)
+
+    const fetchAllData = () => {
+
+        const promises = [
+            CommunityServices.fetchCommunities(),
+            ReviewServices.getLastedMoviesReviewed()
+        ]
+
+        Promise
+            .all(promises)
+            .then(([communities, movies]) => {
+                setCommunities(communities.data)
+                setMovies(movies.data)
             })
+            .then(() => setIsLoading(false))
             .catch(err => console.log(err))
     }
+
 
     return (
 
@@ -48,11 +61,11 @@ const HomePage = () => {
                 <Container>
                     <Row>
                         <Col>
-                            <p className="fs-5 fw-bold">Las películas más comentadas</p>
-
+                            <p className="fs-5 fw-bold">Últimas películas comentadas</p>
+                            <MoviesPostersList movies={movies} />
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="mt-4">
                         <Col>
                             <p className="fs-5 fw-bold">Nuestras comunidades de cinéfilos</p>
                             <CommunitiesList communities={communities} />
@@ -61,7 +74,6 @@ const HomePage = () => {
                 </Container>
             </div>
     )
-
 }
 
 export default HomePage

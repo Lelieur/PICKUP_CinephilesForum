@@ -42,6 +42,9 @@ class ReviewServices {
         return this.axiosApp.get('/')
     }
 
+    getLastedMoviesReviewed() {
+        return this.axiosApp.get('/movies')
+    }
 
     getReviewsFromMovie(movieApiId) {
         return this.axiosApp.get(`/movies/${movieApiId}`)
