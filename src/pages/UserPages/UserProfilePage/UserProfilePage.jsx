@@ -2,9 +2,7 @@ import { useEffect, useState, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button, Modal } from "react-bootstrap"
 import { Facebook, Twitter, Instagram, Tiktok } from 'react-bootstrap-icons'
-
 import { homer } from "../../../const/image-paths"
-
 import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
 import UserServices from "../../../services/user.services"
@@ -68,7 +66,6 @@ const UserProfilePage = () => {
                 setIsLoading(false)
             })
             .catch(err => console.log(err))
-
     }
 
     return (

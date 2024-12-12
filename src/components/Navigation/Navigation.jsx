@@ -45,7 +45,7 @@ const Navigation = () => {
                         <Nav className="d-flex justify-content-start w-100">
                             <Nav.Link className="text-white" as={Link} to="/comunidades">Comunidades</Nav.Link>
                             <Nav.Link className="text-white" as={Link} to="/reviews">Reseñas</Nav.Link>
-
+                            <Nav.Link className="text-white" as={Link} to="/usuarios">Usuarios</Nav.Link>
 
                             <Dropdown className="m-0 d-flex align-items-center">
                                 <Dropdown.Toggle variant="link" className="border-0 m-0 p-2 text-white text-decoration-none" id="dropdown-basic">

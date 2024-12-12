@@ -90,7 +90,7 @@ const NewReviewForm = ({ onInputChange }) => {
                 setSelectedMovie(null)
                 setQuerySearch('')
                 setMoviesFilter([])
-                onInputChange()
+                onInputChange(newReviewData)
             })
             .catch(err => console.log(err))
     }
@@ -100,7 +100,6 @@ const NewReviewForm = ({ onInputChange }) => {
             <Card className="mx-auto mt-5 p-4 rounded-4">
                 <Form onSubmit={handleSubmit}>
                     <Row className="h-100">
-                        {/* Mostrar la imagen de la película seleccionada */}
                         {
                             !selectedMovie &&
                             <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0 border rounded">
@@ -214,8 +213,6 @@ const NewReviewForm = ({ onInputChange }) => {
                     </Row>
                 </Form>
             </Card >
-
-            {/* Modal de búsqueda de películas */}
             < Modal
                 show={showSearchMoviesModal}
                 onHide={() => { setShowSearchMoviesModal(false), setQuerySearch(''), setMoviesFilter([]) }}
@@ -291,7 +288,7 @@ const NewReviewForm = ({ onInputChange }) => {
             </Modal >
         </div >
     )
-};
+}
 
-export default NewReviewForm;
+export default NewReviewForm
 

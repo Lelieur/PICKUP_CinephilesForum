@@ -3,9 +3,8 @@ import { Card, Row, Col, Button, Modal, Form, ButtonGroup } from "react-bootstra
 import { homer } from '../../../const/image-paths'
 import { useContext, useState } from 'react'
 import { AuthContext } from '../../../contexts/auth.context'
-
+import { Link } from 'react-router-dom'
 import { Heart, PencilSquare, Trash3, HeartFill } from "react-bootstrap-icons"
-
 import TimeSinceCreation from '../../../TimeSinceCreation/timeSinceCreation';
 import ReviewServices from "../../../services/review.services"
 
@@ -107,9 +106,14 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                         </Row>
                         <Row className="mt-3">
                             <Col md={{ span: 1 }} className="pe-0">
-                                <img className='rounded-circle object-fit-cover'
-                                    style={{ height: "3rem", width: "3rem" }}
-                                    src={author?.avatar || homer} alt={author?.username} />
+                                <Link to={`/usuarios/${author?._id}`}>
+                                    <img
+                                        className='rounded-circle object-fit-cover'
+                                        style={{ height: "3rem", width: "3rem" }}
+                                        src={author?.avatar || homer}
+                                        alt={author?.username}
+                                    />
+                                </Link>
                             </Col>
                             <Col md={{ span: 11 }}>
                                 <Row>
@@ -183,8 +187,6 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     }
                 </Row>
             </Card>
-
-
             <Modal
                 show={showEditModal}
                 onHide={() => setShowEditModal(false)}
@@ -284,5 +286,4 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
         </div >
     )
 }
-
 export default ReviewCard
