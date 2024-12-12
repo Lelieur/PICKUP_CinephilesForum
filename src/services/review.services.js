@@ -20,8 +20,8 @@ class ReviewServices {
         })
     }
 
-    filterReviews(query) {
-        return this.axiosApp.get(`/search/`, { params: { query } })
+    filterReviews = (query) => {
+        return this.axiosApp.get(`/search/${query}`)
     }
 
 

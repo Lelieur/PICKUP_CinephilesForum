@@ -32,8 +32,8 @@ class CommunityServices {
         return this.axiosApp.get(`/`)
     }
 
-    filterCommunities(searchQuery) {
-        return this.axiosApp.get(`/search/`, searchQuery)
+    filterCommunities = (query) => {
+        return this.axiosApp.get(`/search/${query}`)
     }
 
     saveCommunity(communityData) {

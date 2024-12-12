@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap"
 import ReviewCard from "../ReviewCard/ReviewCard"
 
-const ReviewsList = ({ reviews, onLike, onEdit, onDelete }) => {
+const ReviewsList = ({ reviews, onLike, onEdit, onDelete, userId }) => {
 
     return (
         <div className="ReviewsList">
@@ -10,7 +10,11 @@ const ReviewsList = ({ reviews, onLike, onEdit, onDelete }) => {
                     reviews.map(review => {
                         return (
                             <Col key={review.data._id} lg={{ span: 7 }} className="reviews-container">
-                                <ReviewCard review={{ ...review.data }} />
+                                <ReviewCard review={{ ...review.data }}
+                                    onLike={onLike}
+                                    onEdit={onEdit}
+                                    onDelete={onDelete}
+                                />
                             </Col>
                         )
                     })
