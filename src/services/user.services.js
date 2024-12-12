@@ -19,6 +19,10 @@ class UserServices {
         return this.axiosApp.get(`/?page=${page}&limit=${limit}`)
     }
 
+    fetchAllUsersPopulated() {
+        return this.axiosApp.get(`/detailed`)
+    }
+
     fetchOneUser(id) {
         return this.axiosApp.get(`/${id}`)
     }

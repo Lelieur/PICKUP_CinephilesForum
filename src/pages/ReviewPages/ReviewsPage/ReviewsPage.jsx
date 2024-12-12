@@ -80,11 +80,13 @@ const ReviewsPage = () => {
         }
     }
 
-    const onInputChange = () => {
+    const onInputChange = (newReview) => {
 
-        setIsReviewsLoaded(false)
-        fetchAllReviews()
-        applyFilters("all")
+        console.log(newReview)
+
+        reviews.push(newReview)
+
+        setReviews(reviews)
     }
 
 
@@ -115,11 +117,18 @@ const ReviewsPage = () => {
                         </Col>
                     </Row>
                     <Row className="justify-content-center mb-3">
-                        <Col md={{ span: 10 }} >
-                            <NewReviewForm onInputChange={onInputChange} />
+                        <Col md={{ span: 10 }}>
+                            {loggedUser ? (
+                                <NewReviewForm onInputChange={onInputChange} />
+                            ) : (
+                                <div>
+                                    <p></p>
+                                </div>
+                            )}
                         </Col>
                     </Row>
-                    <Row className="justify-content-center ">
+
+                    <Row className="justify-content-center">
                         <Col md={{ span: 10 }}>
                             <ReviewsList
                                 reviews={filteredReviews.length ? filteredReviews : reviews}
@@ -127,7 +136,6 @@ const ReviewsPage = () => {
                             />
                         </Col>
                     </Row>
-
 
                     <Button variant="dark" className="mt-3 styled-button-2" to="/" as={Link}>
                         Volver a la Home

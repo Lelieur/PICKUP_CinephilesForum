@@ -1,0 +1,11 @@
+.profile-user-card {
+    margin-bottom: 1rem;
+}
+
+.profile-user-card .rounded-circle {
+    transition: transform 0.2s ease;
+}
+
+.profile-user-card .rounded-circle:hover {
+    transform: scale(1.1);
+}

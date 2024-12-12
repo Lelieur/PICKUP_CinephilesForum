@@ -13,6 +13,7 @@ import PrivateRoute from './PrivateRoutes'
 
 import NewCommunityForm from '../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm'
 import TopCommunitiesPage from '../pages/CommunityPages/TopCommunitiesPage/TopComunitiesPage'
+import UsersPage from '../pages/UserPages/UsersPage/UsersPage'
 
 const AppRoutes = () => {
 
@@ -30,6 +31,7 @@ const AppRoutes = () => {
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
 
                 <Route path={'/usuarios/:id'} element={<UserProfilePage />} />
+                <Route path={'/usuarios'} element={<UsersPage />} />
 
                 <Route path={'/*'} element={<Error404Page />} />
 
