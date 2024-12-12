@@ -47,8 +47,16 @@ const HomePage = () => {
                 </Row>
                 <Container>
                     <Row>
-                        <p className="fs-5 fw-bold">Nuestras comunidades de cinéfilos</p>
-                        <CommunitiesList communities={communities} />
+                        <Col>
+                            <p className="fs-5 fw-bold">Las películas más comentadas</p>
+
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <p className="fs-5 fw-bold">Nuestras comunidades de cinéfilos</p>
+                            <CommunitiesList communities={communities} />
+                        </Col>
                     </Row>
                 </Container>
             </div>

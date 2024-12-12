@@ -25,13 +25,13 @@ class ReviewServices {
     }
 
 
-    saveReview(movieApiId, content, rate, author) {
-        return this.axiosApp.post('/', { movieApiId, content, rate, author })
+    saveReview(reviewData) {
+        return this.axiosApp.post('/', reviewData)
     }
 
 
-    editReview(id, content, rate, likesCounter) {
-        return this.axiosApp.put(`/${id}`, { content, rate, likesCounter })
+    editReview(id, reviewData) {
+        return this.axiosApp.put(`/${id}`, reviewData)
     }
 
     getReviewsDetails(id) {
