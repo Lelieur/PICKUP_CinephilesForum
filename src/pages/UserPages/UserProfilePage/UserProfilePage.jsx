@@ -143,7 +143,7 @@ const UserProfilePage = () => {
 
                     <Row className="mt-3">
                         <Col md={12} className="p-xs-0">
-                            <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
+                            <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
                         </Col>
                     </Row>
                     <Row className="mt-3">
@@ -160,13 +160,31 @@ const UserProfilePage = () => {
 
                     <Row className="mt-3">
                         <Col md={12} className="p-xs-0">
+                            <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
+                        </Col>
+                    </Row>
+                    <Row className="mt-3">
+                        {communities.length > 0 ? (
+                            communities.map(community => (
+                                <Col key={community._id} md={4} className="mb-3">
+                                    <CommunityCard {...community} />
+                                </Col>
+                            ))
+                        ) : (
+                            <Col>No pertenece a ninguna comunidad.</Col>
+                        )}
+                    </Row>
+
+
+                    <Row className="mt-3">
+                        <Col md={12} className="p-xs-0">
                             <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
                         </Col>
                     </Row>
                     <Row className="mt-3">
                         {reviewsData.length > 0 ? (
                             reviewsData.map(review => (
-                                <Col key={review._id} md={12} className="mb-3" >
+                                <Col key={review._id} md={6} className="mb-3" >
                                     <ReviewCard {...review} />
                                 </Col>
                             ))

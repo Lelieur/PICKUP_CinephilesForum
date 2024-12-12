@@ -88,12 +88,44 @@ const Navigation = () => {
 
             <Offcanvas className="h-90 text-white border-0 w-75" show={showOffCanvas} onHide={() => setShowOffCanvas(false)}>
                 <Offcanvas.Body className="w-75 fw-bold w-100">
-                    <Row className="offcanvas-login text-center p-3">
-                        <Col>
-                            <Button className="btn-style-2 signup-btn border-0 fw-bold me-3 w-100" as={Link} to="/registro" onClick={() => setShowOffCanvas(false)}>REGISTRARSE</Button>
-                            <Button variant="outline-light" className="w-100 fw-bold mt-3" as={Link} to="/inicio-sesion" onClick={() => setShowOffCanvas(false)}>INICIAR SESIÓN</Button>
-                        </Col>
-                    </Row>
+                    {
+                        !loggedUser ?
+                            <Row className="offcanvas-login text-center p-3">
+                                <Col>
+                                    <Button className="btn-style-2 signup-btn border-0 fw-bold me-3 w-100" as={Link} to="/registro" onClick={() => setShowOffCanvas(false)}>REGISTRARSE</Button>
+                                    <Button variant="outline-light" className="w-100 fw-bold mt-3" as={Link} to="/inicio-sesion" onClick={() => setShowOffCanvas(false)}>INICIAR SESIÓN</Button>
+                                </Col>
+                            </Row>
+                            :
+                            <Row>
+                                <Col >
+                                    <Accordion flush>
+                                        <Accordion.Item eventKey="0">
+                                            <Accordion.Header>
+                                                <img className="border border-white object-fit-cover rounded-circle me-2"
+                                                    style={{ height: "1.5rem", width: "1.5rem" }}
+                                                    src={loggedUser.avatar ? loggedUser.avatar : homer}
+                                                    alt="avatar" />
+                                                <span className="fw-bold">{loggedUser.username} </span>
+                                            </Accordion.Header>
+                                            <Accordion.Body className="p-0">
+                                                <Row>
+                                                    <Col as={Link} to={`/usuarios/${loggedUser._id}`} onClick={() => setShowOffCanvas(false)}>
+                                                        <p className="ps-4 fs-6 pt-3 pb-3 m-0 text-white">Ver perfil</p>
+                                                    </Col>
+                                                </Row>
+                                                <hr className='m-0' />
+                                                <Row>
+                                                    <Col as={Link} to={`/usuarios/${loggedUser._id}`} onClick={() => { () => logoutUser(), setShowOffCanvas(false) }}>
+                                                        <p className="ps-4 fs-6 pt-3 pb-3 m-0 text-white">Cerrar sesión</p>
+                                                    </Col>
+                                                </Row>
+                                            </Accordion.Body>
+                                        </Accordion.Item>
+                                    </Accordion>
+                                </Col>
+                            </Row>
+                    }
                     <hr />
                     <Row className="p-3">
                         <Col className="text-decoration-none" as={Link} to="/" onClick={() => { setShowOffCanvas(false), setClickToggle(false) }}>
@@ -122,9 +154,9 @@ const Navigation = () => {
                     <Row className="accordion-menu">
                         <Col>
                             <Accordion flush>
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header><span className="fw-bold">Más</span></Accordion.Header>
-                                    <Accordion.Body className="p-0">
+                                <Accordion.Item eventKey="0" style={{ backgroundColor: "#141426" }}>
+                                    <Accordion.Header><span className="fw-bold text-white">Más</span></Accordion.Header>
+                                    <Accordion.Body className="p-0" style={{ backgroundColor: "#060613" }}>
                                         <Row className="ms-2 p-3">
                                             <Col as={Link} to="/trend">
                                                 Tendencias

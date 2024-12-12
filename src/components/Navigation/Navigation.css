@@ -56,6 +56,16 @@
     background: #060613
 }
 
+.accordion-header .accordion-button:focus {
+    box-shadow: none;
+    background: #060613;
+    color: white !important
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-icon) !important
+}
+
 .accordion-item,
 .accordion-button {
     background-color: transparent;

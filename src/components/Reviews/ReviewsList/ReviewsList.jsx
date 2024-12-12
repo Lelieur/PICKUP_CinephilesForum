@@ -9,11 +9,8 @@ const ReviewsList = ({ reviews, onLike, onEdit, onDelete, userId }) => {
                 {
                     reviews.map(review => {
                         return (
-                            <Col key={review.data._id} lg={{ span: 7 }} className="reviews-container">
-                                <ReviewCard review={{ ...review.data }}
-                                    onLike={onLike}
-                                    onEdit={onEdit}
-                                    onDelete={onDelete}
+                            <Col key={review._id} lg={{ span: 12 }} className="reviews-container">
+                                <ReviewCard {...review}
                                 />
                             </Col>
                         )

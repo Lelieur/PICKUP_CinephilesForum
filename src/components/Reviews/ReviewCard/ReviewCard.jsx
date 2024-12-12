@@ -4,14 +4,14 @@ import { homer } from '../../../const/image-paths'
 import { useContext, useState } from 'react'
 import { AuthContext } from '../../../contexts/auth.context'
 
-import { Heart, PencilSquare, Trash3 } from "react-bootstrap-icons"
+import { Heart, PencilSquare, Trash3, HeartFill } from "react-bootstrap-icons"
 
 import TimeSinceCreation from '../../../Tools/TimeSinceCreation';
 import ReviewServices from "../../../services/review.services"
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
-const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, author }) => {
+const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, author, usersLikes }) => {
 
     const { loggedUser } = useContext(AuthContext)
 
@@ -22,13 +22,15 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
         likesCounter: likesCounter,
         createdAt: createdAt,
         movieApiId: movieApiId,
-        author: author
+        author: author,
+        usersLikes: usersLikes
     })
 
     const [showEditModal, setShowEditModal] = useState(false)
     const [showRatingModal, setShowRatingModal] = useState(false)
     const [selectedRating, setSelectedRating] = useState(rate);
 
+    const [isReviewLiked, setIsReviewLiked] = useState(false)
 
     const formattedDate = TimeSinceCreation(createdAt)
 
@@ -41,8 +43,25 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
         setReviewData({ ...reviewData, ["rate"]: rating })
     }
 
-    const handleLikeClick = () => {
+    const handleLike = () => {
+        ReviewServices
+            .likeReview(reviewData._id, loggedUser)
+            .then(response => {
+                const { data: reviewData } = response
+                console.log(reviewData)
+                setReviewData(reviewData)
+            })
+            .catch(err => console.log(err))
+    }
 
+    const handleDislike = () => {
+        ReviewServices
+            .dislikeReview(reviewData._id, loggedUser)
+            .then(response => {
+                const { data: reviewData } = response
+                setReviewData(reviewData)
+            })
+            .catch(err => console.log(err))
     }
 
     const handleEdit = e => {
@@ -110,18 +129,33 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                 </Row>
                 <Row className="justify-content-end opacity-50">
                     <Col md={{ span: "auto" }} className="d-flex align-items-center">
-                        <Button
-                            className="text-white p-0 me-2"
-                            variant="link"
-                            size="lg"
-                            onClick={handleLikeClick}
-                        >
-                            <Heart />
-                        </Button>
-                        <span>{likesCounter}</span>
+                        {
+                            !reviewData.usersLikes?.includes(loggedUser?._id) &&
+                            <Button
+                                className="text-white p-0 me-2"
+                                variant="link"
+                                size="lg"
+                                onClick={() => { handleLike(), setIsReviewLiked(true) }}
+                            >
+                                <Heart />
+                            </Button>
+                        }
+                        {
+                            reviewData.usersLikes?.includes(loggedUser?._id) &&
+                            <Button
+                                className="text-white p-0 me-2"
+                                variant="link"
+                                size="lg"
+                                onClick={() => { handleDislike(), setIsReviewLiked(false) }}
+                            >
+                                <HeartFill />
+                            </Button>
+                        }
+
+                        <span>{reviewData.likesCounter}</span>
                     </Col>
                     {
-                        loggedUser?._id === author._id &&
+                        loggedUser?._id === author?._id &&
                         <Col md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
@@ -134,7 +168,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                         </Col>
                     }
                     {
-                        loggedUser?._id === author._id &&
+                        loggedUser?._id === author?._id &&
 
                         <Col md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
@@ -186,7 +220,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     <Col md={{ span: 1 }} className="pe-0">
                                         <img className='rounded-circle object-fit-cover'
                                             style={{ height: "3rem", width: "3rem" }}
-                                            src={loggedUser?.avatar || homer} alt={loggedUser?.author.username} />
+                                            src={loggedUser?.avatar || homer} alt="avatar" />
                                     </Col>
                                     <Col>
                                         <Form.Group controlId="reviewText">
@@ -247,7 +281,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                 </Modal.Body>
             </Modal >
 
-        </div>
+        </div >
     )
 }
 
