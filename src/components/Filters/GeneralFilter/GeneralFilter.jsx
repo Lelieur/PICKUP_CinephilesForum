@@ -31,7 +31,7 @@ const GeneralFilter = ({ onResultsFound, setShowFilter }) => {
                     communities: communityResults.data,
                     users: userResults.data,
                     reviews: reviewResults.data,
-                });
+                })
             })
             .catch((err) => console.error(err))
             .finally(() => setIsLoading(false))

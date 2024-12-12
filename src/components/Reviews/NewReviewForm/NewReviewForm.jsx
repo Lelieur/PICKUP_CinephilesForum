@@ -168,8 +168,6 @@ const NewReviewForm = ({ onInputChange }) => {
                                 </Row>
                             </Col>
                         }
-
-                        {/* Campo de descripción */}
                         {
                             !selectedMovie &&
 

@@ -30,6 +30,11 @@ class UserServices {
     editUser(id, userData) {
         return this.axiosApp.put(`/${id}`, userData)
     }
+
+    fetchUsersWithMostReviews() {
+        return this.axiosApp.get('/top-reviews')
+    }
+
 }
 
 export default new UserServices()

@@ -4,7 +4,7 @@
 
 .rate {
     background-color: #5e606b;
-    border-color: #242432  !important;
+    border-color: #242432 !important;
 }
 
 .ReviewCard .btn-primary {
@@ -13,5 +13,28 @@
 
 .modal-content .rate {
     background-color: #5e606b;
-    border-color: #060613  !important;
+    border-color: #060613 !important;
+}
+
+.ReviewCard .userProfile-card {
+    background-color: #252525;
+    /* Darker background */
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.ReviewCard .userProfile-card .object-fit-cover {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+.ReviewCard .userProfile-card .fs-5 {
+    font-size: 1.2rem;
+}
+
+.ReviewCard .userProfile-card .badge {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
 }

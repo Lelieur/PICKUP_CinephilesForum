@@ -7,12 +7,12 @@ import CommunitiesPage from '../pages/CommunityPages/CommunitiesPage/Communities
 import Error404Page from '../pages/Error404Page/Error404Page'
 import ReviewsPage from '../pages/ReviewPages/ReviewsPage/ReviewsPage'
 import UserProfilePage from '../pages/UserPages/UserProfilePage/UserProfilePage'
-import FiletrPage from '../pages/FilterPage'
 import DetailsReviewPage from '../pages/ReviewPages/DetailsReviewPage/DetailsReviewPage'
 
 import PrivateRoute from './PrivateRoutes'
 
 import NewCommunityForm from '../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm'
+import TopCommunitiesPage from '../pages/CommunityPages/TopCommunitiesPage/TopComunitiesPage'
 
 const AppRoutes = () => {
 
@@ -24,6 +24,7 @@ const AppRoutes = () => {
                 <Route path={'/comunidades'} element={<CommunitiesPage />} />
                 <Route path={'/comunidades/detalles/:communityId'} element={<CommunityDetailsPage />} />
                 <Route path={'/comunidades/crear'} element={<NewCommunityForm />} />
+                <Route path={'/top-comunidades'} element={<TopCommunitiesPage />} />
 
                 <Route path={'/registro'} element={<SignupPage />} />
                 <Route path={'/inicio-sesion'} element={<LoginPage />} />
@@ -34,8 +35,6 @@ const AppRoutes = () => {
 
                 <Route path={'/reviews'} element={<ReviewsPage />} />
                 <Route path={'/reviews/detalles/:reviewId'} element={<DetailsReviewPage />} />
-
-                <Route path={'/filter'} element={<FiletrPage />} />
 
             </Routes>
         </div>
