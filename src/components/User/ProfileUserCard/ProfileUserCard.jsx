@@ -6,58 +6,50 @@ const ProfileUserCard = ({ avatar, username, _id, reviews, followedCommunities }
 
     console.log(followedCommunities)
     return (
-        <div className="profile-user-card">
-            <Card className="border-0 bg-dark text-white p-2">
-                <Row className="align-items-center">
-                    <Col xs={2} className="text-center">
-                        <Link to={`/usuarios/${_id}`}>
-                            <img
-                                className="rounded-circle border border-white"
-                                style={{ height: "3rem", width: "3rem", objectFit: "cover" }}
-                                src={avatar || "/default-avatar.png"}
-                                alt={`${username} avatar`}
-                            />
-                        </Link>
-                    </Col>
-                    <Col xs={6}>
-                        <h5 className="mb-0 fw-bold">
-                            <Link to={`/usuarios/${_id}`} className="text-decoration-none text-white">
-                                {username}
+        <div className="ProfileUserCard">
+            <Container className="profile-user-card text-center" >
+                <Row lg={{ span: 12 }} className="g-4">
+                    <Col>
+                        <Card className="border-0  text-white p-3" style={{ backgroundColor: 'rgb(6, 6, 19)' }}>
+                            <Link to={`/usuarios/${_id}`}>
+                                <img
+                                    className="user-avatar border border-white rounded-circle"
+                                    src={avatar || "/default-avatar.png"}
+                                    alt={`${username} avatar`}
+                                />
                             </Link>
-                        </h5>
-                        <p className="mb-0 small text-muted">{reviews.length} reviews</p>
-                    </Col>
-                    <Col xs={4} className="text-end">
-                        <div className="d-flex justify-content-end">
-                            {followedCommunities.slice(0, 3).map((community) => (
-                                <OverlayTrigger
-                                    key={community._id}
-                                    placement="top"
-                                    overlay={<Tooltip>{community.name}</Tooltip>}
-                                >
-                                    <img
-                                        className="rounded-circle border border-white me-1"
-                                        style={{ height: "2rem", width: "2rem", objectFit: "cover" }}
-                                        src={community.cover || "/default-community-cover.png"}
-                                        alt={community.name}
-                                    />
-                                </OverlayTrigger>
-                            ))}
-                            {followedCommunities.length > 3 && (
-                                <OverlayTrigger
-                                    placement="top"
-                                    overlay={<Tooltip>+{followedCommunities.length - 3} more</Tooltip>}
-                                >
-                                    <span className="rounded-circle border border-white d-flex align-items-center justify-content-center bg-secondary text-white fw-bold" style={{ height: "2rem", width: "2rem" }}>
-                                        +{followedCommunities.length - 3}
-                                    </span>
-                                </OverlayTrigger>
-                            )}
-                        </div>
+                            <h5 className="mt-3 mb-1">
+                                <Link to={`/usuarios/${_id}`} className="text-decoration-none text-white">
+                                    {username}
+                                </Link>
+                            </h5>
+                            <p className="mb-2 text-white small">{reviews.length} reviews</p>
+                            <div className="followed-communities">
+                                {followedCommunities.slice(0, 4).map((community, index) => (
+                                    <OverlayTrigger
+                                        key={community._id}
+                                        placement="top"
+                                        overlay={<Tooltip>{community.name}</Tooltip>}
+                                    >
+                                        <Link to={`/comunidades/detalles/${community._id}`} className="community-link">
+                                            <img
+                                                className="community-cover"
+                                                style={{
+                                                    transform: `translateY(${index * -5}px)`,
+                                                    zIndex: followedCommunities.length - index,
+                                                }}
+                                                src={community.cover || "/default-community-cover.png"}
+                                                alt={community.name}
+                                            />
+                                        </Link>
+                                    </OverlayTrigger>
+                                ))}
+                            </div>
+                        </Card>
                     </Col>
                 </Row>
-            </Card>
-        </div>
+            </Container>
+        </div >
     )
 }
 export default ProfileUserCard

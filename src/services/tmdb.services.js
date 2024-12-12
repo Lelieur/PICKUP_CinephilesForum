@@ -36,6 +36,26 @@ class TMDBServices {
         return this.axiosApp.get(`/movies/upcoming?page=${page}`)
     }
 
+    getPopularMovies = async () => {
+        const response = await axios.get(`/popular`)
+        return response.data
+    }
+
+    getTopRatedMovies = async () => {
+        const response = await axios.get(`top-rated`)
+        return response.data
+    }
+
+    getNowPlayingMovies = async () => {
+        const response = await axios.get(`/now-playing`)
+        return response.data
+    }
+
+    getUpcomingMovies = async () => {
+        const response = await axios.get(`/upcoming`)
+        return response.data
+    }
+
 }
 
 export default new TMDBServices()

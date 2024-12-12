@@ -69,10 +69,10 @@ const CommunityDetailsPage = () => {
 
 
     return (
-
         isLoading ? <Loader /> :
 
             <div className="CommunityDetailsPage">
+
                 <Container>
                     <Row>
                         <Col className="position-relative" style={{ height: "20rem" }}>

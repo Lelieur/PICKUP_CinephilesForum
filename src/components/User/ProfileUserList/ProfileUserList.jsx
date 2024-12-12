@@ -11,7 +11,7 @@ const ProfileUserList = ({ users }) => {
                 {
                     users.map(elm => {
                         return (
-                            <Col key={elm._id} lg={{ span: 12 }} className="reviews-container">
+                            <Col key={elm._id} lg={{ span: 2 }} className="reviews-container">
                                 <ProfileUserCard {...elm}
                                 />
                             </Col>

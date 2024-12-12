@@ -1,2 +1,2 @@
-export const genres = ["Drama", "Acción", "Terror", "Comedia", "Romántico"]
+export const genres = ["Drama", "Acción", "Terror", "Comedia", "Romántico", "Aventura", "Ciencia Ficción", "Fantasía", "Suspense", "Documental", "Musical", "Animación", "Histórico", "Biográfico", "Misterio", "Crimen", "Western", "Deportes", "Superhéroes"]
 export const decades = [1900, 1910, 1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
