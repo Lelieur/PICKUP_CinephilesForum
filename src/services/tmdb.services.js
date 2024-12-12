@@ -32,6 +32,10 @@ class TMDBServices {
         return this.axiosApp.get(`/${id}`)
     }
 
+    fetchUpcomingMovies(page = 1) {
+        return this.axiosApp.get(`/upcoming?page=${page}`)
+    }
+
 }
 
 export default new TMDBServices()

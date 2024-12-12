@@ -4,6 +4,7 @@ import { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth.context'
 import { homer } from '../../const/image-paths';
+import GeneralFilter from '../Filters/GeneralFilter/GeneralFilter';
 
 import "./Navigation.css"
 
@@ -14,8 +15,11 @@ const Navigation = () => {
 
     const [clickToggle, setClickToggle] = useState(false)
     const [showOffCanvas, setShowOffCanvas] = useState(false)
+    const [showFilter, setShowFilter] = useState(false)
 
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(false)
+
+    const toggleSearchFilter = () => setShowFilter(prevState => !prevState)
 
     return (
         <div className="Navigation">
@@ -49,7 +53,7 @@ const Navigation = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="boder-0 m-0">
                                     <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend/reviews">Top Reviews</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/top-peliculas">Top Películas</Dropdown.Item>
                                     <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
@@ -81,8 +85,16 @@ const Navigation = () => {
 
                     </Navbar.Collapse>
                     <Nav className="d-flex align-items-center">
-                        <Button variant="ligth"><Search className="search-icon" size="20px" /></Button>
+                        <Button variant="ligth" onClick={() => setShowFilter(true)}>
+                            <Search className="search-icon" size="20px" />
+                        </Button>
                     </Nav>
+                    {showFilter && (
+                        <GeneralFilter
+                            onResultsFound={() => { }}
+                            setShowFilter={setShowFilter}
+                        />
+                    )}
                 </Container>
             </Navbar >
 

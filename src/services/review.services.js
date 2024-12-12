@@ -78,6 +78,7 @@ class ReviewServices {
     getOneReviewFullData(id) {
         return this.axiosApp.get(`/details/${id}`)
     }
+
 }
 
 export default new ReviewServices()

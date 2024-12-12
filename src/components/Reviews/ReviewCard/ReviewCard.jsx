@@ -1,4 +1,4 @@
-import './ReviewCard.css';
+import './ReviewCard.css'
 import { Card, Row, Col, Button, Modal, Form, ButtonGroup } from "react-bootstrap"
 import { homer } from '../../../const/image-paths'
 import { useContext, useState } from 'react'

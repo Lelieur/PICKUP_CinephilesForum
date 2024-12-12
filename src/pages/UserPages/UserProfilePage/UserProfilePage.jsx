@@ -194,7 +194,7 @@ const UserProfilePage = () => {
                     </Row>
                     <Row className="mt-3">
                         <Col>
-                            <Button>Añadir Reseña</Button>
+                            <Button className="border-0 fw-bold btn-style-2" onClick={() => setShowModal(true)}>Añadir Reseña</Button>
                         </Col>
                     </Row>
 
