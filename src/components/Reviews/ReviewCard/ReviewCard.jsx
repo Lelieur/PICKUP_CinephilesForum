@@ -121,7 +121,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                         <span>{likesCounter}</span>
                     </Col>
                     {
-                        loggedUser._id === author._id &&
+                        loggedUser?._id === author._id &&
                         <Col md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
@@ -134,7 +134,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                         </Col>
                     }
                     {
-                        loggedUser._id === author._id &&
+                        loggedUser?._id === author._id &&
 
                         <Col md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
@@ -186,7 +186,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     <Col md={{ span: 1 }} className="pe-0">
                                         <img className='rounded-circle object-fit-cover'
                                             style={{ height: "3rem", width: "3rem" }}
-                                            src={loggedUser?.avatar || homer} alt={loggedUser.author?.username} />
+                                            src={loggedUser?.avatar || homer} alt={loggedUser?.author.username} />
                                     </Col>
                                     <Col>
                                         <Form.Group controlId="reviewText">
