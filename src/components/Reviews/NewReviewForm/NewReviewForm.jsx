@@ -10,7 +10,7 @@ import TMDBServices from "../../../services/tmdb.services"
 
 import "./NewReviewForm.css"
 
-const NewReviewForm = ({ newReviewCreated }) => {
+const NewReviewForm = ({ onInputChange }) => {
 
     const { loggedUser } = useContext(AuthContext)
 
@@ -90,21 +90,21 @@ const NewReviewForm = ({ newReviewCreated }) => {
                 setSelectedMovie(null)
                 setQuerySearch('')
                 setMoviesFilter([])
-                newReviewCreated()
+                onInputChange()
             })
             .catch(err => console.log(err))
     }
 
     return (
         <div className="NewReviewForm">
-            <Card className="mx-auto mt-5 p-4 bg-transparent border rounded-0">
+            <Card className="mx-auto mt-5 p-4 rounded-4">
                 <Form onSubmit={handleSubmit}>
                     <Row className="h-100">
                         {/* Mostrar la imagen de la película seleccionada */}
                         {
                             !selectedMovie &&
-                            <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0">
-                                <Button className="btn-style-1 border-0 fw-bold" size="sm" onClick={() => setShowSearchMoviesModal(true)}><Plus /></Button>
+                            <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0 border rounded">
+                                <Button className="border-0 fw-bold" size="sm" onClick={() => setShowSearchMoviesModal(true)}><Plus /></Button>
                             </Col>
                         }
                         {
@@ -142,7 +142,7 @@ const NewReviewForm = ({ newReviewCreated }) => {
                             <Col md={{ span: 10 }}>
                                 <Row className="d-flex align-items-center">
                                     <Col>
-                                        <p className="m-0 ps-2 d-flex align-items-center text-white"><span className='fs-3 fw-bold me-2'>{selectedMovie.original_title}</span><span className="fs-5">({new Date(selectedMovie.release_date).getFullYear()})</span></p>
+                                        <p className="m-0 ps-2 d-flex align-items-center text-white"><span className='fs-5 fw-bold me-2'>{selectedMovie.original_title}</span><span className="fs-6">({new Date(selectedMovie.release_date).getFullYear()})</span></p>
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
@@ -176,7 +176,7 @@ const NewReviewForm = ({ newReviewCreated }) => {
                             <Col md={{ span: 10 }}>
                                 <Row className="d-flex align-items-center">
                                     <Col>
-                                        <p className="m-0 ps-2 d-flex align-items-center text-white fs-3 fw-bold">¿De qué película vas a hablar hoy?</p>
+                                        <p className="m-0 ps-2 d-flex align-items-center text-white fs-5 fw-bold">¿De qué película vas a hablar hoy?</p>
                                     </Col>
                                 </Row>
                                 <Row className="mt-3">
@@ -195,7 +195,7 @@ const NewReviewForm = ({ newReviewCreated }) => {
                                                 value={reviewData.content}
                                                 name="content"
                                                 onChange={handleInputChange}
-                                                className="bg-transparent text-white border-0 custom-placeholder"
+                                                className="bg-transparent text-white border-0 m-0 custom-placeholder"
                                             />
                                         </Form.Group>
                                     </Col>

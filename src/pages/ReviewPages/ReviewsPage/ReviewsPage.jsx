@@ -70,17 +70,21 @@ const ReviewsPage = () => {
 
         if (filterType === "top") {
             setFilteredReviews(filteredReviews.sort((a, b) => b.likesCounter - a.likesCounter))
+            setActiveFilter("top")
         }
         if (filterType === "all") {
             setFilteredReviews(filteredReviews.sort(
                 (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
             ))
+            setActiveFilter("all")
         }
     }
 
-    const handleFilter = (type) => {
-        setActiveFilter(type)
-        applyFilters(type)
+    const onInputChange = () => {
+
+        setIsReviewsLoaded(false)
+        fetchAllReviews()
+        applyFilters("all")
     }
 
 
@@ -94,32 +98,32 @@ const ReviewsPage = () => {
                         <Col className="mt-5">
                             <Button
                                 variant="link"
-                                className="text-white text-decoration-none fw-bold"
-                                onClick={() => handleFilter("all")}
+                                className="text-white text-decoration-none fw-bold filter-button opacity-50"
+                                onClick={() => applyFilters("all")}
                                 active={activeFilter === "all"}
                             >
                                 Más recientes
                             </Button>
                             <Button
                                 variant="link"
-                                className="text-white text-decoration-none fw-bold"
-                                onClick={() => handleFilter("top")}
+                                className="text-white text-decoration-none fw-bold filter-button opacity-50"
+                                onClick={() => applyFilters("top")}
                                 active={activeFilter === "top"}
                             >
                                 Más valoradas
                             </Button>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <NewReviewForm newReviewCreated={fetchAllReviews} />
+                    <Row className="justify-content-center mb-3">
+                        <Col md={{span: 10}} >
+                            <NewReviewForm onInputChange={onInputChange} />
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
+                    <Row className="justify-content-center ">
+                        <Col md={{span: 10}}>
                             <ReviewsList
                                 reviews={filteredReviews.length ? filteredReviews : reviews}
-                                loggedUser={loggedUser}
+                                onInputChange={onInputChange}
                             />
                         </Col>
                     </Row>
