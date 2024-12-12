@@ -39,7 +39,6 @@ const CommunitiesPage = () => {
     }
 
     return (
-
         isLoading ? <Loader /> :
 
             <div className="CommunitiesPage">

@@ -31,8 +31,7 @@ const UsersPage = () => {
             <div className="UsersPage">
                 <div className="HomePage">
                     <Container className="mt-3" >
-                        <h5 className="fw-bold mb-0">Usuarios</h5>
-                        <p className="fs-6 m-0 opacity-50 mb-3">Descubre nuestras {users.length} usuarios</p>
+                        <p className="fs-6 m-0 opacity-50 mb-3">Descubre nuestr@s {users.length} usuari@s</p>
                         <ProfileUserList users={users} />
                     </Container>
                 </div>

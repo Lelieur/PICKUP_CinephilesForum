@@ -23,7 +23,6 @@ const SignupForm = () => {
         favoriteGenres: []
     })
 
-    // Manejo de cambios en inputs
     const handleInputChange = (e, index = null) => {
         const { value, name } = e.target
 
@@ -37,14 +36,14 @@ const SignupForm = () => {
         })
     }
 
-    // Añadir seleccion socialNetwork
+
     const handleAddSocialNetwork = () => {
         setSignupData({
             ...signupData,
             socialNetworksProfiles: [...signupData.socialNetworksProfiles, '']
         })
     }
-    //Eliminación campo socialNetwork
+
     const handleRemoveSocialNetwork = (index) => {
         setSignupData((prevData) => ({
             ...prevData,
@@ -52,15 +51,23 @@ const SignupForm = () => {
         }))
     }
 
-    // Selección de géneros favoritos (Con ternario, más explicito y declarativo)
-    const handleGenreChange = (e) => {
-        const { value, checked } = e.target
-        setSignupData((prevData) => ({
-            ...prevData,
-            favoriteGenres: checked
-                ? [...prevData.favoriteGenres, value] // añade el  género si está marcado
-                : prevData.favoriteGenres.filter((genre) => genre !== value) // elimina el género si está desmarcado
-        }))
+
+    const handleGenreChange = (e, idx) => {
+        const updatedGenres = [...signupData.favoriteGenres]
+        updatedGenres[idx] = e.target.value
+        setSignupData({ ...signupData, favoriteGenres: updatedGenres })
+    }
+
+    const addNewGenre = () => {
+        setSignupData({
+            ...signupData,
+            favoriteGenres: [...signupData.favoriteGenres, ""]
+        })
+    }
+
+    const deleteNewGenre = (idx) => {
+        const updatedGenres = signupData.favoriteGenres.filter((_, index) => index !== idx)
+        setSignupData({ ...signupData, favoriteGenres: updatedGenres })
     }
 
     const handleUpload = e => {
@@ -161,8 +168,8 @@ const SignupForm = () => {
                                 name="socialNetworksProfiles"
                             />
                             <Button
+                                className="btn-style-1 me-2 border-0 fw-bold" size="sm"
                                 variant="dark"
-                                className="ms-2"
                                 onClick={() => handleRemoveSocialNetwork(index)}
                             >
                                 Eliminar
@@ -170,7 +177,7 @@ const SignupForm = () => {
                         </div>
                     ))}
                 </Form.Group>
-                <Button variant="dark" onClick={handleAddSocialNetwork} size="sm">
+                <Button className="btn-style-1 me-2 border-0 fw-bold" size="sm" variant="dark" onClick={handleAddSocialNetwork}>
                     Añadir otra red social
                 </Button>
 
@@ -187,27 +194,45 @@ const SignupForm = () => {
 
                 <Form.Group className="mb-3" controlId="favoriteGenres">
                     <Form.Label>Géneros Favoritos</Form.Label>
-                    {
-                        genres.map((genre) => (
-                            <Form.Check
-                                key={genre}
-                                type="checkbox"
-                                label={genre}
+                    <div>
+                        {signupData.favoriteGenres.map((genre, idx) => (
+                            <Form.Control
+                                key={idx}
+                                as="select"
+                                className="mb-2"
+                                type="text"
                                 value={genre}
-                                checked={signupData.favoriteGenres.includes(genre)}
-                                onChange={handleGenreChange}
-                            />
-                        ))
-                    }
+                                onChange={(e) => handleGenreChange(e, idx)}
+                            >
+                                <option value="">Selecciona un género</option>
+                                {genres.map((genreOption) => (
+                                    !signupData.favoriteGenres.includes(genreOption) || genreOption === genre ? (
+                                        <option key={genreOption} value={genreOption}>
+                                            {genreOption}
+                                        </option>
+                                    ) : null
+                                ))}
+                            </Form.Control>
+                        ))}
+                    </div>
+
+                    <Button className="btn-style-1 me-2 border-0 fw-bold" size="sm" onClick={addNewGenre}>
+                        Añadir género
+                    </Button>
+                    {signupData.favoriteGenres.length > 1 && (
+                        <Button className="btn-style-1 me-2 border-0 fw-bold" size="sm" onClick={() => deleteNewGenre(signupData.favoriteGenres.length - 1)}>
+                            Quitar género
+                        </Button>
+                    )}
                     <div className="mt-2">
-                        {signupData.favoriteGenres.map((genre) => (
-                            <span key={genre} className="badge bg-secondary me-2">{genre}</span>
+                        {signupData.favoriteGenres.map((genre, idx) => (
+                            genre && <span key={idx} className="badge bg-secondary me-2">{genre}</span>
                         ))}
                     </div>
                 </Form.Group>
 
                 <div className="d-grid">
-                    <Button variant="dark" type="submit">Registrarme</Button>
+                    <Button className="btn-style-1 me-2 border-0 fw-bold" size="sm" variant="dark" type="submit">Registrarme</Button>
                 </div>
 
             </Form>

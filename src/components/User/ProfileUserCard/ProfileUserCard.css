@@ -1,11 +1,50 @@
+/* General card styles */
 .profile-user-card {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 }
 
-.profile-user-card .rounded-circle {
-    transition: transform 0.2s ease;
+.profile-user-card .user-avatar {
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    transition: transform 0.3s ease;
 }
 
-.profile-user-card .rounded-circle:hover {
+.profile-user-card .user-avatar:hover {
     transform: scale(1.1);
+}
+
+.followed-communities {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.community-link {
+    position: relative;
+}
+
+.community-cover {
+    width: 3rem;
+    height: 3rem;
+    object-fit: cover;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-left: -1rem;
+}
+
+.community-cover:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-color: #121212;
+
+}
+
+.profile-user-card {
+    margin-bottom: 1.5rem;
 }
