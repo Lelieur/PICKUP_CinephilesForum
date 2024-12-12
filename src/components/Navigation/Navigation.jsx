@@ -1,7 +1,7 @@
 import { Container, Nav, Navbar, Button, Dropdown, Offcanvas, Row, Col, Accordion } from 'react-bootstrap'
 import { Search, List, XLg } from "react-bootstrap-icons"
 import { useState, useContext } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth.context'
 import { homer } from '../../const/image-paths';
 import GeneralFilter from '../Filters/GeneralFilter/GeneralFilter';
@@ -12,14 +12,15 @@ import "./Navigation.css"
 const Navigation = () => {
 
     const { loggedUser, logoutUser } = useContext(AuthContext)
+    const navigate = useNavigate()
 
     const [clickToggle, setClickToggle] = useState(false)
     const [showOffCanvas, setShowOffCanvas] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
-
     const [expanded, setExpanded] = useState(false)
 
     const toggleSearchFilter = () => setShowFilter(prevState => !prevState)
+
 
     return (
         <div className="Navigation">
@@ -77,7 +78,7 @@ const Navigation = () => {
                                         <Dropdown.Menu>
                                             <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to={`/usuarios/${loggedUser._id}`}>Ver perfil</Dropdown.Item>
                                             <hr className='m-0' />
-                                            <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as="button" onClick={() => logoutUser()}>Cerrar sesión</Dropdown.Item>
+                                            <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as="button" onClick={() => { logoutUser(), navigate("/") }}>Cerrar sesión</Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </Nav>
@@ -128,7 +129,7 @@ const Navigation = () => {
                                                 </Row>
                                                 <hr className='m-0' />
                                                 <Row>
-                                                    <Col as={Link} to={`/usuarios/${loggedUser._id}`} onClick={() => { () => logoutUser(), setShowOffCanvas(false) }}>
+                                                    <Col as={Link} to={`/usuarios/${loggedUser._id}`} onClick={() => { () => logoutUser(), setShowOffCanvas(false), navigate("/") }}>
                                                         <p className="ps-4 fs-6 pt-3 pb-3 m-0 text-white">Cerrar sesión</p>
                                                     </Col>
                                                 </Row>

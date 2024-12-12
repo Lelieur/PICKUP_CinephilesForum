@@ -3,6 +3,7 @@ import { homeCover } from '../../const/image-paths'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from "react"
 
+import TopCommunitiesList from '../../components/CommunitiesComponents/TopCommunitiesList/TopCommunitiesList'
 import MoviesPostersList from '../../components/MovieComponentes/MoviesPostersList/MoviesPostersList'
 import CommunitiesList from '../../components/CommunitiesComponents/CommunitiesList/CommunitiesList'
 import Loader from '../../components/Loader/Loader'
@@ -14,7 +15,9 @@ import "./HomePage.css"
 const HomePage = () => {
 
     const [communities, setCommunities] = useState([])
-    const [movies, setMovies] = useState([])
+    const [topCommunities, setTopCommunities] = useState([])
+    const [lastReviewdMovies, setLastReviewedMovies] = useState([])
+    const [mostReviewdMovies, setMostReviewedMovies] = useState([])
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -27,14 +30,18 @@ const HomePage = () => {
 
         const promises = [
             CommunityServices.fetchCommunities(),
-            ReviewServices.getLastedMoviesReviewed()
+            CommunityServices.fetchMostFollowedCommunities(),
+            ReviewServices.getLastReviewedMovies(),
+            ReviewServices.getMostReviewedMovies()
         ]
 
         Promise
             .all(promises)
-            .then(([communities, movies]) => {
+            .then(([communities, topCommunites, lastReviewedMovies, mostReviewedMovies]) => {
                 setCommunities(communities.data)
-                setMovies(movies.data)
+                setTopCommunities(topCommunites.data)
+                setLastReviewedMovies(lastReviewedMovies.data)
+                setMostReviewedMovies(mostReviewedMovies.data)
             })
             .then(() => setIsLoading(false))
             .catch(err => console.log(err))
@@ -59,15 +66,27 @@ const HomePage = () => {
                     </Col>
                 </Row>
                 <Container>
-                    <Row>
+                    <Row className="mt-3">
                         <Col>
-                            <p className="fs-5 fw-bold">Últimas películas comentadas</p>
-                            <MoviesPostersList movies={movies} />
+                            <p className="ms-2 mb-4 fs-5 fw-bold">Últimas películas comentadas</p>
+                            <MoviesPostersList movies={lastReviewdMovies} />
                         </Col>
                     </Row>
                     <Row className="mt-4">
                         <Col>
-                            <p className="fs-5 fw-bold">Nuestras comunidades de cinéfilos</p>
+                            <p className="ms-2 mb-4 fs-5 fw-bold">Las comunidades más seguidas</p>
+                            <TopCommunitiesList communities={topCommunities} />
+                        </Col>
+                    </Row>
+                    <Row className="mt-4">
+                        <Col>
+                            <p className="ms-2 mb-4 fs-5 fw-bold">Películas más comentadas</p>
+                            <MoviesPostersList movies={mostReviewdMovies} />
+                        </Col>
+                    </Row>
+                    <Row className="mt-4">
+                        <Col>
+                            <p className="ms-2 mb-4 fs-5 fw-bold">Nuestras comunidades de cinéfilos</p>
                             <CommunitiesList communities={communities} />
                         </Col>
                     </Row>

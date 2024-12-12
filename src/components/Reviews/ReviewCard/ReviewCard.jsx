@@ -7,10 +7,9 @@ import { Link } from 'react-router-dom'
 import { Heart, PencilSquare, Trash3, HeartFill } from "react-bootstrap-icons"
 import TimeSinceCreation from '../../../TimeSinceCreation/timeSinceCreation';
 import ReviewServices from "../../../services/review.services"
+import MoviePosterCard from '../../MovieComponentes/MoviePosterCard/MoviePosterCard'
 
-const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
-
-const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, author, usersLikes }) => {
+const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, author, usersLikes, movieData }) => {
 
     const { loggedUser } = useContext(AuthContext)
 
@@ -86,11 +85,9 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
             <Card className='p-3 m-0 mb-3 text-white text-start'>
                 <Row className='pt-1'>
                     <Col xs={1} md={2} className="ms-2 position-relative">
-                        <img
-                            className='object-fit-cover rounded w-100'
-                            src={`${TMDB_API_IMG_URL}/w780/${movieApiId?.poster_path}`}
-                            alt="movie poster"
-                        />
+                        <Link>
+                            <MoviePosterCard {...movieData} movieApiId={movieApiId} />
+                        </Link>
                         <p
                             className="ms-3 mt-2 fs-6 fw-bold position-absolute top-0 start-0 translate-middle rounded-circle m-0 rate d-flex align-items-center justify-content-center border border-5"
                             style={{ height: "2.5rem", width: "2.5rem" }}
@@ -101,7 +98,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     <Col xs={10} md={9}>
                         <Row className="d-flex align-items-center">
                             <Col>
-                                <p className="m-0 d-flex align-items-center"><span className='fs-5 fw-bold me-2'>{movieApiId?.original_title}</span><span className="fs-6">({new Date(movieApiId?.release_date).getFullYear()})</span></p>
+                                <p className="m-0 d-flex align-items-center"><span className='fs-5 fw-bold me-2'>{movieApiId?.original_title ? movieApiId.original_title : movieData.original_title}</span><span className="fs-6">({new Date(movieApiId?.release_date ? movieApiId?.release_date : movieData.release_date).getFullYear()})</span></p>
                             </Col>
                         </Row>
                         <Row className="mt-3">

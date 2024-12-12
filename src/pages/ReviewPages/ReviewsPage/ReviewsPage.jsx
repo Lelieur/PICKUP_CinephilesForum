@@ -19,49 +19,33 @@ const ReviewsPage = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const [reviews, setReviews] = useState([])
-    const [isReviewsLoaded, setIsReviewsLoaded] = useState(false)
     const [filteredReviews, setFilteredReviews] = useState([])
 
     const [activeFilter, setActiveFilter] = useState("all")
 
     useEffect(() => {
-        fetchAllReviews()
+        fetchAllData()
     }, [])
 
-    useEffect(() => {
-        fetchReviewsFullData()
-        setIsLoading(false)
-    }, [isReviewsLoaded])
+    const fetchAllData = () => {
 
-    const fetchAllReviews = () => {
         ReviewServices
             .getAllReviews()
             .then(response => {
-                const { data: reviews } = response
-                setReviews(reviews)
-                setIsReviewsLoaded(true)
+
+                const promises = response.data.map(review => ReviewServices.getOneReviewFullData(review._id))
+
+                Promise
+                    .all(promises)
+                    .then(response => {
+                        const fullDataReviews = response.map(elm => elm.data)
+                        setReviews(fullDataReviews)
+                        setFilteredReviews(fullDataReviews)
+                    })
+                    .catch(err => console.log(err))
             })
+            .then(() => setIsLoading(false))
             .catch(err => console.log(err))
-    }
-
-    const fetchReviewsFullData = () => {
-
-        const reviewPromises = reviews.map((review) =>
-
-            ReviewServices
-                .getOneReviewFullData(review._id)
-                .then(response => {
-                    return response.data
-                })
-                .catch(err => console.log(err))
-        )
-
-        Promise
-            .all(reviewPromises)
-            .then(response => {
-                setReviews(response)
-            })
-            .catch(err => console.error(err))
     }
 
     const applyFilters = (filterType) => {
@@ -81,11 +65,7 @@ const ReviewsPage = () => {
     }
 
     const onInputChange = (newReview) => {
-
-        console.log(newReview)
-
         reviews.push(newReview)
-
         setReviews(reviews)
     }
 

@@ -11,7 +11,7 @@ const MoviesPostersList = ({ movies }) => {
                     {
                         movies.map(movie => {
                             return (
-                                <Col xs={{ span: 5 }} md={{ span: 3 }} className="ms-0 pe-1">
+                                <Col xs={{ span: 5 }} md={{ span: 3 }} className="ms-0 p-1">
                                     <MoviePosterCard key={movie.id} {...movie} />
                                 </Col>
                             )

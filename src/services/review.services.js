@@ -42,14 +42,21 @@ class ReviewServices {
         return this.axiosApp.get('/')
     }
 
-    getLastedMoviesReviewed() {
+    getAllReviewsFromMovie(id) {
+        return this.axiosApp.get(`/movies/${id}`)
+    }
+
+    getLastReviewedMovies() {
         return this.axiosApp.get('/movies')
     }
 
-    getReviewsFromMovie(movieApiId) {
-        return this.axiosApp.get(`/movies/${movieApiId}`)
+    getMostReviewedMovies() {
+        return this.axiosApp.get('/top/movies')
     }
 
+    getReviewsFromMovie(movieId) {
+        return this.axiosApp.get(`/movies/${movieId}`)
+    }
 
     getReviewsFromAuthor(author) {
         return this.axiosApp.get(`/users/${author}`)
