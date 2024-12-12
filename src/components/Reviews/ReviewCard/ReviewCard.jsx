@@ -6,7 +6,7 @@ import { AuthContext } from '../../../contexts/auth.context'
 
 import { Heart, PencilSquare, Trash3, HeartFill } from "react-bootstrap-icons"
 
-import TimeSinceCreation from '../../../Tools/TimeSinceCreation';
+import TimeSinceCreation from '../../../TimeSinceCreation/timeSinceCreation';
 import ReviewServices from "../../../services/review.services"
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
