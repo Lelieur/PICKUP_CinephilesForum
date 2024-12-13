@@ -21,7 +21,7 @@ const TopRatedMovies = () => {
 
     return (
         <div>
-            <h2>Top Rated Movies</h2>
+            <h2>Películas más Valoradas</h2>
             {error && <p>{error}</p>}
             <div className="movie-list">
                 {movies.length > 0 ? (

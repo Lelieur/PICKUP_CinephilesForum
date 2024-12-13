@@ -21,7 +21,6 @@ const PopularMovies = () => {
     return (
         <div>
             <h2>Películas Populares</h2>
-            <hr />
             <div className="movie-list">
                 {movies.length > 0 ? (
                     movies.map((movie) => (
