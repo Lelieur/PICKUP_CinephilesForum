@@ -10,6 +10,7 @@ import Loader from "../../../components/Loader/Loader"
 import UserServices from "../../../services/user.services"
 import ReviewServices from "../../../services/review.services"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+import EditUserForm from "../../../components/User/EditFormUser/EditFormUser"
 import NewCommunityForm from "./../../../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm"
 import TopCommunitiesList from "../../../components/CommunitiesComponents/TopCommunitiesList/TopCommunitiesList"
 import CommunitiesList from "../../../components/CommunitiesComponents/CommunitiesList/CommunitiesList"
@@ -27,6 +28,8 @@ const UserProfilePage = () => {
     const [reviewsData, setReviewsData] = useState([])
 
     const [showModal, setShowModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+
     const [showNewCommunityModal, setShowNewCommunityModal] = useState(false)
 
     useEffect(() => {
@@ -92,6 +95,13 @@ const UserProfilePage = () => {
                                             <p className="fs-5">{bio}</p>
                                         </Col>
                                     </Row>
+                                </Col>
+                                <Col xs={12} lg={5}>
+                                    {loggedUser && (
+                                        <Button className="border-0 fw-bold btn-style-2 mt-3" onClick={() => setShowEditModal(true)}>
+                                            Editar Perfil
+                                        </Button>
+                                    )}
                                 </Col>
                                 <Col xs={12} lg={6}>
                                     <Row className="order-2 d-flex justify-content-center align-items-center">
@@ -200,6 +210,14 @@ const UserProfilePage = () => {
                         centered>
                         <Modal.Body className="p-0 m-0">
                             <NewCommunityForm />
+                        </Modal.Body>
+                    </Modal>
+                    <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Editar Perfil</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <EditUserForm />
                         </Modal.Body>
                     </Modal>
 

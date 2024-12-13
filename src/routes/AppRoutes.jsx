@@ -15,6 +15,10 @@ import PrivateRoute from './PrivateRoutes'
 import NewCommunityForm from '../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm'
 import TopCommunitiesPage from '../pages/CommunityPages/TopCommunitiesPage/TopComunitiesPage'
 import UsersPage from '../pages/UserPages/UsersPage/UsersPage'
+import PopularMovies from '../pages/MoviesPage/PopularMovies/PopularMovies'
+import UpcomingMovies from '../pages/MoviesPage/UpcomingMovies/UpcomingMovies'
+import TopRatedMovies from '../pages/MoviesPage/TopRatedMovies/TopRatedMovies'
+import NowPlayingMovies from '../pages/MoviesPage/NowPlayingMovies/NowPlayingMovies'
 
 const AppRoutes = () => {
 
@@ -39,6 +43,12 @@ const AppRoutes = () => {
                 <Route path={'/reviews'} element={<ReviewsPage />} />
                 <Route path={'/reviews/movie/:movieId'} element={<ReviewsByMoviePage />} />
                 <Route path={'/reviews/:reviewId'} element={<DetailsReviewPage />} />
+
+                <Route path={'/peliculas-populares'} element={<PopularMovies />} />
+                <Route path={'/estrenos'} element={<NowPlayingMovies />} />
+                <Route path={'/mejor-valoradas'} element={<TopRatedMovies />} />
+                <Route path={'/próximos-estrenos'} element={<UpcomingMovies />} />
+
 
             </Routes>
         </div>
