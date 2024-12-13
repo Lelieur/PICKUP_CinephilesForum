@@ -10,7 +10,7 @@ import TMDBServices from "../../../services/tmdb.services"
 
 import "./NewReviewForm.css"
 
-const NewReviewForm = ({ onInputChange }) => {
+const NewReviewForm = ({ movieData }) => {
 
     const { loggedUser } = useContext(AuthContext)
 
@@ -23,7 +23,7 @@ const NewReviewForm = ({ onInputChange }) => {
 
     const [querySearch, setQuerySearch] = useState("")
     const [moviesFilter, setMoviesFilter] = useState([])
-    const [selectedMovie, setSelectedMovie] = useState(null)
+    const [selectedMovie, setSelectedMovie] = useState(undefined)
 
     const [selectedRating, setSelectedRating] = useState(null);
 
@@ -97,24 +97,24 @@ const NewReviewForm = ({ onInputChange }) => {
 
     return (
         <div className="NewReviewForm">
-            <Card className="mx-auto mt-5 p-4 rounded-4">
+            <Card className="mx-auto p-4 rounded-4">
                 <Form onSubmit={handleSubmit}>
                     <Row className="h-100">
                         {
-                            !selectedMovie &&
+                            !selectedMovie && !movieData &&
                             <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0 border rounded">
                                 <Button className="border-0 fw-bold" size="sm" onClick={() => setShowSearchMoviesModal(true)}><Plus /></Button>
                             </Col>
                         }
                         {
-                            selectedMovie &&
+                            selectedMovie || movieData &&
                             <Col
                                 md={{ span: 2 }}
-                                className="rounded p-0 position-relative">
+                                className="rounded p-0 position-relative d-none d-md-inline">
                                 <img
                                     className="object-fit-cover h-100 w-100 rounded"
-                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
-                                    alt={`${selectedMovie.original_title} poster`} />
+                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie ? selectedMovie.poster_path : movieData.poster_path}`}
+                                    alt={`movie poster`} />
                                 <Button variant="link"
                                     className="text-white p-0 pe-1 m-0 end-0 position-absolute"
                                     onClick={() => { deleteNewSelectedMovies() }}>
@@ -135,70 +135,59 @@ const NewReviewForm = ({ onInputChange }) => {
                                 </Button>
                             </Col>
                         }
-                        {
-                            selectedMovie &&
 
-                            <Col md={{ span: 10 }}>
+                        <Col md={{ span: 10 }}>
+                            {
+                                selectedMovie || movieData &&
                                 <Row className="d-flex align-items-center">
                                     <Col>
-                                        <p className="m-0 ps-2 d-flex align-items-center text-white"><span className='fs-5 fw-bold me-2'>{selectedMovie.original_title}</span><span className="fs-6">({new Date(selectedMovie.release_date).getFullYear()})</span></p>
+                                        <p className="m-0 ps-2 d-flex align-items-center text-white">
+                                            <span className='fs-5 fw-bold me-2'>
+                                                {selectedMovie ?
+                                                    selectedMovie.original_title
+                                                    :
+                                                    movieData.original_title}</span>
+                                            <span className="fs-6">
+                                                ({new Date(selectedMovie ?
+                                                    selectedMovie.release_date
+                                                    :
+                                                    movieData.release_date).getFullYear()})
+                                            </span>
+                                        </p>
                                     </Col>
                                 </Row>
-                                <Row className="mt-3">
-                                    <Col md={{ span: 1 }} className="pe-0">
-                                        <img className='rounded-circle object-fit-cover'
-                                            style={{ height: "3rem", width: "3rem" }}
-                                            src={loggedUser?.avatar || homer} alt={loggedUser.author?.username} />
-                                    </Col>
-                                    <Col>
-                                        <Form.Group controlId="reviewText">
-                                            <Form.Control
-                                                as="textarea"
-                                                rows={9}
-                                                type="text"
-                                                placeholder="Escribe aquí lo que opinas de la película..."
-                                                value={reviewData.content}
-                                                name="content"
-                                                onChange={handleInputChange}
-                                                className="bg-transparent text-white border-0 custom-placeholder"
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        }
-                        {
-                            !selectedMovie &&
-
-                            <Col md={{ span: 10 }}>
+                            }
+                            {
+                                !selectedMovie && !movieData &&
                                 <Row className="d-flex align-items-center">
                                     <Col>
                                         <p className="m-0 ps-2 d-flex align-items-center text-white fs-5 fw-bold">¿De qué película vas a hablar hoy?</p>
                                     </Col>
                                 </Row>
-                                <Row className="mt-3">
-                                    <Col md={{ span: 1 }} className="pe-0">
-                                        <img className='rounded-circle object-fit-cover'
-                                            style={{ height: "3rem", width: "3rem" }}
-                                            src={loggedUser?.avatar || homer} alt={loggedUser?.username} />
-                                    </Col>
-                                    <Col>
-                                        <Form.Group controlId="reviewText">
-                                            <Form.Control
-                                                as="textarea"
-                                                rows={9}
-                                                type="text"
-                                                placeholder="Escribe aquí lo que opinas de la película..."
-                                                value={reviewData.content}
-                                                name="content"
-                                                onChange={handleInputChange}
-                                                className="bg-transparent text-white border-0 m-0 custom-placeholder"
-                                            />
-                                        </Form.Group>
-                                    </Col>
-                                </Row>
-                            </Col>
-                        }
+                            }
+                            <Row className="ms-2 mt-3">
+                                <Col md={{ span: 1 }} className="pe-0">
+                                    <img className='rounded-circle object-fit-cover'
+                                        style={{ height: "3rem", width: "3rem" }}
+                                        src={loggedUser?.avatar || homer} alt={loggedUser?.username} />
+                                </Col>
+                                <Col>
+                                    <Form.Group controlId="reviewText">
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={9}
+                                            type="text"
+                                            placeholder="Escribe aquí lo que opinas de la película..."
+                                            value={reviewData.content}
+                                            name="content"
+                                            onChange={handleInputChange}
+                                            className="bg-transparent text-white border-0 m-0 custom-placeholder"
+                                        />
+                                    </Form.Group>
+                                </Col>
+                            </Row>
+                        </Col>
+
 
                     </Row>
                     <Row>

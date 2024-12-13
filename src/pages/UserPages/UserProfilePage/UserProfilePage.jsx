@@ -9,9 +9,13 @@ import { AuthContext } from "../../../contexts/auth.context"
 import Loader from "../../../components/Loader/Loader"
 import UserServices from "../../../services/user.services"
 import ReviewServices from "../../../services/review.services"
-import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
-import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+import NewCommunityForm from "./../../../components/CommunitiesComponents/Forms/NewCommunityForm/NewCommunityForm"
+import TopCommunitiesList from "../../../components/CommunitiesComponents/TopCommunitiesList/TopCommunitiesList"
+import CommunitiesList from "../../../components/CommunitiesComponents/CommunitiesList/CommunitiesList"
+import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
+
+import "./UserProfilePage.css"
 
 const UserProfilePage = () => {
 
@@ -21,7 +25,9 @@ const UserProfilePage = () => {
     const [userData, setUserData] = useState({})
     const [isUserDataLoaded, setUserDataLoaded] = useState(false)
     const [reviewsData, setReviewsData] = useState([])
+
     const [showModal, setShowModal] = useState(false)
+    const [showNewCommunityModal, setShowNewCommunityModal] = useState(false)
 
     useEffect(() => {
         fetchUserData()
@@ -69,7 +75,7 @@ const UserProfilePage = () => {
                     <Row>
                         <Col>
                             <Row className="p-sm-3 d-flex justify-content-center align-items-center">
-                                <Col xs={3} lg={2}>
+                                <Col xs={3} lg={1}>
                                     <img className="border border-white object-fit-cover rounded-circle"
                                         style={{ height: "5rem", width: "5rem" }}
                                         src={avatar ? avatar : homer}
@@ -83,23 +89,14 @@ const UserProfilePage = () => {
                                     </Row>
                                     <Row>
                                         <Col>
-                                            <p>{bio}</p>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            {
-                                                favoriteGenres.map(genre => {
-                                                    return <span key={genre}>{genre} </span>
-                                                })
-                                            }
+                                            <p className="fs-5">{bio}</p>
                                         </Col>
                                     </Row>
                                 </Col>
-                                <Col xs={12} lg={5}>
+                                <Col xs={12} lg={6}>
                                     <Row className="order-2 d-flex justify-content-center align-items-center">
-                                        <Col xs={{ span: 8 }} lg={{ span: 4 }}>
-                                            <Row>
+                                        <Col xs={{ span: 6 }} md={{ span: 6 }} lg={{ span: 4 }} className="d-none d-md-inline">
+                                            <Row >
                                                 <Col as="a" href={socialNetworksProfiles.facebook || "#"} target="_blank" className={socialNetworksProfiles.facebook ? "text-white text-decoration-none" : "d-none"}>
                                                     <Facebook size={15} />
                                                 </Col>
@@ -114,13 +111,13 @@ const UserProfilePage = () => {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                        <Col xs={{ span: 8 }} lg={{ span: 8 }}>
+                                        <Col xs={{ span: 6 }} md={{ span: 6 }} lg={{ span: 8 }}>
                                             <Row className="mt-sm-3 mt-lg-0 order-1 d-flex justify-content-center">
-                                                <Col xs={{ span: 3 }} lg={{ span: 5 }} className="text-center p-0">
+                                                <Col xs={{ span: 6 }} lg={{ span: 5 }} className="text-center p-0">
                                                     <p className="fs-5 fw-bold m-0">{reviews.length}</p>
                                                     <p className="m-0 opacity-50">RESEÑAS</p>
                                                 </Col>
-                                                <Col xs={{ span: 3 }} lg={{ span: 5 }} className="text-center p-0">
+                                                <Col xs={{ span: 6 }} lg={{ span: 5 }} className="text-center p-0">
                                                     <p className="fs-5 fw-bold m-0">{communities.length}</p>
                                                     <p className="m-0 opacity-50">COMUNIDADES</p>
                                                 </Col>
@@ -131,67 +128,82 @@ const UserProfilePage = () => {
                             </Row>
                         </Col>
                     </Row>
-                    <Row className="mt-3">
-                        <Col md={12} className="p-xs-0">
-                            <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
-                        </Col>
-                    </Row>
-                    <Row className="mt-3">
-                        {communities.length > 0 ? (
-                            communities.map(community => (
-                                <Col key={community._id} md={4} className="mb-3">
-                                    <CommunityCard {...community} />
+                    <Row>
+                        <Col xs={12} md={6}>
+                            <Row className="mt-3">
+                                <Col md="auto">
+                                    <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
                                 </Col>
-                            ))
-                        ) : (
-                            <Col>No pertenece a ninguna comunidad.</Col>
-                        )}
-                    </Row>
-                    <Row className="mt-3">
-                        <Col md={12} className="p-xs-0">
-                            <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
-                        </Col>
-                    </Row>
-                    <Row className="mt-3">
-                        {communities.length > 0 ? (
-                            communities.map(community => (
-                                <Col key={community._id} md={4} className="mb-3">
-                                    <CommunityCard {...community} />
+                                <Col md="auto" className="me-auto mt-2 mt-md-0" >
+                                    <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowModal(true)}>Añadir Reseña</Button>
                                 </Col>
-                            ))
-                        ) : (
-                            <Col>No pertenece a ninguna comunidad.</Col>
-                        )}
-                    </Row>
-                    <Row className="mt-3">
-                        <Col md={12} className="p-xs-0">
-                            <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
+                            </Row>
+                            <Row className="mt-3 reviews-list">
+                                {
+                                    reviewsData.length > 0 ?
+                                        <Col>
+                                            <ReviewsList reviews={reviewsData} />
+                                        </Col>
+                                        :
+                                        <Col>No ha realizado ninguna reseña.</Col>
+                                }
+                            </Row>
                         </Col>
-                    </Row>
-                    <Row className="mt-3">
-                        {reviewsData.length > 0 ? (
-                            reviewsData.map(review => (
-                                <Col key={review._id} md={6} className="mb-3" >
-                                    <ReviewCard {...review} />
+                        <Col xs={12} md={6}>
+                            <Row className="mt-3">
+                                <Col md={{ span: "auto" }} className="p-xs-0">
+                                    <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
                                 </Col>
-                            ))
-                        ) : (
-                            <Col>No ha realizado ninguna reseña.</Col>
-                        )}
-                    </Row>
-                    <Row className="mt-3">
-                        <Col>
-                            <Button className="border-0 fw-bold btn-style-2" onClick={() => setShowModal(true)}>Añadir Reseña</Button>
+                                <Col md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
+                                    <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowNewCommunityModal(true)}>Crear Comunidad</Button>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                {
+                                    communities.length > 0 ?
+                                        <TopCommunitiesList communities={communities} />
+                                        :
+                                        <Col>No pertenece a ninguna comunidad.</Col>
+                                }
+                            </Row>
+                            <Row className="mt-3">
+                                <Col md={12} className="p-xs-0">
+                                    <p className="m-0 fw-bold fs-5">Comunidades a las que pertenece</p>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                {
+                                    communities.length > 0 ?
+                                        <CommunitiesList communities={communities} />
+                                        :
+                                        <Col>No pertenece a ninguna comunidad.</Col>
+                                }
+                            </Row>
                         </Col>
                     </Row>
-                    <Modal show={showModal} onHide={() => setShowModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Añadir Reseña</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <NewReviewForm />
+
+
+                    <Modal
+                        show={showModal}
+                        onHide={() => setShowModal(false)}
+                        size="lg"
+                        centered>
+                        <Modal.Body className="p-0 m-0">
+                            <NewReviewForm className="p-0 m-0" />
                         </Modal.Body>
                     </Modal>
+
+                    <Modal
+                        show={showNewCommunityModal}
+                        onHide={() => setShowNewCommunityModal(false)}
+                        size="lg"
+                        centered>
+                        <Modal.Body className="p-0 m-0">
+                            <NewCommunityForm />
+                        </Modal.Body>
+                    </Modal>
+
+
                 </Container>
             </div>
     )

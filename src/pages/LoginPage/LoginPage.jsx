@@ -4,7 +4,6 @@ import LoginForm from '../../components/User/LoginForm/LoginForm'
 const LoginPage = () => {
 
     return (
-        isLoading ? <Loader /> :
             <Container>
                 <Row>
                     <Col md={{ offset: 3, span: 6 }}>

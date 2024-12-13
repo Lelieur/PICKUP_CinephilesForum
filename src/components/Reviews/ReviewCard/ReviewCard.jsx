@@ -84,25 +84,44 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
         <div className="ReviewCard">
             <Card className='p-3 m-0 mb-3 text-white text-start'>
                 <Row className='pt-1'>
-                    <Col xs={1} md={2} className="ms-2 position-relative">
+                    <Col
+                        md={2}
+                        className="ms-2 position-relative d-none d-md-inline">
                         <Link>
                             <MoviePosterCard {...movieData} movieApiId={movieApiId} />
                         </Link>
                         <p
-                            className="ms-3 mt-2 fs-6 fw-bold position-absolute top-0 start-0 translate-middle rounded-circle m-0 rate d-flex align-items-center justify-content-center border border-5"
+                            className="ms-3 mt-2 fs-6 fw-bold position-absolute
+                            top-0 start-0 translate-middle rounded-circle m-0
+                            rate d-flex align-items-center justify-content-center
+                            border border-5"
                             style={{ height: "2.5rem", width: "2.5rem" }}
                         >
                             {rate}
                         </p>
                     </Col>
-                    <Col xs={10} md={9}>
+                    <Col
+                        md={9}>
                         <Row className="d-flex align-items-center">
                             <Col>
-                                <p className="m-0 d-flex align-items-center"><span className='fs-5 fw-bold me-2'>{movieApiId?.original_title ? movieApiId.original_title : movieData.original_title}</span><span className="fs-6">({new Date(movieApiId?.release_date ? movieApiId?.release_date : movieData.release_date).getFullYear()})</span></p>
+                                <p className="m-0 d-flex align-items-center">
+                                    <span className='fs-5 fw-bold me-2'>
+                                        {movieApiId?.original_title ?
+                                            movieApiId.original_title
+                                            :
+                                            movieData.original_title}
+                                    </span>
+                                    <span className="fs-6">
+                                        ({new Date(movieApiId?.release_date ?
+                                            movieApiId?.release_date
+                                            :
+                                            movieData.release_date).getFullYear()})
+                                    </span>
+                                </p>
                             </Col>
                         </Row>
                         <Row className="mt-3">
-                            <Col md={{ span: 1 }} className="pe-0">
+                            <Col xs={2} md={2} className="pe-0">
                                 <Link to={`/usuarios/${author?._id}`}>
                                     <img
                                         className='rounded-circle object-fit-cover'
@@ -112,7 +131,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     />
                                 </Link>
                             </Col>
-                            <Col md={{ span: 11 }}>
+                            <Col xs={10} md={10}>
                                 <Row>
                                     <Col className="ps-0">
                                         <p className="m-0 fs-6"><span className="fw-bold">{author?.firstName}</span> @{author?.username} · {formattedDate}</p>
@@ -125,11 +144,10 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                 </Row>
                             </Col>
                         </Row>
-
                     </Col>
                 </Row>
                 <Row className="justify-content-end opacity-50">
-                    <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                    <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                         {
                             !reviewData.usersLikes?.includes(loggedUser?._id) &&
                             <Button
@@ -157,7 +175,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     </Col>
                     {
                         loggedUser?._id === author?._id &&
-                        <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                        <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
                                 variant="link"
@@ -171,7 +189,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     {
                         loggedUser?._id === author?._id &&
 
-                        <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                        <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
                                 variant="link"

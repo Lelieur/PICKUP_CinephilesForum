@@ -3,7 +3,7 @@ import { Search, List, XLg } from "react-bootstrap-icons"
 import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth.context'
-import { homer } from '../../const/image-paths';
+import { homer, logo } from '../../const/image-paths';
 import GeneralFilter from '../Filters/GeneralFilter/GeneralFilter';
 
 import "./Navigation.css"
@@ -37,7 +37,7 @@ const Navigation = () => {
                         <Navbar.Brand as={Link} to="/">
                             <img
                                 alt="Logo"
-                                src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Logotipo_Filmin_2023.png"
+                                src={logo}
                                 width="100"
                             />
                         </Navbar.Brand>

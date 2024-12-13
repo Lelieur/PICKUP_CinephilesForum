@@ -116,10 +116,6 @@ const ReviewsPage = () => {
                             />
                         </Col>
                     </Row>
-
-                    <Button variant="dark" className="mt-3 styled-button-2" to="/" as={Link}>
-                        Volver a la Home
-                    </Button>
                 </Container>
             </div>
     )
