@@ -56,7 +56,7 @@ const Navigation = () => {
                                     <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/peliculas-populares">Películas Populares</Dropdown.Item>
                                     <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/mejor-valoradas">Mejor Valoradas</Dropdown.Item>
                                     <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/estrenos">Estrenos</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/próximos-estrenos">Próximos estrenos</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/próximos-estrenos">Próximos Estrenos</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
