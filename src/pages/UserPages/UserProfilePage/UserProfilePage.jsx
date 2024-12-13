@@ -12,6 +12,7 @@ import ReviewServices from "../../../services/review.services"
 import CommunityCard from "../../../components/CommunitiesComponents/CommunityCard/CommunityCard"
 import ReviewCard from "../../../components/Reviews/ReviewCard/ReviewCard"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+import EditUserForm from "../../../components/User/EditFormUser/EditFormUser"
 
 const UserProfilePage = () => {
 
@@ -22,6 +23,8 @@ const UserProfilePage = () => {
     const [isUserDataLoaded, setUserDataLoaded] = useState(false)
     const [reviewsData, setReviewsData] = useState([])
     const [showModal, setShowModal] = useState(false)
+    const [showEditModal, setShowEditModal] = useState(false)
+
 
     useEffect(() => {
         fetchUserData()
@@ -95,6 +98,13 @@ const UserProfilePage = () => {
                                             }
                                         </Col>
                                     </Row>
+                                </Col>
+                                <Col xs={12} lg={5}>
+                                    {loggedUser && (
+                                        <Button className="border-0 fw-bold btn-style-2 mt-3" onClick={() => setShowEditModal(true)}>
+                                            Editar Perfil
+                                        </Button>
+                                    )}
                                 </Col>
                                 <Col xs={12} lg={5}>
                                     <Row className="order-2 d-flex justify-content-center align-items-center">
@@ -190,6 +200,14 @@ const UserProfilePage = () => {
                         </Modal.Header>
                         <Modal.Body>
                             <NewReviewForm />
+                        </Modal.Body>
+                    </Modal>
+                    <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Editar Perfil</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <EditUserForm />
                         </Modal.Body>
                     </Modal>
                 </Container>
