@@ -9,7 +9,7 @@ const PopularMovies = () => {
         const fetchMovies = async () => {
             try {
                 const data = await tmdbServices.getPopularMovies()
-                setMovies(data); // Asigna las películas populares a la variable de estado
+                setMovies(data)
             } catch (error) {
                 console.error('Error fetching popular movies:', error)
             }
