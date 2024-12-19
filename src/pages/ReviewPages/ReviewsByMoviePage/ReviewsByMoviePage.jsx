@@ -126,7 +126,7 @@ const ReviewsByMoviePage = () => {
                     keyboard={true}
                     size="xl"
                     centered >
-                    <NewReviewForm className="m-0" movieData={movieData}/>
+                    <NewReviewForm className="m-0" movieData={movieData} />
                 </Modal >
 
             </div>

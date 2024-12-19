@@ -3,25 +3,20 @@ import { Form, Button, Card, Spinner } from 'react-bootstrap'
 import ReviewServicess from '../../../services/review.services'
 
 const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
-    const [content, setContent] = useState(review?.content || "")
+
+    const [content, setContent] = useState({})
     const [rate, setRate] = useState(review?.rate || 0)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
 
     useEffect(() => {
-        setContent(review?.content || "")
+        setContent()
         setRate(review?.rate || 0)
     }, [review])
 
     const handleSubmit = (e) => {
+
         e.preventDefault()
-
-        if (!content || rate === null || !review._id) {
-            setError("Por favor, rellena los campos")
-            return
-        }
-
-        setLoading(true)
 
         const updatedReviewData = {
             content,
@@ -36,7 +31,6 @@ const EditReviewForm = ({ review, onReviewUpdated, onCancel }) => {
             })
             .catch((err) => {
                 console.log(err)
-                setLoading(false)
                 setError("Hubo un problema al actualizar la reseña")
             })
     }

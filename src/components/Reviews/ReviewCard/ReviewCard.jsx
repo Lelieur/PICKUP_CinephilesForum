@@ -64,6 +64,8 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
 
     const handleEdit = e => {
 
+        e.preventDefault()
+
         ReviewServices
             .editReview(reviewData._id, reviewData)
             .then(() => {
@@ -121,7 +123,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                             </Col>
                         </Row>
                         <Row className="mt-3">
-                            <Col xs={2} md={2} className="pe-0">
+                            <Col xs={2} md={2} xl={1} className="pe-0">
                                 <Link to={`/usuarios/${author?._id}`}>
                                     <img
                                         className='rounded-circle object-fit-cover'
@@ -131,8 +133,8 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     />
                                 </Link>
                             </Col>
-                            <Col xs={10} md={10}>
-                                <Row>
+                            <Col xs={10} md={10} xl={11} className="ps-xl-3">
+                                <Row >
                                     <Col className="ps-0">
                                         <p className="m-0 fs-6"><span className="fw-bold">{author?.firstName}</span> @{author?.username} · {formattedDate}</p>
                                     </Col>
@@ -202,6 +204,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     }
                 </Row>
             </Card>
+
             <Modal
                 show={showEditModal}
                 onHide={() => setShowEditModal(false)}
