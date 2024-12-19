@@ -4,26 +4,26 @@ import { AuthContext } from "./../../../contexts/auth.context"
 import { Plus, XLg, PlusCircle } from 'react-bootstrap-icons'
 import { homer } from "../../../const/image-paths"
 
-
+import MoviePosterCard from "../../MovieComponentes/MoviePosterCard/MoviePosterCard"
 import ReviewServices from "../../../services/review.services"
 import TMDBServices from "../../../services/tmdb.services"
 
 import "./NewReviewForm.css"
 
-const NewReviewForm = ({ movieData }) => {
+const NewReviewForm = ({ movieData, onInputChange }) => {
 
     const { loggedUser } = useContext(AuthContext)
 
     const [reviewData, setReviewData] = useState({
-        author: '',
-        movieApiId: '',
+        author: loggedUser._id,
+        movieApiId: !movieData ? '' : movieData.id,
         content: '',
         rate: null
     })
 
     const [querySearch, setQuerySearch] = useState("")
     const [moviesFilter, setMoviesFilter] = useState([])
-    const [selectedMovie, setSelectedMovie] = useState(undefined)
+    const [selectedMovie, setSelectedMovie] = useState(null)
 
     const [selectedRating, setSelectedRating] = useState(null);
 
@@ -38,7 +38,6 @@ const NewReviewForm = ({ movieData }) => {
     const handleMovieSearch = (e) => {
         const { value: query } = e.target
         setQuerySearch(query)
-        console.log("hasta aquí llega")
 
         if (query) {
             TMDBServices
@@ -64,10 +63,7 @@ const NewReviewForm = ({ movieData }) => {
         const movieId = movie.id
         const movieData = movie
 
-        setReviewData({
-            ...reviewData, ["movieApiId"]: movieId
-        })
-        // todo
+        setReviewData({ ...reviewData, ["movieApiId"]: movieId })
         setSelectedMovie(movieData)
     }
 
@@ -76,27 +72,30 @@ const NewReviewForm = ({ movieData }) => {
             ...reviewData, ["movieApiId"]: ''
         })
         setSelectedMovie(null)
+        setSelectedRating(null)
     }
 
     const handleSubmit = e => {
 
         e.preventDefault()
 
-        const newReviewData = { ...reviewData, ["author"]: loggedUser._id }
-
         ReviewServices
-            .saveReview(newReviewData)
-            .then(() => {
+            .saveReview(reviewData)
+            .then(response => {
+
+                const newReview  = response.data
+
                 setReviewData({
                     author: '',
                     movieApiId: '',
                     content: '',
                     rate: null
                 })
-                setSelectedMovie(null)
-                setQuerySearch('')
-                setMoviesFilter([])
-                onInputChange(newReviewData)
+                selectedMovie && setSelectedMovie(null)
+                querySearch && setQuerySearch('')
+                moviesFilter && setMoviesFilter([])
+                selectedRating && setSelectedRating(null)
+                onInputChange(newReview)
             })
             .catch(err => console.log(err))
     }
@@ -107,89 +106,76 @@ const NewReviewForm = ({ movieData }) => {
                 <Form onSubmit={handleSubmit}>
                     <Row className="h-100">
                         {
-                            !selectedMovie && !movieData &&
-                            <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0 border rounded">
-                                <Button className="border-0 fw-bold" size="sm" onClick={() => setShowSearchMoviesModal(true)}><Plus /></Button>
-                            </Col>
-                        }
-                        {
-                            selectedMovie || movieData &&
-                            <Col
-                                md={{ span: 2 }}
-                                className="rounded p-0 position-relative d-none d-md-inline">
-                                <img
-                                    className="object-fit-cover h-100 w-100 rounded"
-<<<<<<< HEAD
-                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie ? selectedMovie.poster_path : movieData.poster_path}`}
-=======
-                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie?.poster_path ? selectedMovie.poster_path : movieData.poster_path}`}
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
-                                    alt={`movie poster`} />
-                                <Button variant="link"
-                                    className="text-white p-0 pe-1 m-0 end-0 position-absolute"
-                                    onClick={() => { deleteNewSelectedMovies() }}>
-                                    <XLg />
-                                </Button>
-                                <Button
-                                    className="border-0 text-white rounded-0 rounded-end start-0 position-absolute"
-                                    onClick={() => { setShowRatingModal(true) }}
-                                >
-                                    {
-                                        !selectedRating &&
-                                        <PlusCircle />
-                                    }
-                                    {
-                                        selectedRating &&
-                                        <span>{selectedRating}</span>
-                                    }
-                                </Button>
-                            </Col>
+                            !selectedMovie && !movieData ?
+
+                                <Col md={{ span: 2 }} className="d-flex justify-content-center align-items-center p-0 border rounded">
+                                    <Button className="border-0 fw-bold" size="sm" onClick={() => setShowSearchMoviesModal(true)}><Plus /></Button>
+                                </Col>
+
+                                :
+
+                                <Col md={2} className="position-relative p-0" >
+
+                                    <MoviePosterCard {...selectedMovie} movieApiId={movieData} />
+
+                                    <Button variant="link"
+                                        className="text-white p-0 pe-1 m-0 top-0 end-0 position-absolute"
+                                        onClick={() => { deleteNewSelectedMovies() }}>
+                                        <XLg />
+                                    </Button>
+
+                                    <Button
+                                        className="border-0 text-white rounded-0 rounded-end top-0 start-0 position-absolute"
+                                        onClick={() => { setShowRatingModal(true) }}
+                                    >
+                                        {
+                                            !selectedRating &&
+                                            <PlusCircle />
+                                        }
+                                        {
+                                            selectedRating &&
+                                            <span>{selectedRating}</span>
+                                        }
+                                    </Button>
+
+                                </Col>
                         }
 
                         <Col md={{ span: 10 }}>
                             {
-                                selectedMovie || movieData &&
-                                <Row className="d-flex align-items-center">
-                                    <Col>
-                                        <p className="m-0 ps-2 d-flex align-items-center text-white">
-                                            <span className='fs-5 fw-bold me-2'>
-<<<<<<< HEAD
-                                                {selectedMovie ?
-=======
-                                                {selectedMovie?.original_title ?
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
-                                                    selectedMovie.original_title
-                                                    :
-                                                    movieData.original_title}</span>
-                                            <span className="fs-6">
-<<<<<<< HEAD
-                                                ({new Date(selectedMovie ?
-=======
-                                                ({new Date(selectedMovie?.release_date ?
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
-                                                    selectedMovie.release_date
-                                                    :
-                                                    movieData.release_date).getFullYear()})
-                                            </span>
-                                        </p>
-                                    </Col>
-                                </Row>
+                                !selectedMovie && !movieData ?
+                                    <Row className="d-flex align-items-center">
+                                        <Col>
+                                            <p className="m-0 ps-2 d-flex align-items-center text-white fs-5 fw-bold">¿De qué película vas a hablar hoy?</p>
+                                        </Col>
+                                    </Row>
+                                    :
+                                    <Row className="d-flex align-items-center">
+                                        <Col>
+                                            <p className="m-0 d-flex align-items-center text-white">
+                                                <span className='fs-5 fw-bold me-2'>
+                                                    {selectedMovie?.original_title ?
+                                                        selectedMovie.original_title
+                                                        :
+                                                        movieData.original_title}</span>
+                                                <span className="fs-6">
+                                                    ({new Date(selectedMovie?.release_date ?
+                                                        selectedMovie.release_date
+                                                        :
+                                                        movieData.release_date).getFullYear()})
+                                                </span>
+                                            </p>
+                                        </Col>
+                                    </Row>
                             }
-                            {
-                                !selectedMovie && !movieData &&
-                                <Row className="d-flex align-items-center">
-                                    <Col>
-                                        <p className="m-0 ps-2 d-flex align-items-center text-white fs-5 fw-bold">¿De qué película vas a hablar hoy?</p>
-                                    </Col>
-                                </Row>
-                            }
-                            <Row className="ms-2 mt-3">
-                                <Col md={{ span: 1 }} className="pe-0">
+
+                            <Row className="mt-3">
+                                <Col xs={2} md={2} xl={1} className="pe-0">
                                     <img className='rounded-circle object-fit-cover'
                                         style={{ height: "3rem", width: "3rem" }}
                                         src={loggedUser?.avatar || homer} alt={loggedUser?.username} />
                                 </Col>
-                                <Col>
+                                <Col xs={10} md={10} xl={11} className="ps-xl-0">
                                     <Form.Group controlId="reviewText">
                                         <Form.Control
                                             as="textarea"
@@ -204,9 +190,8 @@ const NewReviewForm = ({ movieData }) => {
                                     </Form.Group>
                                 </Col>
                             </Row>
+
                         </Col>
-
-
                     </Row>
                     <Row>
                         <Col className="text-end">
@@ -246,7 +231,6 @@ const NewReviewForm = ({ movieData }) => {
                                                         variant="link"
                                                         className="w-100 p-0 m-0 border-0 text-start text-dark text-decoration-none"
                                                         onClick={() => {
-                                                            console.log(movie)
                                                             handleSelectedMovie(movie)
                                                             setShowSearchMoviesModal(false)
                                                             setQuerySearch('')

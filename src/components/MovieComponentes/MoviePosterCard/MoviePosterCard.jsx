@@ -9,11 +9,16 @@ const MoviePosterCard = ({ id, original_title, backdrop_path, poster_path, movie
 
     return (
         <div className="MoviePosterCard">
-            <Link to={id ? `/reviews/movie/${id}` : `/reviews/movie/${movieApiId.id}`}>
+            {/* <Link to={id ? `/reviews/movie/${id}` : `/reviews/movie/${movieApiId.id}`}> */}
                 <Card className="border-0 p-0 m-0" bg="black">
-                    <Card.Img variant="top rounded object-fit-cover" src={poster_path ? `${TMDB_API_IMG_URL}/w1280/${poster_path}` : `${TMDB_API_IMG_URL}/w1280/${movieApiId.poster_path}`} />
+                    <Card.Img
+                        variant="top rounded object-fit-cover"
+                        src={poster_path ?
+                            `${TMDB_API_IMG_URL}/w1280/${poster_path}`
+                            :
+                            `${TMDB_API_IMG_URL}/w1280/${movieApiId.poster_path}`} />
                 </Card>
-            </Link >
+            {/* </Link > */}
         </div >
     )
 }

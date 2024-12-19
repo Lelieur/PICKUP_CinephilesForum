@@ -46,7 +46,6 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
             .likeReview(reviewData._id, loggedUser)
             .then(response => {
                 const { data: reviewData } = response
-                console.log(reviewData)
                 setReviewData(reviewData)
             })
             .catch(err => console.log(err))
@@ -76,6 +75,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
     }
 
     const handleReviewDelete = () => {
+
         ReviewServices
             .deleteReview(_id)
             .then(() => location.reload())
@@ -88,14 +88,11 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                 <Row className='pt-1'>
                     <Col
                         md={2}
-<<<<<<< HEAD
-                        className="ms-2 position-relative">
-=======
                         className="ms-2 position-relative d-none d-md-inline">
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
-                        <Link>
+                        <Link to={movieApiId && `/reviews/movie/${movieApiId.id}`}>
                             <MoviePosterCard {...movieData} movieApiId={movieApiId} />
-                        </Link>
+                        </Link >
+
                         <p
                             className="ms-3 mt-2 fs-6 fw-bold position-absolute
                             top-0 start-0 translate-middle rounded-circle m-0
@@ -127,11 +124,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                             </Col>
                         </Row>
                         <Row className="mt-3">
-<<<<<<< HEAD
-                            <Col md={2} className="pe-0">
-=======
                             <Col xs={2} md={2} xl={1} className="pe-0">
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
                                 <Link to={`/usuarios/${author?._id}`}>
                                     <img
                                         className='rounded-circle object-fit-cover'
@@ -141,13 +134,8 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     />
                                 </Link>
                             </Col>
-<<<<<<< HEAD
-                            <Col md={10}>
-                                <Row>
-=======
                             <Col xs={10} md={10} xl={11} className="ps-xl-3">
                                 <Row >
->>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
                                     <Col className="ps-0">
                                         <p className="m-0 fs-6"><span className="fw-bold">{author?.firstName}</span> @{author?.username} · {formattedDate}</p>
                                     </Col>

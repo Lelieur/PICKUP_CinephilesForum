@@ -64,9 +64,10 @@ const ReviewsPage = () => {
         }
     }
 
-    const onInputChange = (newReview) => {
-        reviews.push(newReview)
-        setReviews(reviews)
+    const onInputChange = newReview => {
+        const reviewsUpdated = [newReview, ...reviews]
+        setReviews(reviewsUpdated)
+        setFilteredReviews(reviewsUpdated)
     }
 
 
@@ -99,7 +100,7 @@ const ReviewsPage = () => {
                     <Row className="justify-content-center mb-3">
                         <Col md={{ span: 10 }}>
                             {loggedUser ? (
-                                <NewReviewForm onInputChange={onInputChange} />
+                                <NewReviewForm onInputChange={newReview => onInputChange(newReview)} />
                             ) : (
                                 <div>
                                     <p></p>
@@ -112,7 +113,6 @@ const ReviewsPage = () => {
                         <Col md={{ span: 10 }}>
                             <ReviewsList
                                 reviews={filteredReviews.length ? filteredReviews : reviews}
-                                onInputChange={onInputChange}
                             />
                         </Col>
                     </Row>

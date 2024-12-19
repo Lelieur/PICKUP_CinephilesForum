@@ -18,6 +18,7 @@ const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
 
 const ReviewsByMoviePage = () => {
+    
 
     const [isLoading, setIsLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
@@ -56,14 +57,21 @@ const ReviewsByMoviePage = () => {
         setAverageRate(averageRate)
     }
 
+    const onInputChange = newReview => {
+        const reviewsUpdated = [newReview, ...reviews]
+        setReviews(reviewsUpdated)
+        setShowModal(false)
+        averageCount(reviews)
+    }
+
     return (
 
         isLoading ? <Loader /> :
 
             <div className="ReviewsByMoviePage">
                 <Row>
-                    <Col className="position-relative" >
-                        <img src={`${TMDB_API_IMG_URL}/original/${movieData.backdrop_path}`} alt="Movie Cover" className="w-100 object-fit-cover rounded opacity-50" />
+                    <Col className="position-relative"
+                    style={{ backgroundImage: `url(${TMDB_API_IMG_URL}/original/${movieData.backdrop_path})`, backgroundSize: "cover", backgroundPosition: "center", height: "40rem"}}>
                         <div className="w-100 backgroud-faded-down position-absolute top-0" style={{ height: "30%" }} />
                         <div className="w-100 backgroud-faded-up position-absolute bottom-0" style={{ height: "30%" }} />
                         <div className="position-absolute bottom-0 start-0 ms-1 ps-4 ps-md-5 pb-md-5">
@@ -74,7 +82,7 @@ const ReviewsByMoviePage = () => {
                                 <Col xs={{ span: 12 }} md={{ span: 10 }} className="ps-4">
                                     <Row className="justify-content-start align-items-center">
                                         <Col xs={{ span: 2 }} md={{ span: "auto" }} className="p-md-0 border border-2 rounded d-flex justify-content-center align-items-center">
-                                            <p className="fs-5 p-md-2 fw-bold m-0">{averageRate}</p>
+                                            <p className="fs-5 p-md-2 fw-bold m-0">{averageRate ? averageRate : 'Sin puntuar'}</p>
                                         </Col>
                                         <Col>
                                             <p className="fs-6 m-0">{reviews.length} Reseñas</p>
@@ -126,7 +134,7 @@ const ReviewsByMoviePage = () => {
                     keyboard={true}
                     size="xl"
                     centered >
-                    <NewReviewForm className="m-0" movieData={movieData} />
+                    <NewReviewForm className="m-0" movieData={movieData} onInputChange={newReview => onInputChange(newReview)}/>
                 </Modal >
 
             </div>

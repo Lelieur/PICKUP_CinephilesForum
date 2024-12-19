@@ -1,10 +1,8 @@
 .MoviePosterCard {
-    transition: transform 0.3s ease;
-    opacity: 90%
+    transition: transform 0.3s ease
 }
 
 .MoviePosterCard:hover {
     transform: scale(1.02);
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-    opacity: 100%
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2)
 }
