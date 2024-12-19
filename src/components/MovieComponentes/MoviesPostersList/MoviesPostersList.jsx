@@ -4,6 +4,7 @@ import MoviePosterCard from "../MoviePosterCard/MoviePosterCard"
 import "./MoviesPosterList.css"
 
 const MoviesPostersList = ({ movies }) => {
+
     return (
         <div className="MoviesPostersList">
             <Container>
@@ -11,8 +12,8 @@ const MoviesPostersList = ({ movies }) => {
                     {
                         movies.map(movie => {
                             return (
-                                <Col xs={{ span: 5 }} md={{ span: 3 }} className="ms-0 p-1">
-                                    <MoviePosterCard key={movie.id} {...movie} />
+                                <Col xs={{ span: 5 }} md={{ span: 3 }} className="ms-0 p-1" key={movie.id}>
+                                    <MoviePosterCard  {...movie} />
                                 </Col>
                             )
                         })
