@@ -38,6 +38,7 @@ const NewReviewForm = ({ movieData }) => {
     const handleMovieSearch = (e) => {
         const { value: query } = e.target
         setQuerySearch(query)
+        console.log("hasta aquí llega")
 
         if (query) {
             TMDBServices

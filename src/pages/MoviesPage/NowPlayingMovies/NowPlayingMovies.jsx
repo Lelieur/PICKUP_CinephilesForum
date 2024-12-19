@@ -8,7 +8,7 @@ const NowPlayingMovies = () => {
         const fetchMovies = async () => {
             try {
                 const data = await tmdbServices.getNowPlayingMovies()
-                setMovies(data); // Asigna las películas en cartelera a la variable de estado
+                setMovies(data)
             } catch (error) {
                 console.error('Error fetching now playing movies:', error)
             }
