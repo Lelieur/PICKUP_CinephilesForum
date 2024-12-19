@@ -85,9 +85,16 @@ const UserProfilePage = () => {
                                         alt="Avatar del usuario" />
                                 </Col>
                                 <Col xs={9} lg={5}>
-                                    <Row>
-                                        <Col>
+                                    <Row className="align-items-center">
+                                        <Col xs={{ span: "auto" }}>
                                             <span className="fw-bold fs-3">{username}</span>
+                                        </Col>
+                                        <Col xs={{ span: "auto" }}>
+                                            {loggedUser._id === userId && (
+                                                <Button className="border-0 fw-bold btn-style-1 bg-transparent" onClick={() => setShowEditModal(true)}>
+                                                    Editar Perfil
+                                                </Button>
+                                            )}
                                         </Col>
                                     </Row>
                                     <Row>
@@ -95,13 +102,6 @@ const UserProfilePage = () => {
                                             <p className="fs-5">{bio}</p>
                                         </Col>
                                     </Row>
-                                </Col>
-                                <Col xs={12} lg={5}>
-                                    {loggedUser && (
-                                        <Button className="border-0 fw-bold btn-style-2 mt-3" onClick={() => setShowEditModal(true)}>
-                                            Editar Perfil
-                                        </Button>
-                                    )}
                                 </Col>
                                 <Col xs={12} lg={6}>
                                     <Row className="order-2 d-flex justify-content-center align-items-center">
@@ -140,13 +140,16 @@ const UserProfilePage = () => {
                     </Row>
                     <Row>
                         <Col xs={12} md={6}>
-                            <Row className="mt-3">
-                                <Col md="auto">
+                            <Row className="mt-3 align-items-center">
+                                <Col xs={{ span: "auto" }}>
                                     <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
                                 </Col>
-                                <Col md="auto" className="me-auto mt-2 mt-md-0" >
-                                    <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowModal(true)}>Añadir Reseña</Button>
-                                </Col>
+                                {
+                                    loggedUser._id === userId &&
+                                    <Col xs={{ span: "auto" }} md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
+                                        <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowModal(true)}>Añadir Reseña</Button>
+                                    </Col>
+                                }
                             </Row>
                             <Row className="mt-3 reviews-list">
                                 {
@@ -160,13 +163,16 @@ const UserProfilePage = () => {
                             </Row>
                         </Col>
                         <Col xs={12} md={6}>
-                            <Row className="mt-3">
-                                <Col md={{ span: "auto" }} className="p-xs-0">
+                            <Row className="mt-3 align-items-center">
+                                <Col xs={{ span: "auto" }} md={{ span: "auto" }} className="p-xs-0">
                                     <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
                                 </Col>
-                                <Col md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
-                                    <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowNewCommunityModal(true)}>Crear Comunidad</Button>
-                                </Col>
+                                {
+                                    loggedUser._id === userId &&
+                                    <Col xs={{ span: "auto" }} md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
+                                        <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowNewCommunityModal(true)}>Crear Comunidad</Button>
+                                    </Col>
+                                }
                             </Row>
                             <Row className="mt-3">
                                 {

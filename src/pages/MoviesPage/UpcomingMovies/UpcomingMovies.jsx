@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import tmdbServices from '../../../services/tmdb.services'
-import './UpcomingMovies.css'
+
+
+import { Container } from 'react-bootstrap'
+import MoviesPostersList from "./../../../components/MovieComponentes/MoviesPostersList/MoviesPostersList"
+
 
 const UpcomingMovies = () => {
     const [movies, setMovies] = useState([])
@@ -22,27 +26,11 @@ const UpcomingMovies = () => {
 
     return (
         <div>
-            <h2>Próximos Estrenos</h2>
-            {error ? (
-                <p>{error}</p>
-            ) : (
-                <div className="movie-list">
-                    {movies.length > 0 ? (
-                        movies.map((movie) => (
-                            <div key={movie.id} className="movie-item">
-                                <img
-                                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                    alt={movie.title}
-                                />
-                                <h3>{movie.title}</h3>
-                                <p>{movie.release_date}</p>
-                            </div>
-                        ))
-                    ) : (
-                        <p>No upcoming movies available.</p>
-                    )}
-                </div>
-            )}
+            <Container>
+                <h2 className="fw-bold mt-5">Próximos Estrenos</h2>
+                <MoviesPostersList movies={movies} />
+            </Container>
+
         </div>
     )
 }

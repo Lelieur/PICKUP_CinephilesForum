@@ -23,7 +23,7 @@ const NewReviewForm = ({ movieData }) => {
 
     const [querySearch, setQuerySearch] = useState("")
     const [moviesFilter, setMoviesFilter] = useState([])
-    const [selectedMovie, setSelectedMovie] = useState(undefined)
+    const [selectedMovie, setSelectedMovie] = useState(null)
 
     const [selectedRating, setSelectedRating] = useState(null);
 
@@ -60,10 +60,15 @@ const NewReviewForm = ({ movieData }) => {
     }
 
     const handleSelectedMovie = movie => {
+
+        const movieId = movie.id
+        const movieData = movie
+
         setReviewData({
-            ...reviewData, ["movieApiId"]: movie.id
+            ...reviewData, ["movieApiId"]: movieId
         })
-        setSelectedMovie(movie)
+        // todo
+        setSelectedMovie(movieData)
     }
 
     const deleteNewSelectedMovies = () => {
@@ -114,7 +119,7 @@ const NewReviewForm = ({ movieData }) => {
                                 className="rounded p-0 position-relative d-none d-md-inline">
                                 <img
                                     className="object-fit-cover h-100 w-100 rounded"
-                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie ? selectedMovie.poster_path : movieData.poster_path}`}
+                                    src={`https://image.tmdb.org/t/p/w500${selectedMovie?.poster_path ? selectedMovie.poster_path : movieData.poster_path}`}
                                     alt={`movie poster`} />
                                 <Button variant="link"
                                     className="text-white p-0 pe-1 m-0 end-0 position-absolute"
@@ -144,12 +149,12 @@ const NewReviewForm = ({ movieData }) => {
                                     <Col>
                                         <p className="m-0 ps-2 d-flex align-items-center text-white">
                                             <span className='fs-5 fw-bold me-2'>
-                                                {selectedMovie ?
+                                                {selectedMovie?.original_title ?
                                                     selectedMovie.original_title
                                                     :
                                                     movieData.original_title}</span>
                                             <span className="fs-6">
-                                                ({new Date(selectedMovie ?
+                                                ({new Date(selectedMovie?.release_date ?
                                                     selectedMovie.release_date
                                                     :
                                                     movieData.release_date).getFullYear()})
@@ -209,13 +214,10 @@ const NewReviewForm = ({ movieData }) => {
                 backdrop={true}
                 keyboard={true}
                 centered >
-                <Modal.Header closeButton className="border-0 ps-4">
-                    <Modal.Title className="text-white fw-bold">Películas de la comunidad</Modal.Title>
-                </Modal.Header>
                 <Modal.Body className="ps-4 pe-4">
                     <Form>
                         <Form.Group className="mb-3" controlId="searchMovieField">
-                            <Form.Label className="text-white">Nombre de la película</Form.Label>
+                            <Form.Label className="text-white fw-bold fs-6">Nombre de la película</Form.Label>
                             <Form.Control
                                 type="text"
                                 placeholder="Busca una película..."
@@ -232,10 +234,11 @@ const NewReviewForm = ({ movieData }) => {
                                                         variant="link"
                                                         className="w-100 p-0 m-0 border-0 text-start text-dark text-decoration-none"
                                                         onClick={() => {
-                                                            handleSelectedMovie(movie),
-                                                                setShowSearchMoviesModal(false),
-                                                                setQuerySearch(''),
-                                                                setMoviesFilter([])
+                                                            console.log(movie)
+                                                            handleSelectedMovie(movie)
+                                                            setShowSearchMoviesModal(false)
+                                                            setQuerySearch('')
+                                                            setMoviesFilter([])
                                                         }}>
                                                         <span className="m-0 p-0 fw-bold">{movie.original_title} </span><span>({new Date(movie.release_date).getFullYear()})</span>
                                                     </Button>

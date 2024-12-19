@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import tmdbServices from '../../../services/tmdb.services'
 
+import { Container } from 'react-bootstrap'
+import MoviesPostersList from "./../../../components/MovieComponentes/MoviesPostersList/MoviesPostersList"
+
+
 const NowPlayingMovies = () => {
     const [movies, setMovies] = useState([])
 
@@ -19,23 +23,12 @@ const NowPlayingMovies = () => {
 
     return (
         <div>
-            <h2>Estrenos</h2>
-            <div className="movie-list">
-                {movies.length > 0 ? (
-                    movies.map((movie) => (
-                        <div key={movie.id} className="movie-item">
-                            <img
-                                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                                alt={movie.title}
-                            />
-                            <h3>{movie.title}</h3>
-                            <p>{movie.release_date}</p>
-                        </div>
-                    ))
-                ) : (
-                    <p>No movies available in theaters right now.</p>
-                )}
-            </div>
+            <Container>
+                <h2 className="fw-bold mt-5">Estrenos</h2>
+                <div className="movie-list">
+                    <MoviesPostersList movies={movies} />
+                </div>
+            </Container>
         </div>
     )
 }
