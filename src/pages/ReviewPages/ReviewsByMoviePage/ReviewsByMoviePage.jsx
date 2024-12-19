@@ -87,7 +87,7 @@ const ReviewsByMoviePage = () => {
                                     </Row>
                                     <Row>
                                         <Col className="p-md-0">
-                                            <p className="fs-5 m-0">{movieData.credits.cast.slice(0, 3).map(cast => `${cast.name}  `)}</p>
+                                            <p className="fs-5 m-0">{movieData?.credits?.cast?.slice(0, 3).map(cast => `${cast.name}  `)}</p>
                                         </Col>
                                     </Row>
                                     <Row className="pt-3">

@@ -90,7 +90,7 @@ const UserProfilePage = () => {
                                             <span className="fw-bold fs-3">{username}</span>
                                         </Col>
                                         <Col xs={{ span: "auto" }}>
-                                            {loggedUser._id === userId && (
+                                            {loggedUser?._id === userId && (
                                                 <Button className="border-0 fw-bold btn-style-1 bg-transparent" onClick={() => setShowEditModal(true)}>
                                                     Editar Perfil
                                                 </Button>
@@ -145,7 +145,7 @@ const UserProfilePage = () => {
                                     <p className="m-0 fw-bold fs-5">Reseñas realizadas</p>
                                 </Col>
                                 {
-                                    loggedUser._id === userId &&
+                                    loggedUser?._id === userId &&
                                     <Col xs={{ span: "auto" }} md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
                                         <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowModal(true)}>Añadir Reseña</Button>
                                     </Col>
@@ -168,7 +168,7 @@ const UserProfilePage = () => {
                                     <p className="m-0 fw-bold fs-5">Comunidades administradas</p>
                                 </Col>
                                 {
-                                    loggedUser._id === userId &&
+                                    loggedUser?._id === userId &&
                                     <Col xs={{ span: "auto" }} md={{ span: "auto" }} className="me-auto mt-2 mt-md-0" >
                                         <Button className="border-0 fw-bold btn-style-2 " onClick={() => setShowNewCommunityModal(true)}>Crear Comunidad</Button>
                                     </Col>
