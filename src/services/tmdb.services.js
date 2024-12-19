@@ -32,30 +32,36 @@ class TMDBServices {
         return this.axiosApp.get(`/movies/${id}`)
     }
 
-    fetchUpcomingMovies(page = 1) {
-        return this.axiosApp.get(`/movies/upcoming?page=${page}`)
+    async getPopularMovies(page = 1, language = 'en-US', region = 'US') {
+        const response = await this.axiosApp.get(`/movies/popular`, {
+            params: { page, language, region }
+        });
+        return response.data.results
     }
 
-    getPopularMovies = async () => {
-        const response = await axios.get(`/popular`)
-        return response.data
+
+    async getNowPlayingMovies(page = 1, language = 'en-US', region = 'US') {
+        const response = await this.axiosApp.get(`/movie/now-playing`, {
+            params: { page, language, region }
+        });
+        return response.data.results
     }
 
-    getTopRatedMovies = async () => {
-        const response = await axios.get(`top-rated`)
-        return response.data
+    async getTopRatedMovies(page = 1, language = 'en-US', region = 'US') {
+        const response = await this.axiosApp.get(`/movies/top_rated`, {
+            params: { page, language, region }
+        });
+        return response.data.results
     }
 
-    getNowPlayingMovies = async () => {
-        const response = await axios.get(`/now-playing`)
-        return response.data
-    }
 
-    getUpcomingMovies = async () => {
-        const response = await axios.get(`/upcoming`)
-        return response.data
+    async getUpcomingMovies(page = 1, language = 'en-US', region = 'US') {
+        const response = await this.axiosApp.get(`/movies/upcoming`, {
+            params: { page, language, region }
+        });
+        return response.data.results
     }
-
 }
+
 
 export default new TMDBServices()

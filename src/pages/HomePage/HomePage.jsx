@@ -1,7 +1,8 @@
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { homeCover } from '../../const/image-paths'
 import { Link } from 'react-router-dom'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useContext } from "react"
+import { AuthContext } from '../../contexts/auth.context'
 
 import TopCommunitiesList from '../../components/CommunitiesComponents/TopCommunitiesList/TopCommunitiesList'
 import MoviesPostersList from '../../components/MovieComponentes/MoviesPostersList/MoviesPostersList'
@@ -18,6 +19,7 @@ const HomePage = () => {
     const [topCommunities, setTopCommunities] = useState([])
     const [lastReviewdMovies, setLastReviewedMovies] = useState([])
     const [mostReviewdMovies, setMostReviewedMovies] = useState([])
+    const { loggedUser, logoutUser } = useContext(AuthContext)
 
     const [isLoading, setIsLoading] = useState(true)
 
@@ -61,7 +63,10 @@ const HomePage = () => {
                         <div className="p-5 w-100 top-50 start-50 translate-middle position-absolute text-center">
                             <h1 className="text-center fw-bold">Conecta, comparte y crea con cinéfilos de todo el mundo</h1>
                             <p className="text-center fs-5"> La web de cinéfilos para cinéfilos que estábais esperando </p>
-                            <Button className="btn-style-2 border-0 btn-sm fw-bold me-3" as={Link} to="/registro">EMPEZAR</Button>
+                            {
+                                !loggedUser && (
+                                    <Button className="btn-style-2 border-0 btn-sm fw-bold me-3" as={Link} to="/registro">EMPEZAR</Button>
+                                )}
                         </div>
                     </Col>
                 </Row>

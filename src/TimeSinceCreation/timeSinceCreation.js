@@ -7,7 +7,7 @@ const TimeSinceCreation = creationDate => {
     const minutes = Math.floor(differenceInMilliseconds / (1000 * 60));
     const hours = Math.floor(differenceInMilliseconds / (1000 * 60 * 60));
     const days = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(days / 7);
+    const weeks = Math.floor(days / 7)
 
     if (minutes < 60) {
         return `${minutes}m`;

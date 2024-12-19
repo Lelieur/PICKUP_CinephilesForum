@@ -3,7 +3,7 @@ import { Search, List, XLg } from "react-bootstrap-icons"
 import { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/auth.context'
-import { homer } from '../../const/image-paths';
+import { homer, logo } from '../../const/image-paths';
 import GeneralFilter from '../Filters/GeneralFilter/GeneralFilter';
 
 import "./Navigation.css"
@@ -37,7 +37,7 @@ const Navigation = () => {
                         <Navbar.Brand as={Link} to="/">
                             <img
                                 alt="Logo"
-                                src="https://upload.wikimedia.org/wikipedia/commons/d/dd/Logotipo_Filmin_2023.png"
+                                src={logo}
                                 width="100"
                             />
                         </Navbar.Brand>
@@ -53,9 +53,10 @@ const Navigation = () => {
                                     Más
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="boder-0 m-0">
-                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend">Tendencias</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/top-peliculas">Top Películas</Dropdown.Item>
-                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/trend/comunidades">Top Comunidades</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/peliculas-populares">Películas Populares</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/mejor-valoradas">Mejor Valoradas</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/estrenos">Estrenos</Dropdown.Item>
+                                    <Dropdown.Item className="text-white ps-4 pe-4 pt-2 pb-2" as={Link} to="/próximos-estrenos">Próximos Estrenos</Dropdown.Item>
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Nav>
@@ -171,20 +172,26 @@ const Navigation = () => {
                                     <Accordion.Header><span className="fw-bold text-white">Más</span></Accordion.Header>
                                     <Accordion.Body className="p-0" style={{ backgroundColor: "#060613" }}>
                                         <Row className="ms-2 p-3">
-                                            <Col as={Link} to="/trend">
-                                                Tendencias
+                                            <Col as={Link} to="/peliculas-populares">
+                                                Películas Populares
                                             </Col>
                                         </Row>
                                         <hr className='m-0' />
                                         <Row className="ms-2 p-3">
-                                            <Col as={Link} to="/trend/reviews">
-                                                Top Reviews
+                                            <Col as={Link} to="/mejor-valoradas">
+                                                Mejor Valoradas
                                             </Col>
                                         </Row>
                                         <hr className='m-0' />
                                         <Row className="ms-2 p-3">
-                                            <Col as={Link} to="/trend/comunidades">
-                                                Top Comunidades
+                                            <Col as={Link} to="/estrenos">
+                                                Estrenos
+                                            </Col>
+                                        </Row>
+                                        <hr className='m-0' />
+                                        <Row className="ms-2 p-3">
+                                            <Col as={Link} to="/próximos-estrenos">
+                                                Próximos Estrenos
                                             </Col>
                                         </Row>
                                     </Accordion.Body>

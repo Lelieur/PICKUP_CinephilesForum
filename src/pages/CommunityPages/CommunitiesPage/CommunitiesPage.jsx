@@ -51,7 +51,7 @@ const CommunitiesPage = () => {
                             <TopCommunitiesList communities={mostFollowedCommunities} />
                         </Col>
                     </Row>
-                    <Row>
+                    <Row >
                         <Col>
                             <Row>
                                 <Col md={{ span: 3 }}>
@@ -62,7 +62,7 @@ const CommunitiesPage = () => {
                                     <Button className="btn-style-2 signup-btn border-0 fw-bold me-3 w-100" onClick={() => setShowModal(true)}>Crear comunidad</Button>
                                 </Col>
                             </Row>
-                            <Row>
+                            <Row className="mt-3 mt-md-0">
                                 <Col>
                                     <CommunitiesList communities={communities} />
                                 </Col>

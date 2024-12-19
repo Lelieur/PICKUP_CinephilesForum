@@ -64,6 +64,8 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
 
     const handleEdit = e => {
 
+        e.preventDefault()
+
         ReviewServices
             .editReview(reviewData._id, reviewData)
             .then(() => {
@@ -86,7 +88,11 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                 <Row className='pt-1'>
                     <Col
                         md={2}
+<<<<<<< HEAD
                         className="ms-2 position-relative">
+=======
+                        className="ms-2 position-relative d-none d-md-inline">
+>>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
                         <Link>
                             <MoviePosterCard {...movieData} movieApiId={movieApiId} />
                         </Link>
@@ -121,7 +127,11 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                             </Col>
                         </Row>
                         <Row className="mt-3">
+<<<<<<< HEAD
                             <Col md={2} className="pe-0">
+=======
+                            <Col xs={2} md={2} xl={1} className="pe-0">
+>>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
                                 <Link to={`/usuarios/${author?._id}`}>
                                     <img
                                         className='rounded-circle object-fit-cover'
@@ -131,8 +141,13 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                                     />
                                 </Link>
                             </Col>
+<<<<<<< HEAD
                             <Col md={10}>
                                 <Row>
+=======
+                            <Col xs={10} md={10} xl={11} className="ps-xl-3">
+                                <Row >
+>>>>>>> 6d24a6750bdd6ce608dcc7be609f025ba2f113f4
                                     <Col className="ps-0">
                                         <p className="m-0 fs-6"><span className="fw-bold">{author?.firstName}</span> @{author?.username} · {formattedDate}</p>
                                     </Col>
@@ -147,7 +162,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     </Col>
                 </Row>
                 <Row className="justify-content-end opacity-50">
-                    <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                    <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                         {
                             !reviewData.usersLikes?.includes(loggedUser?._id) &&
                             <Button
@@ -175,7 +190,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     </Col>
                     {
                         loggedUser?._id === author?._id &&
-                        <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                        <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
                                 variant="link"
@@ -189,7 +204,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     {
                         loggedUser?._id === author?._id &&
 
-                        <Col md={{ span: "auto" }} className="d-flex align-items-center">
+                        <Col xs={2} md={{ span: "auto" }} className="d-flex align-items-center">
                             <Button
                                 className="text-white p-0"
                                 variant="link"
@@ -202,6 +217,7 @@ const ReviewCard = ({ _id, content, rate, likesCounter, createdAt, movieApiId, a
                     }
                 </Row>
             </Card>
+
             <Modal
                 show={showEditModal}
                 onHide={() => setShowEditModal(false)}
