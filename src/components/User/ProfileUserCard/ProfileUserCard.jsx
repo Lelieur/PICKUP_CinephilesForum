@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import './ProfileUserCard.css'
 import { Row, Col, Card, Container, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { homer } from "../../../const/image-paths"
 
 const ProfileUserCard = ({ avatar, username, _id, reviews, followedCommunities }) => {
 
@@ -14,7 +15,7 @@ const ProfileUserCard = ({ avatar, username, _id, reviews, followedCommunities }
                             <Link to={`/usuarios/${_id}`}>
                                 <img
                                     className="user-avatar border border-white rounded-circle"
-                                    src={avatar || "/default-avatar.png"}
+                                    src={avatar || homer}
                                     alt={`${username} avatar`}
                                 />
                             </Link>
@@ -38,7 +39,7 @@ const ProfileUserCard = ({ avatar, username, _id, reviews, followedCommunities }
                                                     transform: `translateY(${index * -5}px)`,
                                                     zIndex: followedCommunities.length - index,
                                                 }}
-                                                src={community.cover || "/default-community-cover.png"}
+                                                src={community.cover}
                                                 alt={community.name}
                                             />
                                         </Link>

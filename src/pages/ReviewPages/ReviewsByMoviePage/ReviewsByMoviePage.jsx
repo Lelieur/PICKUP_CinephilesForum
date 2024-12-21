@@ -8,6 +8,7 @@ import MoviePosterCard from "../../../components/MovieComponentes/MoviePosterCar
 import ReviewsList from "../../../components/Reviews/ReviewsList/ReviewsList"
 import Loader from "../../../components/Loader/Loader"
 import NewReviewForm from "../../../components/Reviews/NewReviewForm/NewReviewForm"
+import MovieVideo from "../../../components/MovieComponentes/MovieVideo/MovieVideo"
 
 import ReviewServices from "../../../services/review.services"
 import TMDBServices from "../../../services/tmdb.services"
@@ -16,9 +17,7 @@ import "./ReviewsByMoviePage.css"
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
-
 const ReviewsByMoviePage = () => {
-    
 
     const [isLoading, setIsLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
@@ -37,7 +36,8 @@ const ReviewsByMoviePage = () => {
 
         const promises = [
             ReviewServices.getReviewsFromMovie(movieId),
-            TMDBServices.fetchMovieDetails(movieId)
+            TMDBServices.fetchMovieDetails(movieId),
+            TMDBServices.fetchMovieVideos(movieId)
         ]
 
         Promise
@@ -46,6 +46,7 @@ const ReviewsByMoviePage = () => {
                 setReviews(reviews.data)
                 setMovieData(movieData.data)
                 averageCount(reviews.data)
+
             })
             .then(() => setIsLoading(false))
             .catch(err => console.log(err))
@@ -71,7 +72,7 @@ const ReviewsByMoviePage = () => {
             <div className="ReviewsByMoviePage">
                 <Row>
                     <Col className="position-relative"
-                    style={{ backgroundImage: `url(${TMDB_API_IMG_URL}/original/${movieData.backdrop_path})`, backgroundSize: "cover", backgroundPosition: "center", height: "40rem"}}>
+                        style={{ backgroundImage: `url(${TMDB_API_IMG_URL}/original/${movieData.backdrop_path})`, backgroundSize: "cover", backgroundPosition: "center", height: "40rem" }}>
                         <div className="w-100 backgroud-faded-down position-absolute top-0" style={{ height: "30%" }} />
                         <div className="w-100 backgroud-faded-up position-absolute bottom-0" style={{ height: "30%" }} />
                         <div className="position-absolute bottom-0 start-0 ms-1 ps-4 ps-md-5 pb-md-5">
@@ -117,6 +118,7 @@ const ReviewsByMoviePage = () => {
                     <Row className="mt-4">
                         <Col className="d-grid d-md-inline">
                             <Button className="border-0 btn-style-2 fw-bold" onClick={() => setShowModal(true)}>AÑADIR RESEÑA</Button>
+                            <MovieVideo movieId={movieId} />
                         </Col>
                     </Row>
                     <Row className="pt-4">
@@ -125,7 +127,6 @@ const ReviewsByMoviePage = () => {
                         </Col>
                     </Row>
                 </Container>
-
                 < Modal
                     className="bg-transparent"
                     show={showModal}
@@ -134,7 +135,7 @@ const ReviewsByMoviePage = () => {
                     keyboard={true}
                     size="xl"
                     centered >
-                    <NewReviewForm className="m-0" movieData={movieData} onInputChange={newReview => onInputChange(newReview)}/>
+                    <NewReviewForm className="m-0" movieData={movieData} onInputChange={newReview => onInputChange(newReview)} />
                 </Modal >
 
             </div>

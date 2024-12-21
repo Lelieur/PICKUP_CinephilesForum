@@ -35,7 +35,7 @@ class TMDBServices {
     async getPopularMovies(page = 1, language = 'en-US', region = 'US') {
         const response = await this.axiosApp.get(`/movies/popular`, {
             params: { page, language, region }
-        });
+        })
         return response.data.results
     }
 
@@ -43,14 +43,14 @@ class TMDBServices {
     async getNowPlayingMovies(page = 1, language = 'en-US', region = 'US') {
         const response = await this.axiosApp.get(`/movie/now-playing`, {
             params: { page, language, region }
-        });
+        })
         return response.data.results
     }
 
     async getTopRatedMovies(page = 1, language = 'en-US', region = 'US') {
         const response = await this.axiosApp.get(`/movies/top_rated`, {
             params: { page, language, region }
-        });
+        })
         return response.data.results
     }
 
@@ -58,10 +58,13 @@ class TMDBServices {
     async getUpcomingMovies(page = 1, language = 'en-US', region = 'US') {
         const response = await this.axiosApp.get(`/movies/upcoming`, {
             params: { page, language, region }
-        });
+        })
         return response.data.results
     }
-}
 
+    fetchMovieVideos(id) {
+        return this.axiosApp.get(`/movies/${id}/videos`)
+    }
+}
 
 export default new TMDBServices()
