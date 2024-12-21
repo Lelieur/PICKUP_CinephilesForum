@@ -25,7 +25,7 @@ const ReviewsByMoviePage = () => {
     const [reviews, setReviews] = useState([])
     const [movieData, setMovieData] = useState([])
     const [averageRate, setAverageRate] = useState([])
-
+    const [trailerKey, setTrailerKey] = useState(null)
     const { movieId } = useParams()
 
     useEffect(() => {
@@ -42,11 +42,11 @@ const ReviewsByMoviePage = () => {
 
         Promise
             .all(promises)
-            .then(([reviews, movieData]) => {
+            .then(([reviews, movieData, videoData]) => {
                 setReviews(reviews.data)
                 setMovieData(movieData.data)
                 averageCount(reviews.data)
-
+                setTrailerKey(videoData.data.results[0].key)
             })
             .then(() => setIsLoading(false))
             .catch(err => console.log(err))
@@ -64,6 +64,7 @@ const ReviewsByMoviePage = () => {
         setShowModal(false)
         averageCount(reviews)
     }
+
 
     return (
 
@@ -116,10 +117,41 @@ const ReviewsByMoviePage = () => {
                 </Row>
                 <Container>
                     <Row className="mt-4">
+                        {trailerKey && (
+                            <Col className="d-grid d-md-inline">
+                                <div sName="embed-responsive embed-responsive-16by9"
+                                    style={{
+                                        position: 'relative',
+                                        paddingBottom: '56.25%',
+                                        height: 0,
+                                        overflow: 'hidden',
+                                        maxWidth: '100%',
+
+                                    }}>
+                                    <iframe
+                                        className="embed-responsive-item"
+                                        src={`https://www.youtube.com/embed/${trailerKey}`}
+                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%'
+                                        }}
+                                    ></iframe>
+                                </div>
+                            </Col>
+                        )}
+                    </Row>
+                    <Row className="mt-4">
                         <Col className="d-grid d-md-inline">
                             <Button className="border-0 btn-style-2 fw-bold" onClick={() => setShowModal(true)}>AÑADIR RESEÑA</Button>
-                            <MovieVideo movieId={movieId} />
                         </Col>
+                        {/* <Col className="d-grid d-md-inline">
+                            <MovieVideo movieId={movieId} />
+                        </Col> */}
                     </Row>
                     <Row className="pt-4">
                         <Col md={{ span: 12 }}>
