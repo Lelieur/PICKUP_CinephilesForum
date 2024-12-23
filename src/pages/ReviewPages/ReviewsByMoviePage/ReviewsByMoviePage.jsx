@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Row, Col, Button, Modal } from "react-bootstrap"
 
@@ -12,12 +12,15 @@ import MovieVideo from "../../../components/MovieComponentes/MovieVideo/MovieVid
 
 import ReviewServices from "../../../services/review.services"
 import TMDBServices from "../../../services/tmdb.services"
+import { AuthContext } from "../../../contexts/auth.context"
 
 import "./ReviewsByMoviePage.css"
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
 const ReviewsByMoviePage = () => {
+
+    const { loggedUser } = useContext(AuthContext)
 
     const [isLoading, setIsLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
@@ -145,13 +148,23 @@ const ReviewsByMoviePage = () => {
                             </Col>
                         )}
                     </Row>
-                    <Row className="mt-4">
+                    {/* <Row className="mt-4">
                         <Col className="d-grid d-md-inline">
                             <Button className="border-0 btn-style-2 fw-bold" onClick={() => setShowModal(true)}>AÑADIR RESEÑA</Button>
                         </Col>
                         {/* <Col className="d-grid d-md-inline">
                             <MovieVideo movieId={movieId} />
                         </Col> */}
+                    <Row className=" pt-4 justify-content-center mb-3">
+                        <Col md={{ span: 12 }}>
+                            {loggedUser ? (
+                                <NewReviewForm movieData={movieData} onInputChange={newReview => onInputChange(newReview)} />
+                            ) : (
+                                <div>
+                                    <p></p>
+                                </div>
+                            )}
+                        </Col>
                     </Row>
                     <Row className="pt-4">
                         <Col md={{ span: 12 }}>
@@ -159,16 +172,6 @@ const ReviewsByMoviePage = () => {
                         </Col>
                     </Row>
                 </Container>
-                < Modal
-                    className="bg-transparent"
-                    show={showModal}
-                    onHide={() => setShowModal(false)}
-                    backdrop={true}
-                    keyboard={true}
-                    size="xl"
-                    centered >
-                    <NewReviewForm className="m-0" movieData={movieData} onInputChange={newReview => onInputChange(newReview)} />
-                </Modal >
 
             </div>
     )

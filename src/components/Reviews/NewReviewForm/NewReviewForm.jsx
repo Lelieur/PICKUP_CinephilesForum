@@ -7,6 +7,7 @@ import { homer } from "../../../const/image-paths"
 import MoviePosterCard from "../../MovieComponentes/MoviePosterCard/MoviePosterCard"
 import ReviewServices from "../../../services/review.services"
 import TMDBServices from "../../../services/tmdb.services"
+import AuthModal from "../../User/AuthModal/AuthModal"
 
 import "./NewReviewForm.css"
 
@@ -15,7 +16,7 @@ const NewReviewForm = ({ movieData, onInputChange }) => {
     const { loggedUser } = useContext(AuthContext)
 
     const [reviewData, setReviewData] = useState({
-        author: loggedUser._id,
+        author: loggedUser?._id,
         movieApiId: !movieData ? '' : movieData.id,
         content: '',
         rate: null
@@ -29,6 +30,7 @@ const NewReviewForm = ({ movieData, onInputChange }) => {
 
     const [showSearchMoviesModal, setShowSearchMoviesModal] = useState(false)
     const [showRatingModal, setShowRatingModal] = useState(false)
+    const [showAuthModal, setShowAuthModal] = useState(false)
 
     const handleInputChange = e => {
         const { value, name } = e.currentTarget
@@ -79,11 +81,16 @@ const NewReviewForm = ({ movieData, onInputChange }) => {
 
         e.preventDefault()
 
+        if (!loggedUser) {
+            setShowAuthModal(true)
+            return
+        }
+
         ReviewServices
             .saveReview(reviewData)
             .then(response => {
 
-                const newReview  = response.data
+                const newReview = response.data
 
                 setReviewData({
                     author: '',
@@ -275,6 +282,10 @@ const NewReviewForm = ({ movieData, onInputChange }) => {
                     </ButtonGroup>
                 </Modal.Body>
             </Modal >
+            <AuthModal
+                show={showAuthModal}
+                onHide={() => setShowAuthModal(false)}
+            />
         </div >
     )
 }
