@@ -65,6 +65,10 @@ class TMDBServices {
     fetchMovieVideos(id) {
         return this.axiosApp.get(`/movies/${id}/videos`)
     }
+
+    fetchWatchProviders(id) {
+        return this.axiosApp.get(`movie/${id}/watch/providers`)
+    }
 }
 
 export default new TMDBServices()

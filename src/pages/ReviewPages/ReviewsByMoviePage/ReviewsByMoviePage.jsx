@@ -15,6 +15,7 @@ import TMDBServices from "../../../services/tmdb.services"
 import { AuthContext } from "../../../contexts/auth.context"
 
 import "./ReviewsByMoviePage.css"
+import WatchProviders from "../../../components/MovieComponentes/WatchProveiders/WatchProveiders"
 
 const TMDB_API_IMG_URL = import.meta.env.VITE_APP_TMDB_API_IMG_URL
 
@@ -106,6 +107,11 @@ const ReviewsByMoviePage = () => {
                                     <Row className="pt-3">
                                         <Col className="p-md-0">
                                             <p className="fs-6 m-0">{new Date(movieData.release_date).getFullYear()} · {Math.floor(movieData.runtime / 60)}h {movieData.runtime % 60}min</p>
+                                        </Col>
+                                    </Row>
+                                    <Row className="pt-3">
+                                        <Col className="p-md-0">
+                                            <WatchProviders movieId={movieId} />
                                         </Col>
                                     </Row>
                                     <Row className="pt-3  d-none d-md-inline">
