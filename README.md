@@ -3,7 +3,7 @@
   <img src="https://res.cloudinary.com/lucaslelieur/image/upload/v1736788255/LOGO_blanca_kkwqzh.png" alt="PICKUP Logo">
 </p>
 
-# 🍿 **LA PREMIERE**
+# 🎬 **PICKUP**
 
 <br>
 
