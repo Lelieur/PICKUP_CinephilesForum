@@ -20,18 +20,19 @@ It includes a **secure authentication system based on JSON Web Tokens (JWT)** an
 ## 🖱️ **Navigation**  
 
 
-| URL                  | Description                                        |
-| ----------------     | -------------------------------------------------- | 
-| /                    | Home Page                                          |
-| /cines               | Page containing all cinemas                        |
-| /cines/:id           | Page containing the details of the selected cinema |
-| /cines/crear         | New cinema form page                               |
-| /cines/editar/:id    | Selected cinema editing form page                  |
-| /peliculas           | Page containing all movies                         |
-| /peliculas/:id       | Page containing the details of the selected movie  |
-| /peliculas/crear     | New movie form page                                |
-| /peliculas/editar/:id| Selected movie editing form page                   |
-| *                    | 404 page                                           |
+| URL                       | Description                                                     |
+| ----------------          | --------------------------------------------------              |       
+| /                         | Home Page                                                       |
+| /comunidades              | Page containing all communities                                 |
+| /comunidades/detalles/:id | Page containing the details of the selected community           |
+| /reviews                  | Page containing all reviews                                     |
+| /usuarios                 | Page containing all registered users                            |
+| /usuarios/:id             | Page containing the details of the selected user                |
+| /peliculas-populares      | Page containing popular movies from de TMDB API                 |
+| /mejor-valoradas          | Page containing best rated movies from de TMDB API              |         
+| /estrenos                 | Page containing recently released movies from de TMDB API       |
+| /proximos-estrenos        | Page containing upcoming release movies from de TMDB API        |
+| *                         | 404 page                                                        |
 
 
 ## 🚀 **Features**  
